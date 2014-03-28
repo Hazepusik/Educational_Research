@@ -7,5 +7,12 @@ D:\Downloads\ExportToExcelV2\Multicriteria\obj\Debug\Multicriteria.csprojResolve
 D:\Downloads\ExportToExcelV2\Multicriteria\obj\Debug\Multicriteria.Form1.resources
 D:\Downloads\ExportToExcelV2\Multicriteria\obj\Debug\ExportToExcelV2.Properties.Resources.resources
 D:\Downloads\ExportToExcelV2\Multicriteria\obj\Debug\Multicriteria.csproj.GenerateResource.Cache
-D:\GitHub\Educational_Research\Multicriteria\obj\Debug\ExportToExcelV2.exe
-D:\GitHub\Educational_Research\Multicriteria\obj\Debug\ExportToExcelV2.pdb
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\EPPlus.dll
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.csprojResolveAssemblyReference.cache
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.csproj.GenerateResource.Cache
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Multicriteria.exe
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Multicriteria.pdb
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.Form1.resources
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.Properties.Resources.resources
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.exe
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.pdb

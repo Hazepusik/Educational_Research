@@ -8,8 +8,8 @@
     <ProjectGuid>{98BE0E6F-1A12-43E9-804D-D7B16B62D139}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExportToExcelV2</RootNamespace>
-    <AssemblyName>ExportToExcelV2</AssemblyName>
+    <RootNamespace>Multicriteria</RootNamespace>
+    <AssemblyName>Multicriteria</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -58,6 +58,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes.cs" />
+    <Compile Include="Excel.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

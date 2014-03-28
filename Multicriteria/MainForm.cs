@@ -8,8 +8,10 @@ using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Style;
 
+
 namespace Multicriteria
 {
+
     public partial class Form1 : Form
     {
         /// <summary>
@@ -37,12 +39,19 @@ namespace Multicriteria
         {
             using (ExcelPackage p = new ExcelPackage())
             {
+                // set fake criteria
+                Criterion[] criteria = new Criterion[3];
+                criteria[0] = new Criterion("First", 1);
+                criteria[1] = new Criterion("Second", 3.3);
+                criteria[2] = new Criterion("Third", 123.456);
+                string[] models = { "Aaa", "Bbb", "Ccc" };
+
+
                 //set the workbook properties and add a default sheet in it
                 SetWorkbookProperties(p);
 
                 //Create a sheet
                 ExcelWorksheet ws = CreateSheet(p, "Сравнительные характеристики");
-                DataTable dt = CreateDataTable(); //My Function which generates DataTable
 
                 //Merging cells and create a center heading for out table
                 /*ws.Cells[1, 1].Value = "Sample DataTable Export";
@@ -50,18 +59,18 @@ namespace Multicriteria
                 ws.Cells[1, 1, 1, dt.Columns.Count].Style.Font.Bold = true;
                 ws.Cells[1, 1, 1, dt.Columns.Count].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;*/
 
+
+                DataTable dt = CreateDataTable(); //My Function which generates DataTable
                 int rowIndex = 2;
+                int colIndex = 1;
 
-                CreateHeader(ws, ref rowIndex, dt);
-                CreateData(ws, ref rowIndex, dt);
-                CreateFooter(ws, ref rowIndex, dt);
+                FillModels(ws, models, rowIndex, colIndex);
 
-                //AddComment(ws, 5, 10, "Zeeshan Umar's Comments", "Zeeshan Umar");
+                rowIndex--;
+                colIndex++;
 
-                string path = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Application.StartupPath)), "Zeeshan Umar.jpg");
-                AddImage(ws, 10, 0, path);
+                FillCriteria(ws, criteria, rowIndex, colIndex);
 
-                AddCustomShape(ws, 10, 7, eShapeStyle.Ellipse, "Text inside Ellipse.");
 
                 //Generate A File with Random name
                 Byte[] bin = p.GetAsByteArray();
@@ -73,6 +82,31 @@ namespace Multicriteria
                 Process.Start(pi);
             }
         }
+
+        private static void FillCriteria(ExcelWorksheet ws, Criterion[] criteria, int row, int col)
+        {
+            foreach (Criterion criterion in criteria)
+            {
+                var cellName = ws.Cells[row, col];
+                var cellValue = ws.Cells[row + 1, col];
+
+                //Setting Value in cell
+                cellName.Value = criterion.name;
+                cellValue.Value = criterion.value;
+                col++;
+            }
+        }
+
+        private static void FillModels(ExcelWorksheet ws, string[] models, int row, int col)
+        {
+            foreach (string model in models)
+            {
+                var cell = ws.Cells[row, col];
+                cell.Value = model;
+                row++;
+            }
+        }
+
 
         private static ExcelWorksheet CreateSheet(ExcelPackage p, string sheetName)
         {
@@ -96,7 +130,7 @@ namespace Multicriteria
             p.Workbook.Properties.Author = "Khazov Andrey";
             p.Workbook.Properties.Title = "Comparation table";
 
-            
+
         }
 
         private static void CreateHeader(ExcelWorksheet ws, ref int rowIndex, DataTable dt)
@@ -124,7 +158,7 @@ namespace Multicriteria
 
         private static void CreateData(ExcelWorksheet ws, ref int rowIndex, DataTable dt)
         {
-            int colIndex=0;
+            int colIndex = 0;
             foreach (DataRow dr in dt.Rows) // Adding Data into rows
             {
                 colIndex = 1;
@@ -238,7 +272,7 @@ namespace Multicriteria
             DataTable dt = new DataTable();
             for (int i = 0; i < 10; i++)
             {
-                dt.Columns.Add(i.ToString()+"q");
+                dt.Columns.Add(i.ToString() + "q");
             }
 
             for (int i = 0; i < 10; i++)
@@ -254,5 +288,6 @@ namespace Multicriteria
 
             return dt;
         }
+
     }
 }
