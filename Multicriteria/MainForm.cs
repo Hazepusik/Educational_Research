@@ -9,6 +9,7 @@ using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Style;
 
 
+
 namespace Multicriteria
 {
 
@@ -41,17 +42,21 @@ namespace Multicriteria
             {
                 // set fake criteria
                 Criterion[] criteria = new Criterion[3];
-                criteria[0] = new Criterion("First", 1);
-                criteria[1] = new Criterion("Second", 3.3);
-                criteria[2] = new Criterion("Third", 123.456);
-                string[] models = { "Aaa", "Bbb", "Ccc" };
+                criteria[0] = new Criterion(1, "First", 1);
+                criteria[1] = new Criterion(2, "Second", 3.3);
+                criteria[2] = new Criterion(3, "Third", 123.456);
 
+                Model[] models = new Model[3];
+                models[0] = new Model(1, "Aaa");
+                models[1] = new Model(2, "Bbb");
+                models[2] = new Model(3, "Ccc");
 
                 //set the workbook properties and add a default sheet in it
                 SetWorkbookProperties(p);
 
                 //Create a sheet
                 ExcelWorksheet ws = CreateSheet(p, "Сравнительные характеристики");
+                ExcelWorksheet sys_data_ws = CreateSheet(p, "System");
 
                 //Merging cells and create a center heading for out table
                 /*ws.Cells[1, 1].Value = "Sample DataTable Export";
@@ -70,6 +75,8 @@ namespace Multicriteria
                 colIndex++;
 
                 FillCriteria(ws, criteria, rowIndex, colIndex);
+
+                FillSysData(sys_data_ws, models, criteria);
 
 
                 //Generate A File with Random name
@@ -97,16 +104,20 @@ namespace Multicriteria
             }
         }
 
-        private static void FillModels(ExcelWorksheet ws, string[] models, int row, int col)
+        private static void FillModels(ExcelWorksheet ws, Model[] models, int row, int col)
         {
-            foreach (string model in models)
+            foreach (Model model in models)
             {
                 var cell = ws.Cells[row, col];
-                cell.Value = model;
+                cell.Value = model.name;
                 row++;
             }
         }
 
+        private static void FillSysData(ExcelWorksheet ws, Model[] models, Criterion[] criteria)
+        {
+
+        }
 
         private static ExcelWorksheet CreateSheet(ExcelPackage p, string sheetName)
         {
