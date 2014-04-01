@@ -1,39 +1,54 @@
-﻿
+﻿using System;
 namespace Multicriteria
 {
     public class Model
     {
+        private static int modelID = 0;
         public int id;
         public string name;
         public Model()
         {
-            id = -1;
-            name = "Unknown";
+            id = ++modelID;
+            name = "Unknown " + modelID.ToString();
         }
-        public Model(int new_id, string nm)
+        public Model(string nm)
         {
-            id = new_id;
+            id = ++modelID;
             name = nm;
+        }
+        public static void ResetModel()
+        {
+            modelID = 0;
         }
     }
 
-    public class Criterion :Model
+    public class Criterion
     {
-
-        public double value;
+        private static  int criterionID = 0;
+        public int id;
+        public string name;
+        public int value;
         
 
         public Criterion()
         {
-            name = "Unknown";
+            id = ++criterionID;
+            name = "Unknown "+criterionID.ToString();
             value = 0;
         }
 
-        public Criterion(int new_id, string nm, double vl)
+        public Criterion(string nm, double vl)
         {
-            id = new_id;
+            id = ++criterionID;
             name = nm;
-            value = vl;
+            vl = (vl > 100) ? 100 : vl;
+            vl = (vl < 1) ? 1 : vl;
+            value = (int)Math.Round(vl);
+        }
+
+        public static void ResetCriterion()
+        {
+            criterionID = 0;
         }
 
     }
