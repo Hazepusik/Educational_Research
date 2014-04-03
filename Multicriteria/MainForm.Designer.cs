@@ -1,6 +1,6 @@
 ﻿namespace Multicriteria
 {
-    partial class Form1
+    partial class frmMain
     {
         /// <summary>
         /// Required designer variable.
@@ -38,7 +38,7 @@
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(260, 23);
             this.btnExport.TabIndex = 0;
-            this.btnExport.Text = "Export";
+            this.btnExport.Text = "Создать новый";
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
@@ -48,18 +48,18 @@
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(245, 27);
             this.btnImport.TabIndex = 1;
-            this.btnImport.Text = "Import";
+            this.btnImport.Text = "Загрузить существующий";
             this.btnImport.UseVisualStyleBackColor = true;
             this.btnImport.Click += new System.EventHandler(this.Import_Click);
             // 
-            // Form1
+            // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.btnImport);
             this.Controls.Add(this.btnExport);
-            this.Name = "Form1";
+            this.Name = "frmMain";
             this.Text = "Export To Excel";
             this.ResumeLayout(false);
 

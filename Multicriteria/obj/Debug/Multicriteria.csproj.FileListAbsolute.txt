@@ -12,7 +12,8 @@ D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.csprojResol
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.csproj.GenerateResource.Cache
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Multicriteria.exe
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Multicriteria.pdb
-D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.Form1.resources
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.Properties.Resources.resources
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.exe
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.pdb
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmFill.resources
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmMain.resources

@@ -13,12 +13,12 @@ using OfficeOpenXml.Style;
 namespace Multicriteria
 {
 
-    public partial class Form1 : Form
+    public partial class frmMain : Form
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Form1"/> class.
+        /// Initializes a new instance of the <see cref="frmMain"/> class.
         /// </summary>
-        public Form1()
+        public frmMain()
         {
             InitializeComponent();
         }
@@ -30,8 +30,12 @@ namespace Multicriteria
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnExport_Click(object sender, EventArgs e)
         {
-            Excel.GenerateReport();
+            //Excel.GenerateReport();
+            frmFill fillForm = new frmFill();
+            fillForm.ShowDialog();
         }
+
+
 
         private void Import_Click(object sender, EventArgs e)
         {

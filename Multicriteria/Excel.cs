@@ -41,6 +41,14 @@ namespace Multicriteria
                         ExcelWorksheet sysWorksheet = workBook.Worksheets[2];
                         int modelsCount = CellToInt(sysWorksheet.Cells[1, 2]);
                         int criteriaCount = int.Parse(sysWorksheet.Cells[1, 4].Value.ToString());
+                        double[,] table = new double[modelsCount, criteriaCount];
+                        for (int row = 0; row < modelsCount; row++)
+                        {
+                            for (int col = 0; col < criteriaCount; col++)
+                            {
+                                table[row, col] = CellToFloat(dataWorksheet.Cells[row + 2, col + 2]);
+                            }
+                        }
                         for (int col = 1; col <= criteriaCount; col++)
                         {
                             criteria.Add(new Criterion(dataWorksheet.Cells[1, col + 1].Value.ToString(), CellToInt(sysWorksheet.Cells[3, col])));
@@ -54,9 +62,30 @@ namespace Multicriteria
             }
         }
 
+
+        private static double CellToFloat(ExcelRange cell)
+        {
+            try
+            {
+                string q = cell.Value.ToString().Replace(",", ".");
+                return Convert.ToDouble(cell.Value.ToString().Replace(".",","));
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         private static int CellToInt(ExcelRange cell)
         {
-            return int.Parse(cell.Value.ToString());
+            try
+            {
+                return int.Parse(cell.Value.ToString());
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         /// <summary>
@@ -72,10 +101,11 @@ namespace Multicriteria
                 criteria[1] = new Criterion("Second", 3.0);
                 criteria[2] = new Criterion("Third", 123.45);
 
-                Model[] models = new Model[3];
+                Model[] models = new Model[4];
                 models[0] = new Model("Aaa");
                 models[1] = new Model("Bbb");
                 models[2] = new Model("Ccc");
+                models[3] = new Model("Ddd");
 
                 //set the workbook properties and add a default sheet in it
                 SetWorkbookProperties(package);
@@ -113,11 +143,11 @@ namespace Multicriteria
             foreach (Criterion criterion in criteria)
             {
                 var cellName = ws.Cells[row, col];
-                var cellValue = ws.Cells[row + 1, col];
+                //var cellValue = ws.Cells[row + 1, col];
 
                 //Setting Value in cell
                 cellName.Value = criterion.name;
-                cellValue.Value = criterion.value;
+                //cellValue.Value = criterion.value;
                 col++;
             }
         }
