@@ -24,7 +24,7 @@ namespace Multicriteria
 
     public class Criterion
     {
-        private static  int criterionID = 0;
+        private static int criterionID = 0;
         public int id;
         public string name;
         public int value;

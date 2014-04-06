@@ -91,21 +91,23 @@ namespace Multicriteria
         /// <summary>
         /// Generates the report.
         /// </summary>
-        public static void GenerateReport()
+        public static void GenerateReport(List<Criterion> criteria, List<Model> models)
         {
             using (ExcelPackage package = new ExcelPackage())
             {
                 // set fake criteria
-                Criterion[] criteria = new Criterion[3];
+                /*List<Criterion> criteria = new List<Criterion>();
+                List<Model> models = new List<Model>();
+
                 criteria[0] = new Criterion("First", 1.6);
                 criteria[1] = new Criterion("Second", 3.0);
                 criteria[2] = new Criterion("Third", 123.45);
 
-                Model[] models = new Model[4];
+                
                 models[0] = new Model("Aaa");
                 models[1] = new Model("Bbb");
                 models[2] = new Model("Ccc");
-                models[3] = new Model("Ddd");
+                models[3] = new Model("Ddd");*/
 
                 //set the workbook properties and add a default sheet in it
                 SetWorkbookProperties(package);
@@ -138,7 +140,7 @@ namespace Multicriteria
             }
         }
 
-        private static void FillCriteria(ExcelWorksheet ws, Criterion[] criteria, int row, int col)
+        private static void FillCriteria(ExcelWorksheet ws, List<Criterion> criteria, int row, int col)
         {
             foreach (Criterion criterion in criteria)
             {
@@ -152,7 +154,7 @@ namespace Multicriteria
             }
         }
 
-        private static void FillModels(ExcelWorksheet ws, Model[] models, int row, int col)
+        private static void FillModels(ExcelWorksheet ws, List<Model> models, int row, int col)
         {
             foreach (Model model in models)
             {
@@ -188,12 +190,12 @@ namespace Multicriteria
         }
 
 
-        private static void FillSysData(ExcelWorksheet ws, Model[] models, Criterion[] criteria)
+        private static void FillSysData(ExcelWorksheet ws, List<Model> models, List<Criterion> criteria)
         {
             ws.Cells[1, 1].Value = "Models count";
-            ws.Cells[1, 2].Value = models.Length;
+            ws.Cells[1, 2].Value = models.Count;
             ws.Cells[1, 3].Value = "Criteria count";
-            ws.Cells[1, 4].Value = criteria.Length;
+            ws.Cells[1, 4].Value = criteria.Count;
             int col = 1;
             foreach (Criterion criterion in criteria)
             {
