@@ -16,7 +16,7 @@ namespace Multicriteria
         /// <summary>
         /// Read data from Excel File
         /// </summary>
-        public static void ReadXls(string filePath)
+        public static bool ReadXls(string filePath)
         {
             //FIXIT rm
             filePath = "data.xlsx";
@@ -59,6 +59,7 @@ namespace Multicriteria
                         }
                     }
                 }
+                return true;
             }
         }
 

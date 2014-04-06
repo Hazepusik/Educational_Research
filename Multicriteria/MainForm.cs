@@ -39,7 +39,26 @@ namespace Multicriteria
 
         private void Import_Click(object sender, EventArgs e)
         {
-            Excel.ReadXls("qqq");
+            OpenFileDialog openFD = new OpenFileDialog();
+
+            openFD.InitialDirectory = Directory.GetCurrentDirectory();
+            openFD.Filter = "Excel files (*.xlsx;*.xls)|*.xlsx;*.xls|All files (*.*)|*.*";
+            openFD.FilterIndex = 1;
+            openFD.RestoreDirectory = true;
+            if (openFD.ShowDialog() == DialogResult.OK)
+            {
+                //TODO: check data
+                if (Excel.ReadXls(openFD.FileName))
+                {
+                    //TODO: show filename
+                    frmChoose chooseForm = new frmChoose();
+                    chooseForm.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при открытии файла.\nУбедитесь, что файл заполнен верно.");
+                }
+            }
         }
 
         

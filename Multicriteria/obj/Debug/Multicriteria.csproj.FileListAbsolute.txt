@@ -17,3 +17,4 @@ D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.exe
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.pdb
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmFill.resources
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmMain.resources
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmChoose.resources
