@@ -13,16 +13,19 @@ namespace Multicriteria
 {
     class Excel
     {
+        public static List<Model> models;
+        public static List<Criterion> criteria;
+        public static double[][] table;
         /// <summary>
         /// Read data from Excel File
         /// </summary>
         public static bool ReadXls(string filePath)
         {
             //FIXIT rm
-            filePath = "data.xlsx";
-            List<Model> models = new List<Model>();
+            //filePath = "data.xlsx";
+            models = new List<Model>();
+            criteria = new List<Criterion>();
             Model.ResetModel();
-            List<Criterion> criteria = new List<Criterion>();
             Criterion.ResetCriterion();
             // Get the file we are going to process
             var existingFile = new FileInfo(filePath);
@@ -41,12 +44,16 @@ namespace Multicriteria
                         ExcelWorksheet sysWorksheet = workBook.Worksheets[2];
                         int modelsCount = CellToInt(sysWorksheet.Cells[1, 2]);
                         int criteriaCount = int.Parse(sysWorksheet.Cells[1, 4].Value.ToString());
-                        double[,] table = new double[modelsCount, criteriaCount];
+                        table = new double[modelsCount][];
+                        for (int x = 0; x < modelsCount; x++) 
+                        {
+                            table[x] = new double[criteriaCount];
+                        }
                         for (int row = 0; row < modelsCount; row++)
                         {
                             for (int col = 0; col < criteriaCount; col++)
                             {
-                                table[row, col] = CellToFloat(dataWorksheet.Cells[row + 2, col + 2]);
+                                table[row][col] = CellToFloat(dataWorksheet.Cells[row + 2, col + 2]);
                             }
                         }
                         for (int col = 1; col <= criteriaCount; col++)

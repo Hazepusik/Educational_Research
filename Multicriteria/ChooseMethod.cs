@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using MyMath.Core;
+using MathLib;
 
 namespace Multicriteria
 {
@@ -19,7 +19,13 @@ namespace Multicriteria
 
         private void btnElectra_Click(object sender, EventArgs e)
         {
+            btnElectra.Text = MathLib.Domin.fib(4).ToString();
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            List<int> dominated = new List<int>();
+            dominated = MathLib.Domin.ret(Excel.table);
         }
     }
 }

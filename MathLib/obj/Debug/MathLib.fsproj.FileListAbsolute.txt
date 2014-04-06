@@ -1,0 +1,5 @@
+D:\GitHub\Educational_Research\MathLib\bin\Debug\MathLib.XML
+D:\GitHub\Educational_Research\MathLib\bin\Debug\MathLib.dll
+D:\GitHub\Educational_Research\MathLib\bin\Debug\MathLib.pdb
+D:\GitHub\Educational_Research\MathLib\obj\Debug\MathLib.dll
+D:\GitHub\Educational_Research\MathLib\obj\Debug\MathLib.pdb

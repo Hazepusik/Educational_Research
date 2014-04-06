@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
 using OfficeOpenXml.Style;
+using MathLib;
 
 
 
@@ -60,7 +61,6 @@ namespace Multicriteria
                 }
             }
         }
-
         
 
     }
