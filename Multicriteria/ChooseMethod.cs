@@ -19,7 +19,7 @@ namespace Multicriteria
 
         private void btnElectra_Click(object sender, EventArgs e)
         {
-            btnElectra.Text = MathLib.Domin.fib(4).ToString();
+   
         }
 
         private void button1_Click(object sender, EventArgs e)
