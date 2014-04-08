@@ -3,3 +3,4 @@ D:\GitHub\Educational_Research\Tutorial1\bin\Debug\Tutorial1.exe
 D:\GitHub\Educational_Research\Tutorial1\bin\Debug\Tutorial1.pdb
 D:\GitHub\Educational_Research\Tutorial1\obj\x86\Debug\Tutorial1.exe
 D:\GitHub\Educational_Research\Tutorial1\obj\x86\Debug\Tutorial1.pdb
+D:\GitHub\Educational_Research\Tutorial1\obj\x86\Debug\Tutorial1.fsprojResolveAssemblyReference.cache

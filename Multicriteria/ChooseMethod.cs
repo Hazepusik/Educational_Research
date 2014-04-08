@@ -25,7 +25,12 @@ namespace Multicriteria
         private void button1_Click(object sender, EventArgs e)
         {
             List<int> dominated = new List<int>();
-            dominated = MathLib.Domin.ret(Excel.table);
+            List<int> equal = new List<int>();
+            List<int>[] output = new List<int>[2];
+            output = MathLib.Domin.CalcDominated(Excel.table);
+            dominated = output[0];
+            equal = output[1];
+            dominated.Reverse();
         }
     }
 }

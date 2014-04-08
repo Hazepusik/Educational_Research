@@ -9,24 +9,24 @@ module public Domin =
         | n -> fib(n-1) + fib(n-2)
     
 
-    let ret (input:double [][])=
-        let  mutable arr = input
+    let CalcDominated (input:double[][])=
+        let mutable arr = input
         let rows = arr.GetUpperBound(0) + 1
-        let firstDominated coll = Array.forall2 (fun elem1 elem2 -> elem1 <= elem2) coll
-        //for i in 0 .. rows
+        let first_dominated_or_equal coll = Array.forall2 (fun elem1 elem2 -> elem1 <= elem2) coll
+        let rec is_dominated (checkable:double[]) (other:double[][]) =
+            if other.Length = 0 then -1
+            elif checkable = other.[0].[*] then max (is_dominated checkable other.[1..].[*]) 0
+            elif first_dominated_or_equal checkable other.[0].[*] then 1
+            else is_dominated checkable other.[1..].[*]
+
         let dominated = new List<int>()
-        for i in 0..rows-1 do
+        let equal  = new List<int>()
+        for i = rows-1 downto 0 do     // for for dominated numbers
+            //printfn "%A" arr.Length    // downto for deleting in cicle
             let other = Array.concat [arr.[0..i-1].[*]; arr.[i+1..].[*]]
-            let mutable is_dominated = false
-            for new_row in other do
-                if firstDominated arr.[i].[*] new_row then
-                    is_dominated <- true 
-                    //TODO: make MF break!
-            if is_dominated then
-                //arr <- other 
-                dominated.Add(i)    
-        dominated      
-            //printf "%A" other
-            //row i arr
-        
-        //firstDominated arr.[0] arr.[1]
+            match (is_dominated arr.[i].[*] other) with
+            | 1 -> dominated.Add(i+1); arr <- Array.concat [arr.[0..i-1].[*]; arr.[i+1..].[*]]
+            | 0 -> equal.Add(i+1); arr <- Array.concat [arr.[0..i-1].[*]; arr.[i+1..].[*]]  //TODO: equal list
+            | _ -> printfn "Pareto"
+        printfn "%A" arr    
+        [| dominated; equal |]      
