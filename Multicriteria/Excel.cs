@@ -13,9 +13,6 @@ namespace Multicriteria
 {
     class Excel
     {
-        public static List<Model> models;
-        public static List<Criterion> criteria;
-        public static double[][] table;
         /// <summary>
         /// Read data from Excel File
         /// </summary>
@@ -23,8 +20,8 @@ namespace Multicriteria
         {
             //FIXIT rm
             //filePath = "data.xlsx";
-            models = new List<Model>();
-            criteria = new List<Criterion>();
+            Data.models = new List<Model>();
+            Data.criteria = new List<Criterion>();
             Model.ResetModel();
             Criterion.ResetCriterion();
             // Get the file we are going to process
@@ -44,25 +41,25 @@ namespace Multicriteria
                         ExcelWorksheet sysWorksheet = workBook.Worksheets[2];
                         int modelsCount = CellToInt(sysWorksheet.Cells[1, 2]);
                         int criteriaCount = int.Parse(sysWorksheet.Cells[1, 4].Value.ToString());
-                        table = new double[modelsCount][];
+                        Data.table = new double[modelsCount][];
                         for (int x = 0; x < modelsCount; x++) 
                         {
-                            table[x] = new double[criteriaCount];
+                            Data.table[x] = new double[criteriaCount];
                         }
                         for (int row = 0; row < modelsCount; row++)
                         {
                             for (int col = 0; col < criteriaCount; col++)
                             {
-                                table[row][col] = CellToFloat(dataWorksheet.Cells[row + 2, col + 2]);
+                                Data.table[row][col] = CellToFloat(dataWorksheet.Cells[row + 2, col + 2]);
                             }
                         }
                         for (int col = 1; col <= criteriaCount; col++)
                         {
-                            criteria.Add(new Criterion(dataWorksheet.Cells[1, col + 1].Value.ToString(), CellToInt(sysWorksheet.Cells[3, col])));
+                            Data.criteria.Add(new Criterion(dataWorksheet.Cells[1, col + 1].Value.ToString(), CellToInt(sysWorksheet.Cells[3, col])));
                         }
                         for (int row = 1; row <= modelsCount; row++)
                         {
-                            models.Add(new Model(dataWorksheet.Cells[row + 1, 1].Value.ToString()));
+                            Data.models.Add(new Model(dataWorksheet.Cells[row + 1, 1].Value.ToString()));
                         }
                     }
                 }
@@ -103,19 +100,6 @@ namespace Multicriteria
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-                // set fake criteria
-                /*List<Criterion> criteria = new List<Criterion>();
-                List<Model> models = new List<Model>();
-
-                criteria[0] = new Criterion("First", 1.6);
-                criteria[1] = new Criterion("Second", 3.0);
-                criteria[2] = new Criterion("Third", 123.45);
-
-                
-                models[0] = new Model("Aaa");
-                models[1] = new Model("Bbb");
-                models[2] = new Model("Ccc");
-                models[3] = new Model("Ddd");*/
 
                 //set the workbook properties and add a default sheet in it
                 SetWorkbookProperties(package);
@@ -210,6 +194,49 @@ namespace Multicriteria
                 ws.Cells[2, col].Value = criterion.name;
                 ws.Cells[3, col].Value = criterion.value;
                 col++;
+            }
+        }
+
+        public static void WriteElectre(double[,] C, double[,] D, List<Model> models)
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+
+                SetWorkbookProperties(package);
+
+                ExcelWorksheet agree = CreateSheet(package, "Согласие");
+                ExcelWorksheet disagree = CreateSheet(package, "Несогласие");
+
+                int current = 2;
+                foreach (Model model in models)
+                {
+                    agree.Cells[1, current].Value = model.name;
+                    agree.Cells[current, 1].Value = model.name;
+                    disagree.Cells[1, current].Value = model.name;
+                    disagree.Cells[current, 1].Value = model.name;
+                    current++;
+                }
+                int modelsCount = models.Count;
+                for (int r = 2; r <= modelsCount+1; ++r)
+                    for (int c = 2; c <= modelsCount+1; ++c)
+                    {
+                        if (r == c)
+                        {
+                            agree.Cells[r, c].Value = "*";
+                            disagree.Cells[r, c].Value = "*";
+                        }
+                        else
+                        {
+                            agree.Cells[r, c].Value = C[r-2, c-2];
+                            disagree.Cells[r, c].Value = D[r - 2, c - 2];
+                        }
+                    }
+
+                Byte[] bin = package.GetAsByteArray();
+                string fileName = "ELECTRE_result" + ".xlsx";
+                File.WriteAllBytes(fileName, bin);
+                ProcessStartInfo pi = new ProcessStartInfo(fileName);
+                Process.Start(pi);
             }
         }
     }
