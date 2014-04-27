@@ -18,55 +18,92 @@ namespace Multicriteria
         /// </summary>
         public static bool ReadXls(string filePath)
         {
-            //FIXIT rm
-            //filePath = "data.xlsx";
             Data.models = new List<Model>();
             Data.criteria = new List<Criterion>();
             Model.ResetModel();
             Criterion.ResetCriterion();
-            // Get the file we are going to process
+            
             var existingFile = new FileInfo(filePath);
-            // Open and read the Xlsx file.
-            // TODO: catch if ile is already opened
+            if (FileIsLocked(existingFile))
+            {
+                MessageBox.Show("Произошла ошибка при открытии файла.\nУбедитесь, что файл существует и закрыт.");
+                return false;
+            }
+         
             using (var package = new ExcelPackage(existingFile))
             {
-                // Get the work book in the file
                 ExcelWorkbook workBook = package.Workbook;
                 if (workBook != null)
                 {
-                    // TODO: Check data
-                    if (workBook.Worksheets.Count > 0)
+                    if (workBook.Worksheets.Count < 2)
                     {
-                        ExcelWorksheet dataWorksheet = workBook.Worksheets[1];
-                        ExcelWorksheet sysWorksheet = workBook.Worksheets[2];
-                        int modelsCount = CellToInt(sysWorksheet.Cells[1, 2]);
-                        int criteriaCount = int.Parse(sysWorksheet.Cells[1, 4].Value.ToString());
-                        Data.table = new double[modelsCount][];
-                        for (int x = 0; x < modelsCount; x++) 
+                        MessageBox.Show("Произошла ошибка при чтении файла.\nУбедитесь, что файл заполнен верно.");
+                        return false;
+                    }
+                    ExcelWorksheet dataWorksheet = workBook.Worksheets[1];
+                    ExcelWorksheet sysWorksheet = workBook.Worksheets[2];
+                    int modelsCount;
+                    if (!int.TryParse(sysWorksheet.Cells[1, 2].Value.ToString(), out modelsCount))
+                    {
+                        MessageBox.Show("Произошла ошибка при чтении файла.\nУбедитесь, что файл заполнен верно.");
+                        return false;
+                    }
+                    int criteriaCount;
+                    if (!int.TryParse(sysWorksheet.Cells[1, 4].Value.ToString(), out criteriaCount))
+                    {
+                        MessageBox.Show("Произошла ошибка при чтении файла.\nУбедитесь, что файл заполнен верно.");
+                        return false;
+                    }
+                    Data.table = new double[modelsCount][];
+                    for (int x = 0; x < modelsCount; x++) 
+                    {
+                        Data.table[x] = new double[criteriaCount];
+                    }
+                    for (int row = 0; row < modelsCount; row++)
+                    {
+                        for (int col = 0; col < criteriaCount; col++)
                         {
-                            Data.table[x] = new double[criteriaCount];
-                        }
-                        for (int row = 0; row < modelsCount; row++)
-                        {
-                            for (int col = 0; col < criteriaCount; col++)
-                            {
-                                Data.table[row][col] = CellToFloat(dataWorksheet.Cells[row + 2, col + 2]);
-                            }
-                        }
-                        for (int col = 1; col <= criteriaCount; col++)
-                        {
-                            Data.criteria.Add(new Criterion(dataWorksheet.Cells[1, col + 1].Value.ToString(), CellToInt(sysWorksheet.Cells[3, col])));
-                        }
-                        for (int row = 1; row <= modelsCount; row++)
-                        {
-                            Data.models.Add(new Model(dataWorksheet.Cells[row + 1, 1].Value.ToString()));
+                            Data.table[row][col] = CellToFloat(dataWorksheet.Cells[row + 2, col + 2]);
                         }
                     }
+                    for (int col = 1; col <= criteriaCount; col++)
+                    {
+                        Data.criteria.Add(new Criterion(dataWorksheet.Cells[1, col + 1].Value.ToString(), CellToInt(sysWorksheet.Cells[3, col])));
+                    }
+                    for (int row = 1; row <= modelsCount; row++)
+                    {
+                        Data.models.Add(new Model(dataWorksheet.Cells[row + 1, 1].Value.ToString()));
+                    }
+                    if (Data.criteria.Exists(c => c.value == 0))
+                    {
+                        MessageBox.Show("Произошла ошибка при чтении файла.\nУбедитесь, что файл заполнен верно.");
+                        return false;
+                    }
+                    
                 }
                 return true;
             }
         }
 
+        private static bool FileIsLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+            return false;
+        }
 
         private static double CellToFloat(ExcelRange cell)
         {
@@ -100,11 +137,7 @@ namespace Multicriteria
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-
-                //set the workbook properties and add a default sheet in it
                 SetWorkbookProperties(package);
-
-                //Create a sheet
                 ExcelWorksheet dataWorksheet = CreateSheet(package, "Сравнительные характеристики");
                 ExcelWorksheet sysWorksheet = CreateSheet(package, "System");
 
@@ -121,14 +154,32 @@ namespace Multicriteria
                 FillSysData(sysWorksheet, models, criteria);
 
 
-                //Generate A File with Random name
                 Byte[] bin = package.GetAsByteArray();
-                string fileName = "data" + ".xlsx";
-                File.WriteAllBytes(fileName, bin);
+                SaveFileDialog saveFD = new SaveFileDialog();
 
-                //These lines will open it in Excel
-                ProcessStartInfo pi = new ProcessStartInfo(fileName);
-                Process.Start(pi);
+                saveFD.InitialDirectory = Directory.GetCurrentDirectory();
+                saveFD.Filter = "Excel files (*.xlsx;*.xls)|*.xlsx;*.xls|All files (*.*)|*.*";
+                saveFD.FilterIndex = 1;
+                saveFD.RestoreDirectory = true;
+                if (saveFD.ShowDialog() == DialogResult.OK)
+                {
+                    string fileName = saveFD.FileName;
+                    var existingFile = new FileInfo(fileName);
+                    if (FileIsLocked(existingFile))
+                    {
+                        MessageBox.Show("Произошла ошибка при записи файла.\nУбедитесь, что файл закрыт.");
+                    }
+                    else
+                    {
+                        File.WriteAllBytes(fileName, bin);
+                        ProcessStartInfo pi = new ProcessStartInfo(fileName);
+                        Process.Start(pi);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при генерации файла");
+                }
             }
         }
 
@@ -197,7 +248,7 @@ namespace Multicriteria
             }
         }
 
-        public static void WriteElectre(double[,] C, double[,] D, List<Model> models)
+        public static void WriteElectre(double[,] C, double[,] D, Graph[,] graph, List<Model> models)
         {
             using (ExcelPackage package = new ExcelPackage())
             {
@@ -206,6 +257,7 @@ namespace Multicriteria
 
                 ExcelWorksheet agree = CreateSheet(package, "Согласие");
                 ExcelWorksheet disagree = CreateSheet(package, "Несогласие");
+                ExcelWorksheet adjacency = CreateSheet(package, "Таблица смежности");
 
                 int current = 2;
                 foreach (Model model in models)
@@ -214,6 +266,8 @@ namespace Multicriteria
                     agree.Cells[current, 1].Value = model.name;
                     disagree.Cells[1, current].Value = model.name;
                     disagree.Cells[current, 1].Value = model.name;
+                    adjacency.Cells[1, current].Value = model.name;
+                    adjacency.Cells[current, 1].Value = model.name;
                     current++;
                 }
                 int modelsCount = models.Count;
@@ -224,16 +278,19 @@ namespace Multicriteria
                         {
                             agree.Cells[r, c].Value = "*";
                             disagree.Cells[r, c].Value = "*";
+                            adjacency.Cells[r, c].Value = "*";
                         }
                         else
                         {
                             agree.Cells[r, c].Value = C[r-2, c-2];
                             disagree.Cells[r, c].Value = D[r - 2, c - 2];
+                            adjacency.Cells[r, c].Value = graph[r - 2, c - 2].val;
                         }
                     }
 
                 Byte[] bin = package.GetAsByteArray();
                 string fileName = "ELECTRE_result" + ".xlsx";
+                //TODO: file is busy + fname change
                 File.WriteAllBytes(fileName, bin);
                 ProcessStartInfo pi = new ProcessStartInfo(fileName);
                 Process.Start(pi);

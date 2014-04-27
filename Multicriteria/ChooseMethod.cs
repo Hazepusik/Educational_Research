@@ -52,7 +52,7 @@ namespace Multicriteria
                     }
                     current++;
                 }
-            //TODO: modelIsdomin = true
+                Model.IsDominated = true;
             }
             int[] P = new int[Data.criteria.Count];
             foreach (Criterion c in Data.criteria)
@@ -66,7 +66,30 @@ namespace Multicriteria
             var val = MathLib.Electre.CalcIndexes(Data.tablePareto, P, Li);
             double[,] C = val.Select(t => t.Item1).First();
             double[,] D = val.Select(t => t.Item2).First();
-            Excel.WriteElectre(C, D, Data.models.Where(m => m.dominatedStatus == 0).ToList());   
+            //Excel.WriteElectre(C, D, Data.models.Where(m => m.dominatedStatus == 0).ToList()); 
+  
+
+            int modelsCount = Data.tablePareto.Count();
+            Electre.graph = new Graph[modelsCount, modelsCount];
+            for (int i = 0; i < modelsCount; ++i)
+            {
+                for (int j = 0; j < modelsCount; ++j)
+                {
+                    Electre.graph[i, j] = new Graph();
+                    Electre.graph[i, j].name = Data.models.Where(m => m.dominatedStatus == 0).ToList()[i].name + " ---> " + Data.models.Where(m => m.dominatedStatus == 0).ToList()[j].name;
+                    // it works. magic
+                    if ((C[i, j] >= Electre.Y) && (D[i, j] <= Electre.Q) && (i != j))
+                    {
+                        Electre.graph[i, j].val = 1;
+                    }
+                    else
+                    {
+                        Electre.graph[i, j].val = 0;
+                    }
+                }
+            }
+            Excel.WriteElectre(C, D, Electre.graph, Data.models.Where(m => m.dominatedStatus == 0).ToList()); 
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -91,7 +114,7 @@ namespace Multicriteria
                 {
                     Data.models[dom - 1].dominatedStatus = -1;
                 }
-                output = MathLib.Domin.CalcDominated(Data.table);
+                //output = MathLib.Domin.CalcDominated(Data.table);
                 Data.tablePareto = new double[Data.models.Count(m => m.dominatedStatus == 0)][];
                 int criteriaCount = Data.criteria.Count();
                 int current = 0;
@@ -114,7 +137,9 @@ namespace Multicriteria
             var val = MathLib.Electre.CalcIndexes111(Data.tablePareto, P);
             double[,] C = val.Select(t => t.Item1).First();
             double[,] D = val.Select(t => t.Item2).First();
-            Excel.WriteElectre(C, D, Data.models.Where(m => m.dominatedStatus == 0).ToList());  
+            //Excel.WriteElectre(C, D, Data.models.Where(m => m.dominatedStatus == 0).ToList());
+
+            
         }
     }
 }

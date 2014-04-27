@@ -71,9 +71,16 @@ namespace Multicriteria
         public static double[][] tablePareto;
     }
 
+    public class Graph
+    {
+        public int val;
+        public string name; 
+    }
+
     public class Electre
     {
         public static double Y;
         public static double Q;
+        public static Graph[,] graph;
     }
 }

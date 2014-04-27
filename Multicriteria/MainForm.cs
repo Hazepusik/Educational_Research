@@ -55,10 +55,6 @@ namespace Multicriteria
                     frmChoose chooseForm = new frmChoose();
                     chooseForm.ShowDialog();
                 }
-                else
-                {
-                    MessageBox.Show("Произошла ошибка при открытии файла.\nУбедитесь, что файл заполнен верно.");
-                }
             }
         }
         
