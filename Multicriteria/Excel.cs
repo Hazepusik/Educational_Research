@@ -248,7 +248,7 @@ namespace Multicriteria
             }
         }
 
-        public static void WriteElectre(double[,] C, double[,] D, Graph[,] graph, List<Model> models)
+        public static void WriteElectre(double[][] C, double[][] D, int[][] graph, List<Model> models)
         {
             using (ExcelPackage package = new ExcelPackage())
             {
@@ -282,9 +282,9 @@ namespace Multicriteria
                         }
                         else
                         {
-                            agree.Cells[r, c].Value = C[r-2, c-2];
-                            disagree.Cells[r, c].Value = D[r - 2, c - 2];
-                            adjacency.Cells[r, c].Value = graph[r - 2, c - 2].val;
+                            agree.Cells[r, c].Value = C[r-2][c-2];
+                            disagree.Cells[r, c].Value = D[r - 2][c - 2];
+                            adjacency.Cells[r, c].Value = graph[r - 2][c - 2];
                         }
                     }
 

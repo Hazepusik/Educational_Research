@@ -34,6 +34,7 @@
             this.lblName = new System.Windows.Forms.Label();
             this.lblValue = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
+            this.lblDiff = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnCount
@@ -60,6 +61,7 @@
             // txtCount
             // 
             this.txtCount.Location = new System.Drawing.Point(30, 25);
+            this.txtCount.MaxLength = 3;
             this.txtCount.Name = "txtCount";
             this.txtCount.Size = new System.Drawing.Size(68, 20);
             this.txtCount.TabIndex = 2;
@@ -80,7 +82,7 @@
             // lblValue
             // 
             this.lblValue.AutoSize = true;
-            this.lblValue.Location = new System.Drawing.Point(270, 62);
+            this.lblValue.Location = new System.Drawing.Point(249, 62);
             this.lblValue.Name = "lblValue";
             this.lblValue.Size = new System.Drawing.Size(57, 13);
             this.lblValue.TabIndex = 4;
@@ -100,11 +102,21 @@
             this.btnSave.Visible = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // lblDiff
+            // 
+            this.lblDiff.AutoSize = true;
+            this.lblDiff.Location = new System.Drawing.Point(377, 62);
+            this.lblDiff.Name = "lblDiff";
+            this.lblDiff.Size = new System.Drawing.Size(137, 13);
+            this.lblDiff.TabIndex = 6;
+            this.lblDiff.Text = "Макс. разность значений";
+            // 
             // frmFill
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(478, 268);
+            this.ClientSize = new System.Drawing.Size(536, 268);
+            this.Controls.Add(this.lblDiff);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.lblValue);
             this.Controls.Add(this.lblName);
@@ -128,5 +140,6 @@
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.Label lblValue;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Label lblDiff;
     }
 }

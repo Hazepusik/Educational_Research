@@ -17,6 +17,7 @@ namespace Multicriteria
         private List<Model> models = new List<Model>();
         private List<TextBox> critName = new List<TextBox>();
         private List<TextBox> modName = new List<TextBox>();
+        private List<TextBox> maxDiff = new List<TextBox>();
         private List<NumericUpDown> critValue = new List<NumericUpDown>();
         private bool critFilled;
 
@@ -39,16 +40,15 @@ namespace Multicriteria
             btnSave.Visible = !btnSave.Visible;
             lblName.Visible = !lblName.Visible;
             lblValue.Visible = !lblValue.Visible;
+            lblDiff.Visible = !lblDiff.Visible;
         }
 
         private void btnCount_Click(object sender, EventArgs e)
         {
             if (!critFilled)
             {
-                //TODO: resize form
                 critName.Clear();
                 critValue.Clear();
-                this.Size = new Size(111, 111);
                 if (!int.TryParse(txtCount.Text, out critCount) || critCount == 0)
                 {
                     MessageBox.Show("Введите число больше нуля.");
@@ -57,7 +57,7 @@ namespace Multicriteria
                 {
                     for (int i = 0; i < critCount; ++i)
                     {
-                        TextBox tbName = new TextBox();
+                        TextBox tbName = new TextBox(); 
                         tbName.Size = new Size(200, 30);
                         tbName.Parent = this;
                         tbName.Location = new Point(lblName.Left, lblName.Top + (i + 1) * 40);
@@ -71,20 +71,26 @@ namespace Multicriteria
                         nudValue.Value = 100;
                         nudValue.Location = new Point(lblValue.Left, lblValue.Top + (i + 1) * 40);
                         critValue.Add(nudValue);
+
+                        TextBox tbDiff = new TextBox();
+                        tbDiff.Size = new Size(50, 30);
+                        tbDiff.Parent = this;
+                        tbDiff.Location = new Point(lblDiff.Left, lblName.Top + (i + 1) * 40);
+                        critName.Add(tbName);
                     }
                     SwitchObjects();
                     lblTitle.Text = "Число критериев";
+                    int height = Math.Min(critCount * 40 + lblValue.Top + 100, 600);                    
+                    this.Size = new Size(this.Width, height);
                 }
             }
             else
             {
-                //TODO: resize form
                 modName.Clear();
                 if (!int.TryParse(txtCount.Text, out modCount) || modCount==0)
                 {
                     MessageBox.Show("Введите число больше нуля.");
                 }
-                //modCount = int.Parse(txtCount.Text);
                 else
                 {
                     for (int i = 0; i < modCount; ++i)
@@ -98,6 +104,8 @@ namespace Multicriteria
                     SwitchObjects();
                     lblTitle.Text = "Число моделей";
                     lblValue.Visible = false;
+                    int height = Math.Min(modCount * 40 + lblValue.Top + 100, 600);
+                    this.Size = new Size(this.Width, height);
                 }
             }
             
@@ -107,6 +115,7 @@ namespace Multicriteria
         {
             if (!critFilled)
             {
+                //TODO: not empty names
                 for (int i = 0; i < critCount; ++i)
                 {
                     criteria.Add(new Criterion(critName[i].Text, int.Parse(critValue[i].Value.ToString())));
@@ -120,6 +129,7 @@ namespace Multicriteria
             }
             else
             {
+                //TODO: not empty names
                 for (int i = 0; i < modCount; ++i)
                 {
                     models.Add(new Model(modName[i].Text));
@@ -129,11 +139,14 @@ namespace Multicriteria
                 Excel.GenerateReport(criteria, models);
                 MessageBox.Show("Теперь заполните таблицу");
             }
+            this.Size = new Size(this.Width, 100);
         }
 
         private void frmFill_Load(object sender, EventArgs e)
         {
+            this.AutoScroll = true;
             critFilled = false;
+            this.Size = new Size(this.Width, 100);
         }
     }
 }

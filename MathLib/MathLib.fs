@@ -26,44 +26,7 @@ module public Domin =
 
 
 module public Electre = 
-    let CalcIndexes (A:double[][], P:int[], Li:double[]) =   
-        let crCnt = A.[0].GetUpperBound(0) + 1
-        let modCnt = A.GetUpperBound(0) + 1
-        //let getColumn (c, mat:double[][]) = 
-        //    let rows = mat.GetUpperBound(0) + 1
-        //    let mutable column = Array.zeroCreate<double> rows
-        //    for r = 0 to rows-1 do
-        //        column.[r] <- mat.[r].[c]
-        //    column
-        //let Li = Array.zeroCreate<double> crCnt
-        //for i = 0 to crCnt - 1 do
-            //Li.[i] <- (Array.max (getColumn (i, A)))-(Array.min (getColumn (i, A)))
-        let C = Array2D.zeroCreate<double> modCnt modCnt
-        let D = Array2D.zeroCreate<double> modCnt modCnt
-        let pij = ref 0.0
-        let dij = ref 0.0
-
-        let Psum = Array.sum P
-
-        for ii = 0 to modCnt - 1 do
-            for jj = 0 to modCnt - 1 do
-                if ii<>jj then
-                    pij := 0.0
-                    dij := 0.0
-                    Array.iteri2 (fun i x y ->
-                        if x>=y then
-                            pij := !pij + float P.[i]
-                        else
-                            dij := max !dij ((y-x)/Li.[i]) ) A.[ii].[*] A.[jj].[*]
-                    C.[jj,ii] <- !pij/float Psum
-                    D.[jj,ii] <- !dij
-        [| C, D |]
-
-
-
-
-
-    let CalcIndexes111 (A:double[][], P:int[]) =   
+    let CalcIndexes (A:double[][], P:int[]) =   
         let crCnt = A.[0].GetUpperBound(0) + 1
         let modCnt = A.GetUpperBound(0) + 1
         let getColumn (c, mat:double[][]) = 
@@ -75,8 +38,8 @@ module public Electre =
         let Li = Array.zeroCreate<double> crCnt
         for i = 0 to crCnt - 1 do
             Li.[i] <- (Array.max (getColumn (i, A)))-(Array.min (getColumn (i, A)))
-        let C = Array2D.zeroCreate<double> modCnt modCnt
-        let D = Array2D.zeroCreate<double> modCnt modCnt
+        let C = [| for j in 1..modCnt -> [| for i in 1 .. modCnt -> 0.0 |] |]
+        let D = [| for j in 1..modCnt -> [| for i in 1 .. modCnt -> 0.0 |] |]
         let pij = ref 0.0
         let dij = ref 0.0
 
@@ -92,6 +55,52 @@ module public Electre =
                             pij := !pij + float P.[i]
                         else
                             dij := max !dij ((y-x)/Li.[i]) ) A.[ii].[*] A.[jj].[*]
-                    C.[jj,ii] <- !pij/float Psum
-                    D.[jj,ii] <- !dij
+                    C.[jj].[ii] <- !pij/float Psum
+                    D.[jj].[ii] <- !dij
         [| C, D |]
+
+
+    let GetGraphByIndexes(C:double[][], D:double[][], Y, Q) = 
+        let modCnt = C.GetUpperBound(0) + 1
+        let graph = [| for j in 1..modCnt -> [| for i in 1 .. modCnt -> 0 |] |]
+        Array.iteri2 (fun i rowC rowD ->
+            Array.iteri2 (fun j cij dij ->
+                if (cij>=Y) && (dij<=Q) && (i<>j) then
+                    graph.[i].[j] <- 1) rowC rowD) C D
+        graph
+
+
+    let GetGraphCore(A:int[][]) =
+        let modCnt = A.GetUpperBound(0) + 1
+        let precore = Array.create modCnt 0
+        Array.iter (fun row ->
+            Array.iteri (fun i r ->
+                precore.[i] <- precore.[i]+r ) row) A
+        Array.map(fun x -> 
+                            match x with
+                            | x when x=0 -> 1
+                            | _ -> 0 ) precore
+
+    let FinalScore(C:double[][], D:double[][]) = 
+        let modCnt = C.GetUpperBound(0) + 1
+        let cores = [| for j in 1..modCnt -> [| for i in 1 .. modCnt -> 0 |] |]
+        let clist = ref List.Empty
+        let dlist = ref List.Empty
+        Array.iteri2 (fun i rowC rowD ->
+            Array.iteri2 (fun j cij dij ->
+                if not (List.exists(fun e -> e = cij) !clist) && (i<>j) then clist := !clist @ [cij]
+                if not (List.exists(fun e -> e = dij) !dlist) && (i<>j) then dlist := !dlist @ [dij]
+                    ) rowC rowD) C D
+        let yset = !clist
+        let qset = !dlist
+        printfn "Y=%O, Q=%O" yset qset
+        for y in yset do
+            for q in qset do
+                let graph = GetGraphByIndexes (C, D, y, q)
+                let core = GetGraphCore graph
+                let coreCnt = Array.sum core
+                printfn "Y=%f, Q=%f, count=%d" y q coreCnt
+                if coreCnt>0 then
+                    Array.iteri (fun i x -> if x>0 then cores.[coreCnt].[i] <- cores.[coreCnt].[i] + 1) core
+        cores
+

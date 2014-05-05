@@ -40,12 +40,14 @@ namespace Multicriteria
         public int id;
         public string name;
         public int value;
+        public double maxDiff;
 
         public Criterion()
         {
             id = ++criterionID;
             name = "Unknown "+criterionID.ToString();
             value = 0;
+            maxDiff = 1;
         }
 
         public Criterion(string nm, double vl)
@@ -81,6 +83,6 @@ namespace Multicriteria
     {
         public static double Y;
         public static double Q;
-        public static Graph[,] graph;
+        public static int[][] graph;
     }
 }

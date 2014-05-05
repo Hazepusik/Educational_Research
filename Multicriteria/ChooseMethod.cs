@@ -63,31 +63,34 @@ namespace Multicriteria
             Li[0] = 100;
             Li[1] = 50;
             Li[2] = 45;
-            var val = MathLib.Electre.CalcIndexes(Data.tablePareto, P, Li);
-            double[,] C = val.Select(t => t.Item1).First();
-            double[,] D = val.Select(t => t.Item2).First();
+            var val = MathLib.Electre.CalcIndexes(Data.tablePareto, P);
+            double[][] C = val.Select(t => t.Item1).First();
+            double[][] D = val.Select(t => t.Item2).First();
             //Excel.WriteElectre(C, D, Data.models.Where(m => m.dominatedStatus == 0).ToList()); 
   
 
             int modelsCount = Data.tablePareto.Count();
-            Electre.graph = new Graph[modelsCount, modelsCount];
+            Electre.graph = MathLib.Electre.GetGraphByIndexes(C, D, Electre.Y, Electre.Q);
+            MathLib.Electre.FinalScore(C, D);
+            /*Electre.graph = new Graph[modelsCount][modelsCount];
             for (int i = 0; i < modelsCount; ++i)
             {
                 for (int j = 0; j < modelsCount; ++j)
                 {
-                    Electre.graph[i, j] = new Graph();
-                    Electre.graph[i, j].name = Data.models.Where(m => m.dominatedStatus == 0).ToList()[i].name + " ---> " + Data.models.Where(m => m.dominatedStatus == 0).ToList()[j].name;
+                    //Electre.graph[i][j] = new Graph();
+                    //Electre.graph[i][j].name = Data.models.Where(m => m.dominatedStatus == 0).ToList()[i].name + " ---> " + Data.models.Where(m => m.dominatedStatus == 0).ToList()[j].name;
                     // it works. magic
-                    if ((C[i, j] >= Electre.Y) && (D[i, j] <= Electre.Q) && (i != j))
+                    if ((C[i][j] >= Electre.Y) && (D[i][j] <= Electre.Q) && (i != j))
                     {
-                        Electre.graph[i, j].val = 1;
+                        Electre.graph[i][j] = 1;
                     }
                     else
                     {
-                        Electre.graph[i, j].val = 0;
+                        Electre.graph[i][j] = 0;
                     }
                 }
-            }
+            }*/
+
             Excel.WriteElectre(C, D, Electre.graph, Data.models.Where(m => m.dominatedStatus == 0).ToList()); 
 
         }
@@ -134,9 +137,9 @@ namespace Multicriteria
             {
                 P[c.id - 1] = c.value;
             }
-            var val = MathLib.Electre.CalcIndexes111(Data.tablePareto, P);
-            double[,] C = val.Select(t => t.Item1).First();
-            double[,] D = val.Select(t => t.Item2).First();
+            var val = MathLib.Electre.CalcIndexes(Data.tablePareto, P);
+            double[][] C = val.Select(t => t.Item1).First();
+            double[][] D = val.Select(t => t.Item2).First();
             //Excel.WriteElectre(C, D, Data.models.Where(m => m.dominatedStatus == 0).ToList());
 
             
