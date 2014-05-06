@@ -22,8 +22,6 @@ namespace Multicriteria
             List<int> dominated = new List<int>();
             List<int> equal = new List<int>();
             List<int>[] output = new List<int>[2];
-            frmValuesYQ valuesYQForm = new frmValuesYQ();
-            valuesYQForm.ShowDialog();
             if (!Model.IsDominated)
             {
                 output = MathLib.Domin.CalcDominated(Data.table);
@@ -59,14 +57,15 @@ namespace Multicriteria
             {
                 P[c.id - 1] = c.value;
             }
-            double[] Li = new double[Data.criteria.Count];
-            Li[0] = 100;
-            Li[1] = 50;
-            Li[2] = 45;
+
             var val = MathLib.Electre.CalcIndexes(Data.tablePareto, P);
             double[][] C = val.Select(t => t.Item1).First();
             double[][] D = val.Select(t => t.Item2).First();
-            //Excel.WriteElectre(C, D, Data.models.Where(m => m.dominatedStatus == 0).ToList()); 
+
+            double[] cset = MathLib.Electre.GetSet(C);
+            double[] dset = MathLib.Electre.GetSet(D);
+
+            Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Electre.GetGraphByIndexes(C, D, cset[0], dset[2]));
   
 
             int modelsCount = Data.tablePareto.Count();
@@ -91,7 +90,9 @@ namespace Multicriteria
                 }
             }*/
 
-            Excel.WriteElectre(C, D, Electre.graph, Data.models.Where(m => m.dominatedStatus == 0).ToList()); 
+            Excel.WriteElectre(C, D, Electre.graph, Data.models.Where(m => m.dominatedStatus == 0).ToList());
+            //frmValuesYQ valuesYQForm = new frmValuesYQ();
+            //valuesYQForm.ShowDialog();
 
         }
 

@@ -10,7 +10,6 @@ using OfficeOpenXml.Style;
 using MathLib;
 
 
-
 namespace Multicriteria
 {
 
@@ -56,6 +55,11 @@ namespace Multicriteria
                     chooseForm.ShowDialog();
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //Visualization.ShowGraph();
         }
         
 

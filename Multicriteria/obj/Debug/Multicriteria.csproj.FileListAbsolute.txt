@@ -7,7 +7,6 @@ D:\Downloads\ExportToExcelV2\Multicriteria\obj\Debug\Multicriteria.csprojResolve
 D:\Downloads\ExportToExcelV2\Multicriteria\obj\Debug\Multicriteria.Form1.resources
 D:\Downloads\ExportToExcelV2\Multicriteria\obj\Debug\ExportToExcelV2.Properties.Resources.resources
 D:\Downloads\ExportToExcelV2\Multicriteria\obj\Debug\Multicriteria.csproj.GenerateResource.Cache
-D:\GitHub\Educational_Research\Multicriteria\bin\Debug\EPPlus.dll
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.csprojResolveAssemblyReference.cache
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.csproj.GenerateResource.Cache
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Multicriteria.exe
@@ -23,3 +22,15 @@ D:\GitHub\Educational_Research\Multicriteria\bin\Debug\MathLib.dll
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\MathLib.pdb
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\MathLib.xml
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmValuesYQ.resources
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\GraphSharp.Controls.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\GraphSharp.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Microsoft.Contracts.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\QuickGraph.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\RibbonControlsLibrary.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\System.Windows.Controls.Theming.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\System.Windows.Controls.Theming.ExpressionDark.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\WPFExtensions.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\WPFToolkit.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Microsoft.GLEE.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Microsoft.GLEE.Drawing.dll
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Microsoft.GLEE.GraphViewerGDI.dll

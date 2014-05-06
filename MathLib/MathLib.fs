@@ -81,18 +81,24 @@ module public Electre =
                             | x when x=0 -> 1
                             | _ -> 0 ) precore
 
+    let GetSet(A:double[][]) = 
+        let list = ref List.Empty
+        Array.iteri (fun i row ->
+            Array.iteri (fun j aij ->
+                if not (List.exists(fun e -> e = aij) !list) && (i<>j) then list := !list @ [aij]
+                    ) row) A
+        !list |> List.toArray
+
     let FinalScore(C:double[][], D:double[][]) = 
         let modCnt = C.GetUpperBound(0) + 1
         let cores = [| for j in 1..modCnt -> [| for i in 1 .. modCnt -> 0 |] |]
-        let clist = ref List.Empty
-        let dlist = ref List.Empty
-        Array.iteri2 (fun i rowC rowD ->
-            Array.iteri2 (fun j cij dij ->
-                if not (List.exists(fun e -> e = cij) !clist) && (i<>j) then clist := !clist @ [cij]
-                if not (List.exists(fun e -> e = dij) !dlist) && (i<>j) then dlist := !dlist @ [dij]
-                    ) rowC rowD) C D
-        let yset = !clist
-        let qset = !dlist
+        //Array.iteri2 (fun i rowC rowD ->
+        //    Array.iteri2 (fun j cij dij ->
+        //        if not (List.exists(fun e -> e = cij) !clist) && (i<>j) then clist := !clist @ [cij]
+        //        if not (List.exists(fun e -> e = dij) !dlist) && (i<>j) then dlist := !dlist @ [dij]
+        //            ) rowC rowD) C D
+        let yset = GetSet C
+        let qset = GetSet D
         printfn "Y=%O, Q=%O" yset qset
         for y in yset do
             for q in qset do

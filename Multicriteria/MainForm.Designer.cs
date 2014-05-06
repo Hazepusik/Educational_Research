@@ -30,6 +30,7 @@
         {
             this.btnExport = new System.Windows.Forms.Button();
             this.btnImport = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnExport
@@ -52,11 +53,22 @@
             this.btnImport.UseVisualStyleBackColor = true;
             this.btnImport.Click += new System.EventHandler(this.Import_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(187, 228);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnImport);
             this.Controls.Add(this.btnExport);
             this.Name = "frmMain";
@@ -69,6 +81,7 @@
 
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.Button btnImport;
+        private System.Windows.Forms.Button button1;
     }
 }
 
