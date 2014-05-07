@@ -111,11 +111,11 @@
     <Compile Include="Classes.cs" />
     <Compile Include="Excel.cs" />
     <Compile Include="Visualization.cs" />
-    <Compile Include="YQValuesForm.cs">
+    <Compile Include="GraphForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="YQValuesForm.Designer.cs">
-      <DependentUpon>YQValuesForm.cs</DependentUpon>
+    <Compile Include="GraphForm.Designer.cs">
+      <DependentUpon>GraphForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
@@ -134,8 +134,8 @@
     <EmbeddedResource Include="ChooseMethodForm.resx">
       <DependentUpon>ChooseMethodForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="YQValuesForm.resx">
-      <DependentUpon>YQValuesForm.cs</DependentUpon>
+    <EmbeddedResource Include="GraphForm.resx">
+      <DependentUpon>GraphForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>

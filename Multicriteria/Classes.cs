@@ -84,5 +84,7 @@ namespace Multicriteria
         public static double Y;
         public static double Q;
         public static int[][] graph;
+        public static double[][] C;
+        public static double[][] D;
     }
 }

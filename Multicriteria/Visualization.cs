@@ -15,8 +15,8 @@ namespace Multicriteria
                 {
                     if (graphTable[i][j] == 1)
                         graph.AddEdge(models[i].name, models[j].name);
-                } Microsoft.Glee.Drawing.Node n = graph.FindNode(models[i].name);
-                //n.Attr.Shape = Microsoft.Glee.Drawing.Shape.DoubleCircle;
+                } 
+                Microsoft.Glee.Drawing.Node n = graph.FindNode(models[i].name);
                 if (core[i] == 1)
                 {
                     n.Attr.Fillcolor = Microsoft.Glee.Drawing.Color.SeaGreen;

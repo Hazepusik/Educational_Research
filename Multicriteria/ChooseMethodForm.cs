@@ -22,6 +22,7 @@ namespace Multicriteria
             List<int> dominated = new List<int>();
             List<int> equal = new List<int>();
             List<int>[] output = new List<int>[2];
+            Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
             if (!Model.IsDominated)
             {
                 output = MathLib.Domin.CalcDominated(Data.table);
@@ -38,10 +39,10 @@ namespace Multicriteria
                     Data.models[dom - 1].dominatedStatus = -1;
                 }
                 output = MathLib.Domin.CalcDominated(Data.table);
-                Data.tablePareto = new double[Data.models.Count(m => m.dominatedStatus == 0)][];
+                Data.tablePareto = new double[notDominated.Count()][];
                 int criteriaCount = Data.criteria.Count();
                 int current = 0;
-                foreach (Model m in Data.models.Where(m => m.dominatedStatus == 0))
+                foreach (Model m in notDominated)
                 {
                     Data.tablePareto[current] = new double[criteriaCount];
                     for (int i = 0; i < criteriaCount; ++i)
@@ -59,18 +60,17 @@ namespace Multicriteria
             }
 
             var val = MathLib.Electre.CalcIndexes(Data.tablePareto, P);
-            double[][] C = val.Select(t => t.Item1).First();
-            double[][] D = val.Select(t => t.Item2).First();
-
-            double[] cset = MathLib.Electre.GetSet(C);
-            double[] dset = MathLib.Electre.GetSet(D);
-
-            Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Electre.GetGraphByIndexes(C, D, cset[0], dset[2]));
-  
+            Electre.C = val.Select(t => t.Item1).First();
+            Electre.D = val.Select(t => t.Item2).First();
 
             int modelsCount = Data.tablePareto.Count();
-            Electre.graph = MathLib.Electre.GetGraphByIndexes(C, D, Electre.Y, Electre.Q);
-            MathLib.Electre.FinalScore(C, D);
+            Electre.graph = MathLib.Electre.GetGraphByIndexes(Electre.C, Electre.D, Electre.Y, Electre.Q);
+            string[] modelNames = new string[notDominated.Count()];
+            for (int i=0; i<notDominated.Count(); ++i)
+            {
+                modelNames[i] = notDominated[i].name;
+            }
+            MathLib.Electre.FinalScore(Electre.C, Electre.D, modelNames);
             /*Electre.graph = new Graph[modelsCount][modelsCount];
             for (int i = 0; i < modelsCount; ++i)
             {
@@ -90,9 +90,9 @@ namespace Multicriteria
                 }
             }*/
 
-            Excel.WriteElectre(C, D, Electre.graph, Data.models.Where(m => m.dominatedStatus == 0).ToList());
-            //frmValuesYQ valuesYQForm = new frmValuesYQ();
-            //valuesYQForm.ShowDialog();
+            Excel.WriteElectre(Electre.C, Electre.D, Electre.graph, Data.models.Where(m => m.dominatedStatus == 0).ToList());
+            frmGraph graphForm = new frmGraph();
+            graphForm.ShowDialog();
 
         }
 
@@ -101,8 +101,8 @@ namespace Multicriteria
             List<int> dominated = new List<int>();
             List<int> equal = new List<int>();
             List<int>[] output = new List<int>[2];
-            frmValuesYQ valuesYQForm = new frmValuesYQ();
-            valuesYQForm.ShowDialog();
+            //frmGraph valuesYQForm = new frmGraph();
+            //valuesYQForm.ShowDialog();
             if (!Model.IsDominated)
             {
                 output = MathLib.Domin.CalcDominated(Data.table);

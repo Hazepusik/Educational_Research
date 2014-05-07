@@ -89,7 +89,14 @@ module public Electre =
                     ) row) A
         !list |> List.toArray
 
-    let FinalScore(C:double[][], D:double[][]) = 
+    let LeadingZeros(s:string) = 
+        let mutable str = s
+        let maxL = 4
+        while str.Length<maxL do
+            str <- "0"+str
+        str
+
+    let FinalScore(C:double[][], D:double[][], names:string[]) = 
         let modCnt = C.GetUpperBound(0) + 1
         let cores = [| for j in 1..modCnt -> [| for i in 1 .. modCnt -> 0 |] |]
         //Array.iteri2 (fun i rowC rowD ->
@@ -108,5 +115,10 @@ module public Electre =
                 printfn "Y=%f, Q=%f, count=%d" y q coreCnt
                 if coreCnt>0 then
                     Array.iteri (fun i x -> if x>0 then cores.[coreCnt].[i] <- cores.[coreCnt].[i] + 1) core
+        let results = Array.create modCnt ""
+        for m=0 to modCnt-1 do //models
+            for c=1 to modCnt-1 do //cores
+                results.[m] <- results.[m] + LeadingZeros (sprintf "%d" cores.[c].[m])
+        let pairs = Array.zip results names |> Array.sortBy (fun (x,y) -> (x,y)) |> Array.rev
         cores
 
