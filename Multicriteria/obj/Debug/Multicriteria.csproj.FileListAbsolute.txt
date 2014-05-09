@@ -11,14 +11,7 @@ D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Multicriteria.exe.config
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Multicriteria.exe
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Multicriteria.pdb
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\MathLib.dll
-D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Microsoft.Contracts.dll
-D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Microsoft.GLEE.dll
-D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Microsoft.GLEE.Drawing.dll
-D:\GitHub\Educational_Research\Multicriteria\bin\Debug\Microsoft.GLEE.GraphViewerGDI.dll
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\QuickGraph.dll
-D:\GitHub\Educational_Research\Multicriteria\bin\Debug\RibbonControlsLibrary.dll
-D:\GitHub\Educational_Research\Multicriteria\bin\Debug\System.Windows.Controls.Theming.dll
-D:\GitHub\Educational_Research\Multicriteria\bin\Debug\System.Windows.Controls.Theming.ExpressionDark.dll
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\MathLib.pdb
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\MathLib.xml
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.csprojResolveAssemblyReference.cache
@@ -30,3 +23,4 @@ D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.Properties.
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.csproj.GenerateResource.Cache
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.exe
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.pdb
+D:\GitHub\Educational_Research\Multicriteria\bin\Debug\EPPlus.dll

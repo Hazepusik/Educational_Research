@@ -107,9 +107,11 @@
             this.lblDiff.AutoSize = true;
             this.lblDiff.Location = new System.Drawing.Point(377, 62);
             this.lblDiff.Name = "lblDiff";
-            this.lblDiff.Size = new System.Drawing.Size(137, 13);
+            this.lblDiff.Size = new System.Drawing.Size(172, 13);
             this.lblDiff.TabIndex = 6;
-            this.lblDiff.Text = "Макс. разность значений";
+            this.lblDiff.Text = "Оценивать реверсивно //TODO:";
+            this.lblDiff.UseWaitCursor = true;
+            this.lblDiff.Visible = false;
             // 
             // frmFill
             // 
