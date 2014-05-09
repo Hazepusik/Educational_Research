@@ -1,9 +1,9 @@
 D:\GitHub\Educational_Research\MathLib\bin\Debug\MathLib.XML
 D:\GitHub\Educational_Research\MathLib\bin\Debug\MathLib.dll
 D:\GitHub\Educational_Research\MathLib\bin\Debug\MathLib.pdb
-D:\GitHub\Educational_Research\MathLib\obj\Debug\MathLib.dll
-D:\GitHub\Educational_Research\MathLib\obj\Debug\MathLib.pdb
-D:\GitHub\Educational_Research\MathLib\obj\Debug\MathLib.fsprojResolveAssemblyReference.cache
 D:\GitHub\Educational_Research\MathLib\bin\Debug\FSharp.Core.dll
 D:\GitHub\Educational_Research\MathLib\bin\Debug\FSharp.Core.xml
 D:\GitHub\Educational_Research\MathLib\bin\Debug\ru\FSharp.Core.resources.dll
+D:\GitHub\Educational_Research\MathLib\obj\Debug\MathLib.dll
+D:\GitHub\Educational_Research\MathLib\obj\Debug\MathLib.pdb
+D:\GitHub\Educational_Research\MathLib\obj\Debug\MathLib.fsprojResolveAssemblyReference.cache

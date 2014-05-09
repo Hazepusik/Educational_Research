@@ -32,13 +32,16 @@ namespace Multicriteria
                 foreach (int eq in equal)
                 {
                     //TODO: make refs to equal 
-                    Data.models[eq - 1].dominatedStatus = 1;
+                    int mainId = MathLib.Domin.EqualIndex(Data.table, eq - 1);
+                    Data.models.First(m => m.id == mainId).name += "; " + Data.models[eq - 1].name;
+                    Data.models[eq - 1].dominatedStatus = mainId;
+                    
                 }
                 foreach (int dom in dominated)
                 {
                     Data.models[dom - 1].dominatedStatus = -1;
                 }
-                output = MathLib.Domin.CalcDominated(Data.table);
+                notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
                 Data.tablePareto = new double[notDominated.Count()][];
                 int criteriaCount = Data.criteria.Count();
                 int current = 0;
@@ -64,13 +67,13 @@ namespace Multicriteria
             Electre.D = val.Select(t => t.Item2).First();
 
             int modelsCount = Data.tablePareto.Count();
-            Electre.graph = MathLib.Electre.GetGraphByIndexes(Electre.C, Electre.D, Electre.Y, Electre.Q);
+            //Electre.graph = MathLib.Electre.GetGraphByIndexes(Electre.C, Electre.D, Electre.Y, Electre.Q);
             string[] modelNames = new string[notDominated.Count()];
             for (int i=0; i<notDominated.Count(); ++i)
             {
                 modelNames[i] = notDominated[i].name;
             }
-            MathLib.Electre.FinalScore(Electre.C, Electre.D, modelNames);
+            Electre.scores = MathLib.Electre.FinalScore(Electre.C, Electre.D, modelNames);
             /*Electre.graph = new Graph[modelsCount][modelsCount];
             for (int i = 0; i < modelsCount; ++i)
             {
@@ -90,7 +93,7 @@ namespace Multicriteria
                 }
             }*/
 
-            Excel.WriteElectre(Electre.C, Electre.D, Electre.graph, Data.models.Where(m => m.dominatedStatus == 0).ToList());
+            Excel.WriteElectre(Electre.C, Electre.D, Data.models.Where(m => m.dominatedStatus == 0).ToList());
             frmGraph graphForm = new frmGraph();
             graphForm.ShowDialog();
 

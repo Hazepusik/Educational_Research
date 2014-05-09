@@ -28,19 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnSuperiority = new System.Windows.Forms.Button();
             this.btnElectre = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // btnSuperiority
             // 
-            this.button1.Location = new System.Drawing.Point(47, 37);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(166, 42);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnSuperiority.Location = new System.Drawing.Point(47, 37);
+            this.btnSuperiority.Name = "btnSuperiority";
+            this.btnSuperiority.Size = new System.Drawing.Size(166, 42);
+            this.btnSuperiority.TabIndex = 0;
+            this.btnSuperiority.Text = "Отношение превосходства";
+            this.btnSuperiority.UseVisualStyleBackColor = true;
+            this.btnSuperiority.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnElectre
             // 
@@ -58,7 +58,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.btnElectre);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnSuperiority);
             this.Name = "frmChoose";
             this.Text = "ChooseMethod";
             this.ResumeLayout(false);
@@ -67,7 +67,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnSuperiority;
         private System.Windows.Forms.Button btnElectre;
     }
 }

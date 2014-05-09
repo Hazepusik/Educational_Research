@@ -24,6 +24,8 @@ namespace Multicriteria
             {
                 qbox.Items.Add(d.ToString());
             }
+            ybox.SelectedIndex = 0;
+            qbox.SelectedIndex = dset.Length - 1;
         }
 
       private class Item

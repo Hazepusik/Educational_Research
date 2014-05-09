@@ -22,7 +22,16 @@ module public Domin =
             | 1 -> dominated.Add(i+1); arr <- Array.concat [arr.[0..i-1].[*]; arr.[i+1..].[*]]
             | 0 -> equal.Add(i+1); arr <- Array.concat [arr.[0..i-1].[*]; arr.[i+1..].[*]]
             | _ -> printfn "Pareto"
-        [| dominated; equal |]      
+        [| dominated; equal |]   
+        
+        
+    let EqualIndex (input:double[][], num:int) =
+        let ans = ref 0 
+        input.[0..num-1].[*] |> Array.iteri (fun i x -> 
+            if (x=input.[num].[*]) && (!ans = 0) then
+                ans := i ) 
+      
+        !ans + 1 // model ID, not number
 
 
 module public Electre = 
@@ -62,10 +71,11 @@ module public Electre =
 
     let GetGraphByIndexes(C:double[][], D:double[][], Y, Q) = 
         let modCnt = C.GetUpperBound(0) + 1
+        let eps = 0.000001 //round errors
         let graph = [| for j in 1..modCnt -> [| for i in 1 .. modCnt -> 0 |] |]
         Array.iteri2 (fun i rowC rowD ->
             Array.iteri2 (fun j cij dij ->
-                if (cij>=Y) && (dij<=Q) && (i<>j) then
+                if (cij>=Y-eps) && (dij<=Q+eps) && (i<>j) then
                     graph.[i].[j] <- 1) rowC rowD) C D
         graph
 
@@ -87,7 +97,7 @@ module public Electre =
             Array.iteri (fun j aij ->
                 if not (List.exists(fun e -> e = aij) !list) && (i<>j) then list := !list @ [aij]
                     ) row) A
-        !list |> List.toArray
+        !list |> List.toArray |> Array.sort
 
     let LeadingZeros(s:string) = 
         let mutable str = s
@@ -96,17 +106,34 @@ module public Electre =
             str <- "0"+str
         str
 
+    let CountPlaces pairs = 
+        let mutable last = ""
+        let mutable groups = List.empty
+        let mutable group = List.empty
+        for p in pairs do
+            if (last<>fst p) && (last<>"") then
+                groups <- group :: groups
+                group <- []
+            group <- snd p :: group
+            last <- fst p
+        groups <- group :: groups |> List.rev
+        let mutable score = 0.0
+        let mutable cur = 1.0
+        let mutable result = List.empty
+        for eq in groups do
+            let n = float eq.Length
+            score <-  (2.0 * cur + n - 1.0) / 2.0
+            for m in eq do
+                result <- result @ [(m, score)]
+            cur <- cur + n   
+        result |> List.toArray
+
+
     let FinalScore(C:double[][], D:double[][], names:string[]) = 
         let modCnt = C.GetUpperBound(0) + 1
-        let cores = [| for j in 1..modCnt -> [| for i in 1 .. modCnt -> 0 |] |]
-        //Array.iteri2 (fun i rowC rowD ->
-        //    Array.iteri2 (fun j cij dij ->
-        //        if not (List.exists(fun e -> e = cij) !clist) && (i<>j) then clist := !clist @ [cij]
-        //        if not (List.exists(fun e -> e = dij) !dlist) && (i<>j) then dlist := !dlist @ [dij]
-        //            ) rowC rowD) C D
+        let cores = [| for j in 1..modCnt+1 -> [| for i in 1 .. modCnt+1 -> 0 |] |]
         let yset = GetSet C
         let qset = GetSet D
-        printfn "Y=%O, Q=%O" yset qset
         for y in yset do
             for q in qset do
                 let graph = GetGraphByIndexes (C, D, y, q)
@@ -120,5 +147,7 @@ module public Electre =
             for c=1 to modCnt-1 do //cores
                 results.[m] <- results.[m] + LeadingZeros (sprintf "%d" cores.[c].[m])
         let pairs = Array.zip results names |> Array.sortBy (fun (x,y) -> (x,y)) |> Array.rev
-        cores
+        CountPlaces pairs
+        
+
 

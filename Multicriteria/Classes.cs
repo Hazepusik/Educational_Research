@@ -79,12 +79,18 @@ namespace Multicriteria
         public string name; 
     }
 
+    public class Superiority
+    {
+
+    }
+
     public class Electre
     {
-        public static double Y;
-        public static double Q;
+        //public static double Y;
+        //public static double Q;
         public static int[][] graph;
         public static double[][] C;
         public static double[][] D;
+        public static System.Tuple<string, double>[] scores;
     }
 }

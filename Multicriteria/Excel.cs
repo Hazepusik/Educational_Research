@@ -248,26 +248,38 @@ namespace Multicriteria
             }
         }
 
-        public static void WriteElectre(double[][] C, double[][] D, int[][] graph, List<Model> models)
+        public static void WriteElectre(double[][] C, double[][] D, List<Model> models)
         {
             using (ExcelPackage package = new ExcelPackage())
             {
 
                 SetWorkbookProperties(package);
 
+                ExcelWorksheet score = CreateSheet(package, "Таблица смежности");
                 ExcelWorksheet agree = CreateSheet(package, "Согласие");
                 ExcelWorksheet disagree = CreateSheet(package, "Несогласие");
-                ExcelWorksheet adjacency = CreateSheet(package, "Таблица смежности");
+                
 
                 int current = 2;
+                score.Cells[1, 1].Value = "Модел(и)";
+                score.Cells[1, 2].Value = "Штрафной балл";
+                foreach (System.Tuple<string, double> modSc in Electre.scores)
+                {
+                    string m = modSc.Item1;
+                    double s = modSc.Item2;
+                    score.Cells[current, 1].Value = m;
+                    score.Cells[current, 2].Value = s.ToString();
+                    current++;
+                }
+
+
+                current = 2;
                 foreach (Model model in models)
                 {
                     agree.Cells[1, current].Value = model.name;
                     agree.Cells[current, 1].Value = model.name;
                     disagree.Cells[1, current].Value = model.name;
                     disagree.Cells[current, 1].Value = model.name;
-                    adjacency.Cells[1, current].Value = model.name;
-                    adjacency.Cells[current, 1].Value = model.name;
                     current++;
                 }
                 int modelsCount = models.Count;
@@ -278,13 +290,11 @@ namespace Multicriteria
                         {
                             agree.Cells[r, c].Value = "*";
                             disagree.Cells[r, c].Value = "*";
-                            adjacency.Cells[r, c].Value = "*";
                         }
                         else
                         {
                             agree.Cells[r, c].Value = C[r-2][c-2];
                             disagree.Cells[r, c].Value = D[r - 2][c - 2];
-                            adjacency.Cells[r, c].Value = graph[r - 2][c - 2];
                         }
                     }
 
