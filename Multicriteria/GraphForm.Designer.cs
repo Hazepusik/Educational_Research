@@ -28,31 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblY = new System.Windows.Forms.Label();
+            this.lblQ = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnYQ = new System.Windows.Forms.Button();
             this.ybox = new System.Windows.Forms.ComboBox();
             this.qbox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
-            // label1
+            // lblY
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 45);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(101, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Уровень согласия";
+            this.lblY.AutoSize = true;
+            this.lblY.Location = new System.Drawing.Point(22, 45);
+            this.lblY.Name = "lblY";
+            this.lblY.Size = new System.Drawing.Size(101, 13);
+            this.lblY.TabIndex = 2;
+            this.lblY.Text = "Уровень согласия";
             // 
-            // label2
+            // lblQ
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 87);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(113, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Уровень несогласия";
+            this.lblQ.AutoSize = true;
+            this.lblQ.Location = new System.Drawing.Point(22, 87);
+            this.lblQ.Name = "lblQ";
+            this.lblQ.Size = new System.Drawing.Size(113, 13);
+            this.lblQ.TabIndex = 3;
+            this.lblQ.Text = "Уровень несогласия";
             // 
             // label3
             // 
@@ -98,8 +98,8 @@
             this.Controls.Add(this.ybox);
             this.Controls.Add(this.btnYQ);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblQ);
+            this.Controls.Add(this.lblY);
             this.Name = "frmGraph";
             this.Text = "frmValuesYQ";
             this.ResumeLayout(false);
@@ -109,8 +109,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblY;
+        private System.Windows.Forms.Label lblQ;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnYQ;
         private System.Windows.Forms.ComboBox ybox;

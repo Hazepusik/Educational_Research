@@ -11,21 +11,44 @@ namespace Multicriteria
 {
     public partial class frmGraph : Form
     {
-        public frmGraph()
+        private int method;
+        public frmGraph(int meth)
         {
             InitializeComponent();
-            double[] cset = MathLib.Electre.GetSet(Electre.C);
-            double[] dset = MathLib.Electre.GetSet(Electre.D);
-            foreach (double c in cset)
+            method = meth;
+            switch (method)
             {
-                ybox.Items.Add(c.ToString());
-            }
-            foreach (double d in dset)
-            {
-                qbox.Items.Add(d.ToString());
-            }
-            ybox.SelectedIndex = 0;
-            qbox.SelectedIndex = dset.Length - 1;
+                case 1:
+                {
+                    double[] cset = MathLib.Superiority.GetSet(Superiority.C);
+
+                    foreach (double c in cset)
+                    {
+                        ybox.Items.Add(c.ToString());
+                    }
+                    ybox.SelectedIndex = 0;
+                    qbox.Visible = false;
+                    lblQ.Visible = false;
+                    break;
+                }
+                case 2:
+                {
+                    double[] cset = MathLib.Electre.GetSet(Electre.C);
+                    double[] dset = MathLib.Electre.GetSet(Electre.D);
+                    foreach (double c in cset)
+                    {
+                        ybox.Items.Add(c.ToString());
+                    }
+                    foreach (double d in dset)
+                    {
+                        qbox.Items.Add(d.ToString());
+                    }
+                    ybox.SelectedIndex = 0;
+                    qbox.SelectedIndex = dset.Length - 1;
+                    break;
+                }
+
+        }
         }
 
       private class Item
@@ -40,7 +63,19 @@ namespace Multicriteria
 
         private void btnYQ_Click(object sender, EventArgs e)
         {
-            Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Electre.GetGraphByIndexes(Electre.C, Electre.D, Convert.ToDouble(ybox.SelectedItem), Convert.ToDouble(qbox.SelectedItem)));
+            switch (method)
+            {
+                case 1:
+                    {
+                        Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Superiority.GetGraphByIndexes(Superiority.C, Convert.ToDouble(ybox.SelectedItem)));
+                        break;
+                    }
+                case 2:
+                    {
+                        Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Electre.GetGraphByIndexes(Electre.C, Electre.D, Convert.ToDouble(ybox.SelectedItem), Convert.ToDouble(qbox.SelectedItem)));
+                        break;
+                    }
+            }
         }
     }
 }

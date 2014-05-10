@@ -19,12 +19,13 @@ namespace Multicriteria
 
         private void btnElectre_Click(object sender, EventArgs e)
         {
-            List<int> dominated = new List<int>();
-            List<int> equal = new List<int>();
-            List<int>[] output = new List<int>[2];
+            Model.CheckDominated();
             Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
-            if (!Model.IsDominated)
+            /*if (!Model.IsDominated)
             {
+                List<int> dominated = new List<int>();
+                List<int> equal = new List<int>();
+                List<int>[] output = new List<int>[2];
                 output = MathLib.Domin.CalcDominated(Data.table);
                 dominated = output[0];
                 equal = output[1];
@@ -54,7 +55,7 @@ namespace Multicriteria
                     current++;
                 }
                 Model.IsDominated = true;
-            }
+            }*/
             int[] P = new int[Data.criteria.Count];
             foreach (Criterion c in Data.criteria)
             {
@@ -92,15 +93,37 @@ namespace Multicriteria
                 }
             }*/
 
-            Excel.WriteElectre(Electre.C, Electre.D, Data.models.Where(m => m.dominatedStatus == 0).ToList());
-            frmGraph graphForm = new frmGraph();
+            Excel.WriteElectre(Electre.C, Electre.D, notDominated.ToList());
+            frmGraph graphForm = new frmGraph(2);
             graphForm.ShowDialog();
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+
+        private void btnSuperiority_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Under Construction");
+            Model.CheckDominated();
+            Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
+            int[] P = new int[Data.criteria.Count];
+            foreach (Criterion c in Data.criteria)
+            {
+                P[c.id - 1] = c.value;
+            }
+
+            Superiority.C = MathLib.Superiority.CalcIndexes(Data.tablePareto, P);
+
+
+            int modelsCount = Data.tablePareto.Count();
+            string[] modelNames = new string[notDominated.Count()];
+            for (int i = 0; i < notDominated.Count(); ++i)
+            {
+                modelNames[i] = notDominated[i].name;
+            }
+            Superiority.scores = MathLib.Superiority.FinalScore(Superiority.C, modelNames);
+            Excel.WriteSuperiority(Superiority.C, notDominated.ToList());
+            frmGraph graphForm = new frmGraph(1);
+            graphForm.ShowDialog();
         }
     }
 }

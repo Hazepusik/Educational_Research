@@ -68,7 +68,7 @@ namespace Multicriteria
                     }
                     for (int col = 1; col <= criteriaCount; col++)
                     {
-                        Data.criteria.Add(new Criterion(dataWorksheet.Cells[1, col + 1].Value.ToString(), CellToInt(sysWorksheet.Cells[3, col])));
+                        Data.criteria.Add(new Criterion(dataWorksheet.Cells[1, col + 1].Value.ToString(), CellToInt(sysWorksheet.Cells[3, col]), Convert.ToBoolean(sysWorksheet.Cells[4, col].Value)));
                     }
                     for (int row = 1; row <= modelsCount; row++)
                     {
@@ -133,7 +133,7 @@ namespace Multicriteria
         /// <summary>
         /// Generates the report.
         /// </summary>
-        public static void GenerateReport(List<Criterion> criteria, List<Model> models)
+        public static bool GenerateReport(List<Criterion> criteria, List<Model> models)
         {
             using (ExcelPackage package = new ExcelPackage())
             {
@@ -165,9 +165,10 @@ namespace Multicriteria
                 {
                     string fileName = saveFD.FileName;
                     var existingFile = new FileInfo(fileName);
-                    if (FileIsLocked(existingFile))
+                    if (FileIsLocked(existingFile) && File.Exists(fileName))
                     {
                         MessageBox.Show("Произошла ошибка при записи файла.\nУбедитесь, что файл закрыт.");
+                        return false;
                     }
                     else
                     {
@@ -179,8 +180,10 @@ namespace Multicriteria
                 else
                 {
                     MessageBox.Show("Произошла ошибка при генерации файла");
+                    return false;
                 }
             }
+            return true;
         }
 
         private static void FillCriteria(ExcelWorksheet ws, List<Criterion> criteria, int row, int col)
@@ -244,6 +247,7 @@ namespace Multicriteria
             {
                 ws.Cells[2, col].Value = criterion.name;
                 ws.Cells[3, col].Value = criterion.value;
+                ws.Cells[4, col].Value = criterion.reverse;
                 col++;
             }
         }
@@ -258,7 +262,7 @@ namespace Multicriteria
                 ExcelWorksheet score = CreateSheet(package, "Таблица смежности");
                 ExcelWorksheet agree = CreateSheet(package, "Согласие");
                 ExcelWorksheet disagree = CreateSheet(package, "Несогласие");
-                
+
 
                 int current = 2;
                 score.Cells[1, 1].Value = "Модел(и)";
@@ -283,8 +287,8 @@ namespace Multicriteria
                     current++;
                 }
                 int modelsCount = models.Count;
-                for (int r = 2; r <= modelsCount+1; ++r)
-                    for (int c = 2; c <= modelsCount+1; ++c)
+                for (int r = 2; r <= modelsCount + 1; ++r)
+                    for (int c = 2; c <= modelsCount + 1; ++c)
                     {
                         if (r == c)
                         {
@@ -293,13 +297,66 @@ namespace Multicriteria
                         }
                         else
                         {
-                            agree.Cells[r, c].Value = C[r-2][c-2];
+                            agree.Cells[r, c].Value = C[r - 2][c - 2];
                             disagree.Cells[r, c].Value = D[r - 2][c - 2];
                         }
                     }
 
                 Byte[] bin = package.GetAsByteArray();
                 string fileName = "ELECTRE_result" + ".xlsx";
+                //TODO: file is busy + fname change
+                File.WriteAllBytes(fileName, bin);
+                ProcessStartInfo pi = new ProcessStartInfo(fileName);
+                Process.Start(pi);
+            }
+        }
+
+        public static void WriteSuperiority(double[][] C, List<Model> models)
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+
+                SetWorkbookProperties(package);
+
+                ExcelWorksheet score = CreateSheet(package, "Таблица смежности");
+                ExcelWorksheet agree = CreateSheet(package, "Согласие");
+
+                int current = 2;
+                score.Cells[1, 1].Value = "Модел(и)";
+                score.Cells[1, 2].Value = "Штрафной балл";
+                foreach (System.Tuple<string, double> modSc in Superiority.scores)
+                {
+                    string m = modSc.Item1;
+                    double s = modSc.Item2;
+                    score.Cells[current, 1].Value = m;
+                    score.Cells[current, 2].Value = s.ToString();
+                    current++;
+                }
+
+
+                current = 2;
+                foreach (Model model in models)
+                {
+                    agree.Cells[1, current].Value = model.name;
+                    agree.Cells[current, 1].Value = model.name;
+                    current++;
+                }
+                int modelsCount = models.Count;
+                for (int r = 2; r <= modelsCount + 1; ++r)
+                    for (int c = 2; c <= modelsCount + 1; ++c)
+                    {
+                        if (r == c)
+                        {
+                            agree.Cells[r, c].Value = "*";
+                        }
+                        else
+                        {
+                            agree.Cells[r, c].Value = C[r - 2][c - 2];
+                        }
+                    }
+
+                Byte[] bin = package.GetAsByteArray();
+                string fileName = "ОтношениеПревосходства_result" + ".xlsx";
                 //TODO: file is busy + fname change
                 File.WriteAllBytes(fileName, bin);
                 ProcessStartInfo pi = new ProcessStartInfo(fileName);

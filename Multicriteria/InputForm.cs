@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Multicriteria
 {
-    public partial class frmFill : Form
+    public partial class frmInput : Form
     {
         private int critCount; 
         private int modCount;
@@ -17,11 +17,12 @@ namespace Multicriteria
         private List<Model> models = new List<Model>();
         private List<TextBox> critName = new List<TextBox>();
         private List<TextBox> modName = new List<TextBox>();
-        private List<TextBox> maxDiff = new List<TextBox>();
+        private List<CheckBox> isRev = new List<CheckBox>();
+        //private List<TextBox> maxDiff = new List<TextBox>();
         private List<NumericUpDown> critValue = new List<NumericUpDown>();
         private bool critFilled;
 
-        public frmFill()
+        public frmInput()
         {
             InitializeComponent();
         }
@@ -40,7 +41,7 @@ namespace Multicriteria
             btnSave.Visible = !btnSave.Visible;
             lblName.Visible = !lblName.Visible;
             lblValue.Visible = !lblValue.Visible;
-            lblDiff.Visible = !lblDiff.Visible;
+            //lblDiff.Visible = !lblDiff.Visible;
         }
 
         private void btnCount_Click(object sender, EventArgs e)
@@ -49,6 +50,7 @@ namespace Multicriteria
             {
                 critName.Clear();
                 critValue.Clear();
+                isRev.Clear();
                 if (!int.TryParse(txtCount.Text, out critCount) || critCount == 0)
                 {
                     MessageBox.Show("Введите число больше нуля.");
@@ -72,11 +74,12 @@ namespace Multicriteria
                         nudValue.Location = new Point(lblValue.Left, lblValue.Top + (i + 1) * 40);
                         critValue.Add(nudValue);
 
-                        TextBox tbDiff = new TextBox();
-                        tbDiff.Size = new Size(50, 30);
-                        tbDiff.Parent = this;
-                        tbDiff.Location = new Point(lblDiff.Left, lblName.Top + (i + 1) * 40);
-                        critName.Add(tbName);
+                        CheckBox cbRev = new CheckBox();
+                        cbRev.Parent = this;
+                        cbRev.Location = new Point(lblDiff.Left, lblDiff.Top + (i + 1) * 40-5);
+                        cbRev.Size = new Size(150, 30);
+                        cbRev.Text = "Оценивать реверсивно";
+                        isRev.Add(cbRev);
                     }
                     SwitchObjects();
                     lblTitle.Text = "Число критериев";
@@ -104,6 +107,7 @@ namespace Multicriteria
                     SwitchObjects();
                     lblTitle.Text = "Число моделей";
                     lblValue.Visible = false;
+                    lblDiff.Visible = false;
                     int height = Math.Min(modCount * 40 + lblValue.Top + 100, 600);
                     this.Size = new Size(this.Width, height);
                 }
@@ -118,9 +122,10 @@ namespace Multicriteria
                 //TODO: not empty names
                 for (int i = 0; i < critCount; ++i)
                 {
-                    criteria.Add(new Criterion(critName[i].Text, int.Parse(critValue[i].Value.ToString())));
+                    criteria.Add(new Criterion(critName[i].Text, int.Parse(critValue[i].Value.ToString()),isRev[i].Checked));
                     critName[i].Dispose();
                     critValue[i].Dispose();
+                    isRev[i].Dispose();
                 }
                 SwitchObjects();
                 txtCount.Text = "";

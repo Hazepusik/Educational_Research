@@ -17,10 +17,10 @@ D:\GitHub\Educational_Research\Multicriteria\bin\Debug\MathLib.xml
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.csprojResolveAssemblyReference.cache
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmChoose.resources
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmGraph.resources
-D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmFill.resources
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmMain.resources
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.Properties.Resources.resources
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.csproj.GenerateResource.Cache
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.exe
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.pdb
 D:\GitHub\Educational_Research\Multicriteria\bin\Debug\EPPlus.dll
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmInput.resources

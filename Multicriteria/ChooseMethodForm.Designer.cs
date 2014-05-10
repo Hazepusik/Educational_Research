@@ -40,7 +40,7 @@
             this.btnSuperiority.TabIndex = 0;
             this.btnSuperiority.Text = "Отношение превосходства";
             this.btnSuperiority.UseVisualStyleBackColor = true;
-            this.btnSuperiority.Click += new System.EventHandler(this.button1_Click);
+            this.btnSuperiority.Click += new System.EventHandler(this.btnSuperiority_Click);
             // 
             // btnElectre
             // 

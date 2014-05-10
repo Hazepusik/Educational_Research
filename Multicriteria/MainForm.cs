@@ -30,9 +30,10 @@ namespace Multicriteria
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnExport_Click(object sender, EventArgs e)
         {
-            //Excel.GenerateReport();
-            frmFill fillForm = new frmFill();
-            fillForm.ShowDialog();
+            //frmFill fillForm = new frmFill();
+            //fillForm.ShowDialog();
+            frmInput f = new frmInput();
+            f.ShowDialog();
         }
 
 
@@ -56,12 +57,6 @@ namespace Multicriteria
                 }
             }
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //Visualization.ShowGraph();
-        }
-        
 
     }
 }
