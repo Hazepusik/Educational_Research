@@ -35,6 +35,7 @@
             this.lblValue = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.lblDiff = new System.Windows.Forms.Label();
+            this.btnFinish = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCount
@@ -107,11 +108,23 @@
             this.lblDiff.UseWaitCursor = true;
             this.lblDiff.Visible = false;
             // 
+            // btnFinish
+            // 
+            this.btnFinish.Location = new System.Drawing.Point(135, 212);
+            this.btnFinish.Name = "btnFinish";
+            this.btnFinish.Size = new System.Drawing.Size(75, 23);
+            this.btnFinish.TabIndex = 7;
+            this.btnFinish.Text = "Сохранить";
+            this.btnFinish.UseVisualStyleBackColor = true;
+            this.btnFinish.Visible = false;
+            this.btnFinish.Click += new System.EventHandler(this.btnFinish_Click);
+            // 
             // frmInput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(536, 268);
+            this.Controls.Add(this.btnFinish);
             this.Controls.Add(this.lblDiff);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.lblValue);
@@ -136,5 +149,6 @@
         private System.Windows.Forms.Label lblValue;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lblDiff;
+        private System.Windows.Forms.Button btnFinish;
     }
 }

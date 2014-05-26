@@ -20,6 +20,7 @@ namespace Multicriteria
         private List<CheckBox> isRev = new List<CheckBox>();
         //private List<TextBox> maxDiff = new List<TextBox>();
         private List<NumericUpDown> critValue = new List<NumericUpDown>();
+        private DataGridView data = new DataGridView();
         private bool critFilled;
 
         public frmInput()
@@ -131,6 +132,7 @@ namespace Multicriteria
                 txtCount.Text = "";
                 lblTitle.Text = "Введите число моделей";
                 critFilled = true;
+                this.Size = new Size(this.Width, 100);
             }
             else
             {
@@ -140,18 +142,71 @@ namespace Multicriteria
                     models.Add(new Model(modName[i].Text));
                     modName[i].Dispose();
                 }
-                this.Dispose();
-                Excel.GenerateReport(criteria, models);
-                MessageBox.Show("Теперь заполните таблицу");
+                //this.Dispose();
+                //Excel.GenerateReport(criteria, models);
+                //MessageBox.Show("Теперь заполните таблицу");
+                
+                data.Parent = this;
+                data.ColumnHeadersVisible = false;
+                data.RowHeadersVisible = false;
+                data.Columns.Add("first", "first");
+                data.Rows.Add(models.Count+1);
+                data.AllowUserToAddRows = false;
+                data.AllowUserToOrderColumns = false;
+                data.Rows[0].Cells[0].Style.BackColor = Color.LightGray;
+                data.Rows[0].Cells[0].ReadOnly = true;
+                foreach (Criterion c in criteria)
+                {
+                    int col = data.Columns.Add(c.name, c.name);
+                    data.Rows[0].Cells[col].Value = c.name;
+                    data.Rows[0].Cells[col].ReadOnly = true;
+                    data.Rows[0].Cells[col].Style.Font = new Font(data.Font, FontStyle.Bold);
+                    data.Rows[0].Cells[col].Style.BackColor = Color.LightGray;
+                    data.Columns[col].Width = 80;
+
+                }
+                foreach (Model m in models)
+                {
+                    data.Rows[m.id].Cells[0].Value = m.name;
+                    data.Rows[m.id].Cells[0].ReadOnly = true;
+                    data.Rows[m.id].Cells[0].Style.Font = new Font(data.Font, FontStyle.Bold);
+                    data.Rows[m.id].Cells[0].Style.BackColor = Color.LightGray;
+                }
+                data.Left = 5;
+                data.Top = 5;
+                int w = Math.Min(data.Columns[0].Width + (data.Columns.Count - 1) * data.Columns[1].Width, 800);
+                int h = Math.Min(data.Rows.Count * data.Rows[0].Height, 600);
+                w += 3;
+                h += 3;
+                data.Size = new Size(w, h);
+                data.Visible = true;
+                btnFinish.Left = data.Left;
+                btnFinish.Top = h + 10;
+                btnFinish.Width = w;
+                btnFinish.Height = 50;
+                btnFinish.Visible = true;
+                this.Width = w + 26;
+                this.Height = h + 102;
+                this.btnSave.Visible = false;
+                this.txtCount.Visible = false;
+                this.lblName.Visible = false;
             }
-            this.Size = new Size(this.Width, 100);
         }
 
         private void frmFill_Load(object sender, EventArgs e)
         {
             this.AutoScroll = true;
             critFilled = false;
+            data.Visible = false;
             this.Size = new Size(this.Width, 100);
+        }
+
+        private void btnFinish_Click(object sender, EventArgs e)
+        {
+            DataTable d = (DataTable)data.DataSource;
+            DataTable dtFromGrid = new DataTable();
+            dtFromGrid = data.DataSource as DataTable;
+            Excel.GenerateReport(criteria, models, data);
         }
     }
 }

@@ -30,6 +30,7 @@
         {
             this.btnSuperiority = new System.Windows.Forms.Button();
             this.btnElectre = new System.Windows.Forms.Button();
+            this.btnAll = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnSuperiority
@@ -52,11 +53,21 @@
             this.btnElectre.UseVisualStyleBackColor = true;
             this.btnElectre.Click += new System.EventHandler(this.btnElectre_Click);
             // 
+            // btnAll
+            // 
+            this.btnAll.Location = new System.Drawing.Point(52, 179);
+            this.btnAll.Name = "btnAll";
+            this.btnAll.Size = new System.Drawing.Size(161, 41);
+            this.btnAll.TabIndex = 2;
+            this.btnAll.Text = "Всеми";
+            this.btnAll.UseVisualStyleBackColor = true;
+            // 
             // frmChoose
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.btnAll);
             this.Controls.Add(this.btnElectre);
             this.Controls.Add(this.btnSuperiority);
             this.Name = "frmChoose";
@@ -69,5 +80,6 @@
 
         private System.Windows.Forms.Button btnSuperiority;
         private System.Windows.Forms.Button btnElectre;
+        private System.Windows.Forms.Button btnAll;
     }
 }

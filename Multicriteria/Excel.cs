@@ -13,6 +13,63 @@ namespace Multicriteria
 {
     class Excel
     {
+
+
+        private static bool FileIsLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+            return false;
+        }
+
+        public static DataTable DataGridViewToDataTable(DataGridView dgv, int minRow = 0)
+        {
+            DataTable dt = new DataTable("tbl");
+            foreach (DataGridViewColumn column in dgv.Columns)
+            {
+                DataColumn dc = new DataColumn(column.Name.ToString());
+                dt.Columns.Add(dc);
+            }
+
+            for (int i = 0; i < dgv.Rows.Count; i++)
+            {
+                DataGridViewRow row = dgv.Rows[i];
+                DataRow dr = dt.NewRow();
+                for (int j = 0; j < dgv.Columns.Count; j++)
+                {
+                    dr[j] = (row.Cells[j].Value == null) ? "" : row.Cells[j].Value.ToString();
+                }
+
+            dt.Rows.Add(dr);
+            }
+
+
+            for (int i = dgv.Rows.Count; i < minRow; i++)
+            {
+                DataRow dr = dt.NewRow();
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    dr[j] = " ";
+                }
+                dt.Rows.Add(dr);
+            }
+            return dt;
+
+        }
+
         /// <summary>
         /// Read data from Excel File
         /// </summary>
@@ -85,27 +142,7 @@ namespace Multicriteria
             }
         }
 
-        private static bool FileIsLocked(FileInfo file)
-        {
-            FileStream stream = null;
-
-            try
-            {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                    stream.Close();
-            }
-            return false;
-        }
-
-        private static double CellToFloat(ExcelRange cell)
+        public static double CellToFloat(ExcelRange cell)
         {
             try
             {
@@ -133,8 +170,9 @@ namespace Multicriteria
         /// <summary>
         /// Generates the report.
         /// </summary>
-        public static bool GenerateReport(List<Criterion> criteria, List<Model> models)
+        public static bool GenerateReport(List<Criterion> criteria, List<Model> models, DataGridView dgv)
         {
+            DataTable data = DataGridViewToDataTable(dgv);
             using (ExcelPackage package = new ExcelPackage())
             {
                 SetWorkbookProperties(package);
@@ -153,6 +191,7 @@ namespace Multicriteria
 
                 FillSysData(sysWorksheet, models, criteria);
 
+                dataWorksheet.Cells[1, 1].LoadFromDataTable(data, false); 
 
                 Byte[] bin = package.GetAsByteArray();
                 SaveFileDialog saveFD = new SaveFileDialog();
@@ -173,8 +212,8 @@ namespace Multicriteria
                     else
                     {
                         File.WriteAllBytes(fileName, bin);
-                        ProcessStartInfo pi = new ProcessStartInfo(fileName);
-                        Process.Start(pi);
+                        //ProcessStartInfo pi = new ProcessStartInfo(fileName);
+                        //Process.Start(pi);
                     }
                 }
                 else

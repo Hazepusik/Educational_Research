@@ -34,9 +34,9 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(12, 180);
+            this.btnExport.Location = new System.Drawing.Point(26, 152);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(260, 23);
+            this.btnExport.Size = new System.Drawing.Size(245, 23);
             this.btnExport.TabIndex = 0;
             this.btnExport.Text = "Создать новый";
             this.btnExport.UseVisualStyleBackColor = true;
@@ -56,7 +56,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(307, 242);
             this.Controls.Add(this.btnImport);
             this.Controls.Add(this.btnExport);
             this.Name = "frmMain";
