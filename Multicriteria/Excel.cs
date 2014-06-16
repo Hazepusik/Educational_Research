@@ -89,6 +89,7 @@ namespace Multicriteria
          
             using (var package = new ExcelPackage(existingFile))
             {
+                List<int> ids = new List<int>();
                 ExcelWorkbook workBook = package.Workbook;
                 if (workBook != null)
                 {
@@ -126,6 +127,8 @@ namespace Multicriteria
                     for (int col = 1; col <= criteriaCount; col++)
                     {
                         Data.criteria.Add(new Criterion(dataWorksheet.Cells[1, col + 1].Value.ToString(), CellToInt(sysWorksheet.Cells[3, col]), Convert.ToBoolean(sysWorksheet.Cells[4, col].Value)));
+                        if (Convert.ToBoolean(sysWorksheet.Cells[4, col].Value))
+                            ids.Add(col);
                     }
                     for (int row = 1; row <= modelsCount; row++)
                     {
@@ -138,6 +141,8 @@ namespace Multicriteria
                     }
                     
                 }
+
+                Data.table = MathLib.Common.MakeReverse(Data.table, ids);
                 return true;
             }
         }
@@ -146,7 +151,7 @@ namespace Multicriteria
         {
             try
             {
-                string q = cell.Value.ToString().Replace(",", ".");
+                //string q = cell.Value.ToString().Replace(",", ".");
                 return Convert.ToDouble(cell.Value.ToString().Replace(".",","));
             }
             catch
@@ -170,9 +175,9 @@ namespace Multicriteria
         /// <summary>
         /// Generates the report.
         /// </summary>
-        public static bool GenerateReport(List<Criterion> criteria, List<Model> models, DataGridView dgv)
+        public static bool GenerateReport(List<Criterion> criteria, List<Model> models, DataTable data)
         {
-            DataTable data = DataGridViewToDataTable(dgv);
+            //DataTable data = DataGridViewToDataTable(dgv);
             using (ExcelPackage package = new ExcelPackage())
             {
                 SetWorkbookProperties(package);
@@ -212,6 +217,7 @@ namespace Multicriteria
                     else
                     {
                         File.WriteAllBytes(fileName, bin);
+                        Data.filePath = fileName;
                         //ProcessStartInfo pi = new ProcessStartInfo(fileName);
                         //Process.Start(pi);
                     }
@@ -291,11 +297,13 @@ namespace Multicriteria
             }
         }
 
-        public static void WriteElectre(double[][] C, double[][] D, List<Model> models)
+        public static void WriteElectre()
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-
+                List<Model> models = Data.notDominated;
+                double[][] C = Electre.C;
+                double[][] D = Electre.D;
                 SetWorkbookProperties(package);
 
                 ExcelWorksheet score = CreateSheet(package, "Таблица смежности");
@@ -342,7 +350,7 @@ namespace Multicriteria
                     }
 
                 Byte[] bin = package.GetAsByteArray();
-                string fileName = "ELECTRE_result" + ".xlsx";
+                string fileName = Data.GetFileName() + "_electre_result.xlsx";
                 //TODO: file is busy + fname change
                 File.WriteAllBytes(fileName, bin);
                 ProcessStartInfo pi = new ProcessStartInfo(fileName);
@@ -350,11 +358,12 @@ namespace Multicriteria
             }
         }
 
-        public static void WriteSuperiority(double[][] C, List<Model> models)
+        public static void WriteSuperiority()
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-
+                List<Model> models = Data.notDominated;
+                double[][] C = Superiority.C;
                 SetWorkbookProperties(package);
 
                 ExcelWorksheet score = CreateSheet(package, "Таблица смежности");
@@ -395,12 +404,44 @@ namespace Multicriteria
                     }
 
                 Byte[] bin = package.GetAsByteArray();
-                string fileName = "ОтношениеПревосходства_result" + ".xlsx";
+                string fileName = Data.GetFileName() + "_superiority_result.xlsx";
                 //TODO: file is busy + fname change
                 File.WriteAllBytes(fileName, bin);
                 ProcessStartInfo pi = new ProcessStartInfo(fileName);
                 Process.Start(pi);
             }
         }
+
+
+        public static void WriteAvg()
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                List<Model> models = Data.notDominated;
+                SetWorkbookProperties(package);
+
+                ExcelWorksheet score = CreateSheet(package, "Результат");
+
+                int current = 2;
+                score.Cells[1, 1].Value = "Модел(и)";
+                score.Cells[1, 2].Value = "Штрафной балл";
+                foreach (System.Tuple<string, double> avgSc in Data.avgScores)
+                {
+                    string m = avgSc.Item1;
+                    double s = avgSc.Item2;
+                    score.Cells[current, 1].Value = m;
+                    score.Cells[current, 2].Value = s.ToString();
+                    current++;
+                }
+
+                Byte[] bin = package.GetAsByteArray();
+                string fileName = Data.GetFileName()+"_avg_result.xlsx";
+                //TODO: file is busy
+                File.WriteAllBytes(fileName, bin);
+                ProcessStartInfo pi = new ProcessStartInfo(fileName);
+                Process.Start(pi);
+            }
+        }
+
     }
 }

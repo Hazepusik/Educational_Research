@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ExportToExcelV2")]
+[assembly: AssemblyTitle("Multicriteria")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Telenor")]
-[assembly: AssemblyProduct("ExportToExcelV2")]
-[assembly: AssemblyCopyright("Copyright © Telenor 2011")]
+[assembly: AssemblyCompany("NRNU MEPhI")]
+[assembly: AssemblyProduct("Multicriteria")]
+[assembly: AssemblyCopyright("Copyright © Khazov Andrey 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b63e1fef-8905-4938-bd41-a2d2a02d5e21")]
+//[assembly: Guid("b63e1fef-8905-4938-bd41-a2d2a02d5e21")]
 
 // Version information for an assembly consists of the following four values:
 //

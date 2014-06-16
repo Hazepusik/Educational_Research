@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
+using System.ComponentModel;
+using System.Windows.Forms;
 namespace Multicriteria
 {
     public class Model
@@ -106,12 +109,60 @@ namespace Multicriteria
         }
 
     }
-    public class Data
+    public static class Data
     {
         public static List<Model> models;
         public static List<Criterion> criteria;
         public static double[][] table;
         public static double[][] tablePareto;
+        public static System.Tuple<string, double>[] avgScores;
+        public static string filePath;
+        public static List<Model> notDominated;
+        public static string GetFileName()
+        {
+            return filePath.Substring(0, filePath.Length - 5);
+        }
+        public static void ShowResults(System.Tuple<string, double>[] scores, int method)
+        {
+            string messageBoxText = "Результаты: модели и штрафной балл";
+            foreach (System.Tuple<string, double> score in scores)
+            {
+                messageBoxText += String.Format("\n{0} - {1}", score.Item1, score.Item2.ToString());
+            }
+            messageBoxText += "\n\n\n Сохранить результат в файл?";
+            string caption = "Результат";
+            MessageBoxButtons button = MessageBoxButtons.YesNo;
+            MessageBoxIcon icon = MessageBoxIcon.Question;
+            DialogResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+
+            // Process message box results 
+            switch (result)
+            {
+                case DialogResult.Yes:
+                    switch (method)
+                    {
+                        case 0:
+                            {
+                                Excel.WriteAvg();
+                                break;
+                            }
+                        case 1:
+                            {
+                                Excel.WriteSuperiority();
+                                break;
+                            }
+                        case 2:
+                            {
+                                Excel.WriteElectre();
+                                break;
+                            }
+                    }
+                    break;
+                case DialogResult.No:
+                    
+                    break;
+            }
+        }
 
 
     }
@@ -122,13 +173,14 @@ namespace Multicriteria
         public string name; 
     }
 
-    public class Superiority
+    public static class Superiority
     {
         public static double[][] C;
         public static System.Tuple<string, double>[] scores;
+        public static int importance = 1;
     }
 
-    public class Electre
+    public static class Electre
     {
         //public static double Y;
         //public static double Q;
@@ -136,5 +188,6 @@ namespace Multicriteria
         public static double[][] C;
         public static double[][] D;
         public static System.Tuple<string, double>[] scores;
+        public static int importance = 3;
     }
 }

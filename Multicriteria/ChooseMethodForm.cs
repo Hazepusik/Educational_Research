@@ -21,41 +21,6 @@ namespace Multicriteria
         {
             Model.CheckDominated();
             Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
-            /*if (!Model.IsDominated)
-            {
-                List<int> dominated = new List<int>();
-                List<int> equal = new List<int>();
-                List<int>[] output = new List<int>[2];
-                output = MathLib.Domin.CalcDominated(Data.table);
-                dominated = output[0];
-                equal = output[1];
-                dominated.Reverse();
-                foreach (int eq in equal)
-                {
-                    int mainId = MathLib.Domin.EqualIndex(Data.table, eq - 1);
-                    Data.models.First(m => m.id == mainId).name += "; " + Data.models[eq - 1].name;
-                    Data.models[eq - 1].dominatedStatus = mainId;
-                    
-                }
-                foreach (int dom in dominated)
-                {
-                    Data.models[dom - 1].dominatedStatus = -1;
-                }
-                notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
-                Data.tablePareto = new double[notDominated.Count()][];
-                int criteriaCount = Data.criteria.Count();
-                int current = 0;
-                foreach (Model m in notDominated)
-                {
-                    Data.tablePareto[current] = new double[criteriaCount];
-                    for (int i = 0; i < criteriaCount; ++i)
-                    {
-                        Data.tablePareto[current][i] = Data.table[m.id - 1][i];
-                    }
-                    current++;
-                }
-                Model.IsDominated = true;
-            }*/
             int[] P = new int[Data.criteria.Count];
             foreach (Criterion c in Data.criteria)
             {
@@ -74,28 +39,15 @@ namespace Multicriteria
                 modelNames[i] = notDominated[i].name;
             }
             Electre.scores = MathLib.Electre.FinalScore(Electre.C, Electre.D, modelNames);
-            /*Electre.graph = new Graph[modelsCount][modelsCount];
-            for (int i = 0; i < modelsCount; ++i)
-            {
-                for (int j = 0; j < modelsCount; ++j)
-                {
-                    //Electre.graph[i][j] = new Graph();
-                    //Electre.graph[i][j].name = Data.models.Where(m => m.dominatedStatus == 0).ToList()[i].name + " ---> " + Data.models.Where(m => m.dominatedStatus == 0).ToList()[j].name;
-                    // it works. magic
-                    if ((C[i][j] >= Electre.Y) && (D[i][j] <= Electre.Q) && (i != j))
-                    {
-                        Electre.graph[i][j] = 1;
-                    }
-                    else
-                    {
-                        Electre.graph[i][j] = 0;
-                    }
-                }
-            }*/
 
-            Excel.WriteElectre(Electre.C, Electre.D, notDominated.ToList());
-            frmGraph graphForm = new frmGraph(2);
-            graphForm.ShowDialog();
+            Data.notDominated = notDominated.ToList();
+            Data.ShowResults(Electre.scores, 2);
+            //Excel.WriteElectre();
+            if (Electre.scores.Count() > 1)
+            {
+                frmGraph graphForm = new frmGraph(2);
+                graphForm.ShowDialog();
+            }
 
         }
 
@@ -121,9 +73,49 @@ namespace Multicriteria
                 modelNames[i] = notDominated[i].name;
             }
             Superiority.scores = MathLib.Superiority.FinalScore(Superiority.C, modelNames);
-            Excel.WriteSuperiority(Superiority.C, notDominated.ToList());
-            frmGraph graphForm = new frmGraph(1);
-            graphForm.ShowDialog();
+            Data.notDominated = notDominated.ToList();
+            Data.ShowResults(Superiority.scores, 1);
+            //Excel.WriteSuperiority();
+            if (Superiority.scores.Count() > 1)
+            {
+                frmGraph graphForm = new frmGraph(1);
+                graphForm.ShowDialog();
+            }
+        }
+
+        private void btnAll_Click(object sender, EventArgs e)
+        {
+            Model.CheckDominated();
+            Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
+            int[] P = new int[Data.criteria.Count];
+            foreach (Criterion c in Data.criteria)
+                P[c.id - 1] = c.value;
+            int modelsCount = Data.tablePareto.Count();
+            string[] modelNames = new string[notDominated.Count()];
+            for (int i = 0; i < notDominated.Count(); ++i)
+                modelNames[i] = notDominated[i].name;
+
+
+            Superiority.C = MathLib.Superiority.CalcIndexes(Data.tablePareto, P);
+            Superiority.scores = MathLib.Superiority.FinalScore(Superiority.C, modelNames);
+
+            var val = MathLib.Electre.CalcIndexes(Data.tablePareto, P);
+            Electre.C = val.Select(t => t.Item1).First();
+            Electre.D = val.Select(t => t.Item2).First();
+
+            Electre.scores = MathLib.Electre.FinalScore(Electre.C, Electre.D, modelNames);
+            Array.Sort(Electre.scores);
+            Array.Sort(Superiority.scores);
+            Data.avgScores = new System.Tuple<string, double>[Electre.scores.Count()];
+            for (int i = 0; i < Electre.scores.Count(); ++i)
+            {
+                double avg = ((Superiority.scores[i].Item2 * Superiority.importance) + (Electre.scores[i].Item2 * Electre.importance)) / (Electre.importance + Superiority.importance);
+                Data.avgScores[i] = new System.Tuple<string, double>(Electre.scores[i].Item1, avg);
+            }
+            Data.avgScores = Data.avgScores.OrderBy(x => x.Item2).ToArray();
+            Data.notDominated = notDominated.ToList();
+            Data.ShowResults(Data.avgScores, 0);
+            //Excel.WriteAvg();
         }
     }
 }

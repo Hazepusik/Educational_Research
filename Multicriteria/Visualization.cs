@@ -5,7 +5,7 @@ namespace Multicriteria
     {
         public static void ShowGraph(Model[] models, int[][] graphTable)
         {
-            int[] core = MathLib.Electre.GetGraphCore(graphTable);
+            int[] core = MathLib.Common.GetGraphCore(graphTable);
             Microsoft.Glee.GraphViewerGdi.GViewer viewer = new Microsoft.Glee.GraphViewerGdi.GViewer();
             Microsoft.Glee.Drawing.Graph graph = new Microsoft.Glee.Drawing.Graph("graph");
             for (int i = 0; i < models.Length; ++i)

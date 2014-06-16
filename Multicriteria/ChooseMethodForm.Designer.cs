@@ -31,13 +31,15 @@
             this.btnSuperiority = new System.Windows.Forms.Button();
             this.btnElectre = new System.Windows.Forms.Button();
             this.btnAll = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnSuperiority
             // 
-            this.btnSuperiority.Location = new System.Drawing.Point(47, 37);
+            this.btnSuperiority.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnSuperiority.Location = new System.Drawing.Point(54, 88);
             this.btnSuperiority.Name = "btnSuperiority";
-            this.btnSuperiority.Size = new System.Drawing.Size(166, 42);
+            this.btnSuperiority.Size = new System.Drawing.Size(372, 55);
             this.btnSuperiority.TabIndex = 0;
             this.btnSuperiority.Text = "Отношение превосходства";
             this.btnSuperiority.UseVisualStyleBackColor = true;
@@ -45,34 +47,49 @@
             // 
             // btnElectre
             // 
-            this.btnElectre.Location = new System.Drawing.Point(52, 106);
+            this.btnElectre.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnElectre.Location = new System.Drawing.Point(59, 157);
             this.btnElectre.Name = "btnElectre";
-            this.btnElectre.Size = new System.Drawing.Size(161, 41);
+            this.btnElectre.Size = new System.Drawing.Size(367, 54);
             this.btnElectre.TabIndex = 1;
-            this.btnElectre.Text = "ELECTRE";
+            this.btnElectre.Text = "Метод ELECTRE";
             this.btnElectre.UseVisualStyleBackColor = true;
             this.btnElectre.Click += new System.EventHandler(this.btnElectre_Click);
             // 
             // btnAll
             // 
-            this.btnAll.Location = new System.Drawing.Point(52, 179);
+            this.btnAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnAll.Location = new System.Drawing.Point(59, 230);
             this.btnAll.Name = "btnAll";
-            this.btnAll.Size = new System.Drawing.Size(161, 41);
+            this.btnAll.Size = new System.Drawing.Size(367, 54);
             this.btnAll.TabIndex = 2;
-            this.btnAll.Text = "Всеми";
+            this.btnAll.Text = "Усреднить по всем";
             this.btnAll.UseVisualStyleBackColor = true;
+            this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(71, 31);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(341, 31);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Выберите метод решения";
             // 
             // frmChoose
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(500, 301);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnAll);
             this.Controls.Add(this.btnElectre);
             this.Controls.Add(this.btnSuperiority);
             this.Name = "frmChoose";
-            this.Text = "ChooseMethod";
+            this.Text = "Выбор метода оценки";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -81,5 +98,6 @@
         private System.Windows.Forms.Button btnSuperiority;
         private System.Windows.Forms.Button btnElectre;
         private System.Windows.Forms.Button btnAll;
+        private System.Windows.Forms.Label label1;
     }
 }

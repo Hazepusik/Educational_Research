@@ -30,7 +30,7 @@
         {
             this.lblY = new System.Windows.Forms.Label();
             this.lblQ = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lblCD = new System.Windows.Forms.Label();
             this.btnYQ = new System.Windows.Forms.Button();
             this.ybox = new System.Windows.Forms.ComboBox();
             this.qbox = new System.Windows.Forms.ComboBox();
@@ -39,35 +39,39 @@
             // lblY
             // 
             this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(22, 45);
+            this.lblY.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblY.Location = new System.Drawing.Point(22, 59);
             this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(101, 13);
+            this.lblY.Size = new System.Drawing.Size(174, 24);
             this.lblY.TabIndex = 2;
             this.lblY.Text = "Уровень согласия";
             // 
             // lblQ
             // 
             this.lblQ.AutoSize = true;
-            this.lblQ.Location = new System.Drawing.Point(22, 87);
+            this.lblQ.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblQ.Location = new System.Drawing.Point(22, 101);
             this.lblQ.Name = "lblQ";
-            this.lblQ.Size = new System.Drawing.Size(113, 13);
+            this.lblQ.Size = new System.Drawing.Size(196, 24);
             this.lblQ.TabIndex = 3;
             this.lblQ.Text = "Уровень несогласия";
             // 
-            // label3
+            // lblCD
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(208, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Задайте уровни согласия и несогласия";
+            this.lblCD.AutoSize = true;
+            this.lblCD.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblCD.Location = new System.Drawing.Point(22, 9);
+            this.lblCD.Name = "lblCD";
+            this.lblCD.Size = new System.Drawing.Size(366, 24);
+            this.lblCD.TabIndex = 4;
+            this.lblCD.Text = "Задайте уровни согласия и несогласия";
             // 
             // btnYQ
             // 
-            this.btnYQ.Location = new System.Drawing.Point(25, 133);
+            this.btnYQ.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnYQ.Location = new System.Drawing.Point(90, 156);
             this.btnYQ.Name = "btnYQ";
-            this.btnYQ.Size = new System.Drawing.Size(237, 46);
+            this.btnYQ.Size = new System.Drawing.Size(239, 58);
             this.btnYQ.TabIndex = 7;
             this.btnYQ.Text = "Показать граф";
             this.btnYQ.UseVisualStyleBackColor = true;
@@ -75,33 +79,35 @@
             // 
             // ybox
             // 
+            this.ybox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ybox.FormattingEnabled = true;
-            this.ybox.Location = new System.Drawing.Point(143, 42);
+            this.ybox.Location = new System.Drawing.Point(255, 60);
             this.ybox.Name = "ybox";
-            this.ybox.Size = new System.Drawing.Size(121, 21);
+            this.ybox.Size = new System.Drawing.Size(133, 32);
             this.ybox.TabIndex = 8;
             // 
             // qbox
             // 
+            this.qbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.qbox.FormattingEnabled = true;
-            this.qbox.Location = new System.Drawing.Point(143, 84);
+            this.qbox.Location = new System.Drawing.Point(255, 98);
             this.qbox.Name = "qbox";
-            this.qbox.Size = new System.Drawing.Size(121, 21);
+            this.qbox.Size = new System.Drawing.Size(133, 32);
             this.qbox.TabIndex = 9;
             // 
             // frmGraph
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(434, 242);
             this.Controls.Add(this.qbox);
             this.Controls.Add(this.ybox);
             this.Controls.Add(this.btnYQ);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lblCD);
             this.Controls.Add(this.lblQ);
             this.Controls.Add(this.lblY);
             this.Name = "frmGraph";
-            this.Text = "frmValuesYQ";
+            this.Text = "Графическая интерпретация";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -111,7 +117,7 @@
 
         private System.Windows.Forms.Label lblY;
         private System.Windows.Forms.Label lblQ;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblCD;
         private System.Windows.Forms.Button btnYQ;
         private System.Windows.Forms.ComboBox ybox;
         private System.Windows.Forms.ComboBox qbox;

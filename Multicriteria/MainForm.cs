@@ -11,8 +11,7 @@ using MathLib;
 
 
 namespace Multicriteria
-{
-
+{ 
     public partial class frmMain : Form
     {
         /// <summary>
@@ -30,8 +29,6 @@ namespace Multicriteria
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnExport_Click(object sender, EventArgs e)
         {
-            //frmFill fillForm = new frmFill();
-            //fillForm.ShowDialog();
             frmInput f = new frmInput();
             f.ShowDialog();
         }
@@ -48,10 +45,10 @@ namespace Multicriteria
             openFD.RestoreDirectory = true;
             if (openFD.ShowDialog() == DialogResult.OK)
             {
-                //TODO: check data
                 if (Excel.ReadXls(openFD.FileName))
                 {
                     //TODO: show filename
+                    Data.filePath = openFD.FileName;
                     frmChoose chooseForm = new frmChoose();
                     chooseForm.ShowDialog();
                 }

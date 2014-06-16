@@ -20,11 +20,11 @@ namespace Multicriteria
             {
                 case 1:
                 {
-                    double[] cset = MathLib.Superiority.GetSet(Superiority.C);
-
+                    double[] cset = MathLib.Common.GetSet(Superiority.C);
+                    lblCD.Text = "Задайте уровень согласия";
                     foreach (double c in cset)
                     {
-                        ybox.Items.Add(c.ToString());
+                        ybox.Items.Add(Math.Round(c, 4).ToString());
                     }
                     ybox.SelectedIndex = 0;
                     qbox.Visible = false;
@@ -33,15 +33,15 @@ namespace Multicriteria
                 }
                 case 2:
                 {
-                    double[] cset = MathLib.Electre.GetSet(Electre.C);
-                    double[] dset = MathLib.Electre.GetSet(Electre.D);
+                    double[] cset = MathLib.Common.GetSet(Electre.C);
+                    double[] dset = MathLib.Common.GetSet(Electre.D);
                     foreach (double c in cset)
                     {
-                        ybox.Items.Add(c.ToString());
+                        ybox.Items.Add(Math.Round(c, 4).ToString());
                     }
                     foreach (double d in dset)
                     {
-                        qbox.Items.Add(d.ToString());
+                        qbox.Items.Add(Math.Round(d, 4).ToString());
                     }
                     ybox.SelectedIndex = 0;
                     qbox.SelectedIndex = dset.Length - 1;

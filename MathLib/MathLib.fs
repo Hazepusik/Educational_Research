@@ -2,6 +2,77 @@
 open System.Collections.Generic
 open Microsoft.FSharp.Math
 
+module public Common = 
+
+    let getColumn (c, mat:double[][]) = 
+        let rows = mat.GetUpperBound(0) + 1
+        let mutable column = Array.zeroCreate<double> rows
+        for r = 0 to rows-1 do
+            column.[r] <- mat.[r].[c]
+        column
+
+    let MakeReverse(A:double[][], ids) = 
+        let containsNumber number arr = Seq.exists (fun elem -> elem = number) arr
+        let mutable ans = A
+        Array.iteri (fun i row ->
+            Array.iteri (fun j aij ->
+                if containsNumber (j+1) ids then
+                    A.[i].[j] <- Array.max (getColumn (j, A)) - A.[i].[j]
+                    ) row) A
+        A
+
+
+    let GetGraphCore(A:int[][]) = 
+        // returns array of 0 and 1: 1 - model is in core
+        let modCnt = A.GetUpperBound(0) + 1
+        let precore = Array.create modCnt 0
+        Array.iter (fun row ->
+            Array.iteri (fun i r ->
+                precore.[i] <- precore.[i]+r ) row) A
+        Array.map(fun x -> 
+                            match x with
+                            | x when x=0 -> 1
+                            | _ -> 0 ) precore
+
+    let GetSet(A:double[][]) = 
+        // returns sorted array 
+        let list = ref List.Empty
+        Array.iteri (fun i row ->
+            Array.iteri (fun j aij ->
+                if not (List.exists(fun e -> e = aij) !list) && (i<>j) then list := !list @ [aij]
+                    ) row) A
+        !list |> List.toArray |> Array.sort
+
+    let LeadingZeros(s:string) = 
+        let mutable str = s
+        let maxL = 4
+        while str.Length<maxL do
+            str <- "0"+str
+        str
+
+    let CountPlaces pairs = 
+        // returns sorted array of tuples. conact models with equal scores
+        let mutable last = ""
+        let mutable groups = List.empty
+        let mutable group = List.empty
+        for p in pairs do
+            if (last<>fst p) && (last<>"") then
+                groups <- group :: groups
+                group <- []
+            group <- snd p :: group
+            last <- fst p
+        groups <- group :: groups |> List.rev
+        let mutable score = 0.0
+        let mutable cur = 1.0
+        let mutable result = List.empty
+        for eq in groups do
+            let n = float eq.Length
+            score <-  (2.0 * cur + n - 1.0) / 2.0
+            for m in eq do
+                result <- result @ [(m, score)]
+            cur <- cur + n   
+        result |> List.toArray
+
 module public Domin =  
 
     let CalcDominated (input:double[][]) = 
@@ -65,71 +136,22 @@ module public Superiority =
         graph
 
 
-    let GetGraphCore(A:int[][]) =
-        let modCnt = A.GetUpperBound(0) + 1
-        let precore = Array.create modCnt 0
-        Array.iter (fun row ->
-            Array.iteri (fun i r ->
-                precore.[i] <- precore.[i]+r ) row) A
-        Array.map(fun x -> 
-                            match x with
-                            | x when x=0 -> 1
-                            | _ -> 0 ) precore
-
-    let GetSet(A:double[][]) = 
-        let list = ref List.Empty
-        Array.iteri (fun i row ->
-            Array.iteri (fun j aij ->
-                if not (List.exists(fun e -> e = aij) !list) && (i<>j) then list := !list @ [aij]
-                    ) row) A
-        !list |> List.toArray |> Array.sort
-
-    let LeadingZeros(s:string) = 
-        let mutable str = s
-        let maxL = 4
-        while str.Length<maxL do
-            str <- "0"+str
-        str
-
-    let CountPlaces pairs = 
-        let mutable last = ""
-        let mutable groups = List.empty
-        let mutable group = List.empty
-        for p in pairs do
-            if (last<>fst p) && (last<>"") then
-                groups <- group :: groups
-                group <- []
-            group <- snd p :: group
-            last <- fst p
-        groups <- group :: groups |> List.rev
-        let mutable score = 0.0
-        let mutable cur = 1.0
-        let mutable result = List.empty
-        for eq in groups do
-            let n = float eq.Length
-            score <-  (2.0 * cur + n - 1.0) / 2.0
-            for m in eq do
-                result <- result @ [(m, score)]
-            cur <- cur + n   
-        result |> List.toArray
-
-
     let FinalScore(C:double[][], names:string[]) = 
         let modCnt = C.GetUpperBound(0) + 1
         let cores = [| for j in 1..modCnt+1 -> [| for i in 1 .. modCnt+1 -> 0 |] |]
-        let yset = GetSet C
+        let yset = Common.GetSet C
         for y in yset do
             let graph = GetGraphByIndexes (C, y)
-            let core = GetGraphCore graph
+            let core = Common.GetGraphCore graph
             let coreCnt = Array.sum core
             if coreCnt>0 then
                 Array.iteri (fun i x -> if x>0 then cores.[coreCnt].[i] <- cores.[coreCnt].[i] + 1) core
         let results = Array.create modCnt ""
         for m=0 to modCnt-1 do //models
             for c=1 to modCnt-1 do //cores
-                results.[m] <- results.[m] + LeadingZeros (sprintf "%d" cores.[c].[m])
+                results.[m] <- results.[m] + Common.LeadingZeros (sprintf "%d" cores.[c].[m])
         let pairs = Array.zip results names |> Array.sortBy (fun (x,y) -> (x,y)) |> Array.rev
-        CountPlaces pairs
+        Common.CountPlaces pairs
 
 
 
@@ -137,15 +159,9 @@ module public Electre =
     let CalcIndexes (A:double[][], P:int[]) =   
         let crCnt = A.[0].GetUpperBound(0) + 1
         let modCnt = A.GetUpperBound(0) + 1
-        let getColumn (c, mat:double[][]) = 
-            let rows = mat.GetUpperBound(0) + 1
-            let mutable column = Array.zeroCreate<double> rows
-            for r = 0 to rows-1 do
-                column.[r] <- mat.[r].[c]
-            column
         let Li = Array.zeroCreate<double> crCnt
         for i = 0 to crCnt - 1 do
-            Li.[i] <- (Array.max (getColumn (i, A)))-(Array.min (getColumn (i, A)))
+            Li.[i] <- (Array.max (Common.getColumn (i, A)))-(Array.min (Common.getColumn (i, A)))
         let C = [| for j in 1..modCnt -> [| for i in 1 .. modCnt -> 0.0 |] |]
         let D = [| for j in 1..modCnt -> [| for i in 1 .. modCnt -> 0.0 |] |]
         let pij = ref 0.0
@@ -179,64 +195,15 @@ module public Electre =
         graph
 
 
-    let GetGraphCore(A:int[][]) =
-        let modCnt = A.GetUpperBound(0) + 1
-        let precore = Array.create modCnt 0
-        Array.iter (fun row ->
-            Array.iteri (fun i r ->
-                precore.[i] <- precore.[i]+r ) row) A
-        Array.map(fun x -> 
-                            match x with
-                            | x when x=0 -> 1
-                            | _ -> 0 ) precore
-
-    let GetSet(A:double[][]) = 
-        let list = ref List.Empty
-        Array.iteri (fun i row ->
-            Array.iteri (fun j aij ->
-                if not (List.exists(fun e -> e = aij) !list) && (i<>j) then list := !list @ [aij]
-                    ) row) A
-        !list |> List.toArray |> Array.sort
-
-    let LeadingZeros(s:string) = 
-        let mutable str = s
-        let maxL = 4
-        while str.Length<maxL do
-            str <- "0"+str
-        str
-
-    let CountPlaces pairs = 
-        let mutable last = ""
-        let mutable groups = List.empty
-        let mutable group = List.empty
-        for p in pairs do
-            if (last<>fst p) && (last<>"") then
-                groups <- group :: groups
-                group <- []
-            group <- snd p :: group
-            last <- fst p
-        groups <- group :: groups |> List.rev
-        let mutable score = 0.0
-        let mutable cur = 1.0
-        let mutable result = List.empty
-        for eq in groups do
-            let n = float eq.Length
-            score <-  (2.0 * cur + n - 1.0) / 2.0
-            for m in eq do
-                result <- result @ [(m, score)]
-            cur <- cur + n   
-        result |> List.toArray
-
-
     let FinalScore(C:double[][], D:double[][], names:string[]) = 
         let modCnt = C.GetUpperBound(0) + 1
         let cores = [| for j in 1..modCnt+1 -> [| for i in 1 .. modCnt+1 -> 0 |] |]
-        let yset = GetSet C
-        let qset = GetSet D
+        let yset = Common.GetSet C
+        let qset = Common.GetSet D
         for y in yset do
             for q in qset do
                 let graph = GetGraphByIndexes (C, D, y, q)
-                let core = GetGraphCore graph
+                let core = Common.GetGraphCore graph
                 let coreCnt = Array.sum core
                 printfn "Y=%f, Q=%f, count=%d" y q coreCnt
                 if coreCnt>0 then
@@ -244,9 +211,9 @@ module public Electre =
         let results = Array.create modCnt ""
         for m=0 to modCnt-1 do //models
             for c=1 to modCnt-1 do //cores
-                results.[m] <- results.[m] + LeadingZeros (sprintf "%d" cores.[c].[m])
+                results.[m] <- results.[m] + Common.LeadingZeros (sprintf "%d" cores.[c].[m])
         let pairs = Array.zip results names |> Array.sortBy (fun (x,y) -> (x,y)) |> Array.rev
-        CountPlaces pairs
+        Common.CountPlaces pairs
         
 
 
