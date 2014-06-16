@@ -23,9 +23,12 @@ namespace Multicriteria
         private List<NumericUpDown> critValue = new List<NumericUpDown>();
         private DataGridView data = new DataGridView();
         private bool critFilled;
-
-        public frmInput()
+        private bool isNew;
+        private int prevMod;
+        private int prevCrit;
+        public frmInput(bool New)
         {
+            isNew = New;
             InitializeComponent();
         }
 
@@ -66,6 +69,10 @@ namespace Multicriteria
                         tbName.Parent = this;
                         tbName.Font = new Font(tbName.Font.Name, 14, tbName.Font.Style);
                         tbName.Location = new Point(lblName.Left, lblName.Top + (i + 1) * 40);
+                        if (!isNew && Data.criteria.Count > i)
+                        {
+                            tbName.Text = Data.criteria[i].name;
+                        }
                         critName.Add(tbName);
 
                         NumericUpDown nudValue = new NumericUpDown();
@@ -75,6 +82,10 @@ namespace Multicriteria
                         nudValue.Minimum = 1;
                         nudValue.Maximum = 100;
                         nudValue.Value = 100;
+                        if (!isNew && Data.criteria.Count > i)
+                        {
+                            nudValue.Value = Data.criteria[i].value;
+                        }
                         nudValue.Location = new Point(lblValue.Left, lblValue.Top + (i + 1) * 40);
                         critValue.Add(nudValue);
 
@@ -84,6 +95,10 @@ namespace Multicriteria
                         cbRev.Size = new Size(250, 30);
                         cbRev.Font = new Font(cbRev.Font.Name, 14, cbRev.Font.Style);
                         cbRev.Text = "Оценивать реверсивно";
+                        if (!isNew && Data.criteria.Count > i)
+                        {
+                            cbRev.Checked = Data.criteria[i].reverse;
+                        }
                         isRev.Add(cbRev);
                     }
                     SwitchObjects();
@@ -110,6 +125,10 @@ namespace Multicriteria
                         tbName.Parent = this;
                         tbName.Font = new Font(tbName.Font.Name, 14, tbName.Font.Style);
                         tbName.Location = new Point(lblName.Left, lblName.Top + (i + 1) * 40);
+                        if (!isNew && Data.models.Count > i)
+                        {
+                            tbName.Text = Data.models[i].name;
+                        }
                         modName.Add(tbName);
                     }
                     SwitchObjects();
@@ -137,6 +156,7 @@ namespace Multicriteria
                 }
                 if (!failed)
                 {
+                    Criterion.ResetCriterion();
                     for (int i = 0; i < critCount; ++i)
                     {
                         criteria.Add(new Criterion(critName[i].Text, int.Parse(critValue[i].Value.ToString()), isRev[i].Checked));
@@ -149,6 +169,10 @@ namespace Multicriteria
                     lblTitle.Text = "Введите число моделей";
                     critFilled = true;
                     this.Size = new Size(320, 135);
+                    if (!isNew)
+                    {
+                        txtCount.Text = Data.models.Count.ToString();
+                    }
                 }
                 else
                 {
@@ -165,16 +189,12 @@ namespace Multicriteria
                 }
                 if (!failed)
                 {
+                    Model.ResetModel();
                     for (int i = 0; i < modCount; ++i)
                     {
                         models.Add(new Model(modName[i].Text));
                         modName[i].Dispose();
                     }
-
-
-                    //this.Dispose();
-                    //Excel.GenerateReport(criteria, models);
-                    //MessageBox.Show("Теперь заполните таблицу");
 
                     data.Parent = this;
                     data.ColumnHeadersVisible = false;
@@ -211,6 +231,12 @@ namespace Multicriteria
                     w += 3;
                     h += 3;
                     data.Size = new Size(w, h);
+                    if (!isNew)
+                    {
+                        for (int i = 0; i < Math.Min(prevMod, modCount); ++i)
+                            for (int j = 0; j < Math.Min(prevCrit, critCount); ++j)
+                                data.Rows[i+1].Cells[j+1].Value = Data.table[i][j];
+                    }
                     data.Visible = true;
                     btnFinish.Left = data.Left;
                     btnFinish.Top = h + 10;
@@ -237,6 +263,12 @@ namespace Multicriteria
             critFilled = false;
             data.Visible = false;
             this.Size = new Size(320, 135);
+            if (!isNew)
+            {
+                txtCount.Text = Data.criteria.Count.ToString();
+                prevCrit = Data.criteria.Count;
+                prevMod = Data.models.Count;
+            }
         }
 
         private void btnFinish_Click(object sender, EventArgs e)
@@ -271,6 +303,7 @@ namespace Multicriteria
                     this.Close();
                     if (Excel.ReadXls(Data.filePath))
                     {
+                        Data.ShowPareto();
                         frmChoose chooseForm = new frmChoose();
                         chooseForm.ShowDialog();
                     }

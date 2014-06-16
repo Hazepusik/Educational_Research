@@ -24,7 +24,8 @@ namespace Multicriteria
                     lblCD.Text = "Задайте уровень согласия";
                     foreach (double c in cset)
                     {
-                        ybox.Items.Add(Math.Round(c, 4).ToString());
+                        //ybox.Items.Add(Math.Round(c, 4).ToString());
+                        ybox.Items.Add (new Item(Math.Round(c, 4).ToString(), c));
                     }
                     ybox.SelectedIndex = 0;
                     qbox.Visible = false;
@@ -37,11 +38,11 @@ namespace Multicriteria
                     double[] dset = MathLib.Common.GetSet(Electre.D);
                     foreach (double c in cset)
                     {
-                        ybox.Items.Add(Math.Round(c, 4).ToString());
+                        ybox.Items.Add(new Item(Math.Round(c, 4).ToString(), c));
                     }
                     foreach (double d in dset)
                     {
-                        qbox.Items.Add(Math.Round(d, 4).ToString());
+                        qbox.Items.Add(new Item(Math.Round(d, 4).ToString(), d));
                     }
                     ybox.SelectedIndex = 0;
                     qbox.SelectedIndex = dset.Length - 1;
@@ -53,11 +54,16 @@ namespace Multicriteria
 
       private class Item
       {
-        public string Name;
+        public string Text;
         public double Value;
-        public Item(string name, double value)
+        public Item(string text, double value)
         {
-            Name = name; Value = value;
+            Text = text; Value = value;
+        }
+
+        public override string ToString()
+        {
+            return Text;
         }
       }
 
@@ -67,12 +73,12 @@ namespace Multicriteria
             {
                 case 1:
                     {
-                        Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Superiority.GetGraphByIndexes(Superiority.C, Convert.ToDouble(ybox.SelectedItem)));
+                        Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Superiority.GetGraphByIndexes(Superiority.C, Convert.ToDouble((ybox.SelectedItem as Item).Value)));
                         break;
                     }
                 case 2:
                     {
-                        Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Electre.GetGraphByIndexes(Electre.C, Electre.D, Convert.ToDouble(ybox.SelectedItem), Convert.ToDouble(qbox.SelectedItem)));
+                        Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Electre.GetGraphByIndexes(Electre.C, Electre.D, Convert.ToDouble((ybox.SelectedItem as Item).Value), Convert.ToDouble((qbox.SelectedItem as Item).Value)));
                         break;
                     }
             }

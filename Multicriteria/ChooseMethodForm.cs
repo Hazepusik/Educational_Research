@@ -115,7 +115,6 @@ namespace Multicriteria
             Data.avgScores = Data.avgScores.OrderBy(x => x.Item2).ToArray();
             Data.notDominated = notDominated.ToList();
             Data.ShowResults(Data.avgScores, 0);
-            //Excel.WriteAvg();
         }
     }
 }

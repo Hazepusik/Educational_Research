@@ -29,8 +29,8 @@ namespace Multicriteria
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnExport_Click(object sender, EventArgs e)
         {
-            frmInput f = new frmInput();
-            f.ShowDialog();
+            frmInput inputForm = new frmInput(true);
+            inputForm.ShowDialog();
         }
 
 
@@ -49,8 +49,27 @@ namespace Multicriteria
                 {
                     //TODO: show filename
                     Data.filePath = openFD.FileName;
-                    frmChoose chooseForm = new frmChoose();
-                    chooseForm.ShowDialog();
+
+                    string messageBoxText = "Произвести изменения в загруженном файле?";
+                    string caption = "Загрузка файла";
+                    MessageBoxButtons button = MessageBoxButtons.YesNo;
+                    MessageBoxIcon icon = MessageBoxIcon.Question;
+                    DialogResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+                    switch (result)
+                    {
+                        case DialogResult.Yes:
+                            frmInput inputForm = new frmInput(false);
+                            inputForm.ShowDialog();
+                            break;
+                        case DialogResult.No:
+                            Data.ShowPareto();
+                            frmChoose chooseForm = new frmChoose();
+                            chooseForm.ShowDialog();
+                            break;
+                    }
+
+
+
                 }
             }
         }

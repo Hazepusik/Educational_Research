@@ -73,7 +73,7 @@ namespace Multicriteria
                 }
 
             } Model.IsDominated = true;
-        }   
+        }
     }
 
     public class Criterion
@@ -162,6 +162,19 @@ namespace Multicriteria
                     
                     break;
             }
+        }
+
+
+        public static void ShowPareto()
+        {
+            Model.CheckDominated();
+            Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
+            string txt = "Оптимальные по Парето модели:\n(через ';' обозначены эквивалентные)\n";
+            foreach (Model m in notDominated)
+            {
+                txt += "\n" + m.name;
+            }
+            MessageBox.Show(txt);
         }
 
 

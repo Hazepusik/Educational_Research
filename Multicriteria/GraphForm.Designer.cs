@@ -40,21 +40,21 @@
             // 
             this.lblY.AutoSize = true;
             this.lblY.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblY.Location = new System.Drawing.Point(22, 59);
+            this.lblY.Location = new System.Drawing.Point(16, 60);
             this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(174, 24);
+            this.lblY.Size = new System.Drawing.Size(263, 24);
             this.lblY.TabIndex = 2;
-            this.lblY.Text = "Уровень согласия";
+            this.lblY.Text = "Уровень согласия не менее";
             // 
             // lblQ
             // 
             this.lblQ.AutoSize = true;
             this.lblQ.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblQ.Location = new System.Drawing.Point(22, 101);
+            this.lblQ.Location = new System.Drawing.Point(16, 101);
             this.lblQ.Name = "lblQ";
-            this.lblQ.Size = new System.Drawing.Size(196, 24);
+            this.lblQ.Size = new System.Drawing.Size(282, 24);
             this.lblQ.TabIndex = 3;
-            this.lblQ.Text = "Уровень несогласия";
+            this.lblQ.Text = "Уровень несогласия не более";
             // 
             // lblCD
             // 
@@ -81,18 +81,18 @@
             // 
             this.ybox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ybox.FormattingEnabled = true;
-            this.ybox.Location = new System.Drawing.Point(255, 60);
+            this.ybox.Location = new System.Drawing.Point(306, 60);
             this.ybox.Name = "ybox";
-            this.ybox.Size = new System.Drawing.Size(133, 32);
+            this.ybox.Size = new System.Drawing.Size(116, 32);
             this.ybox.TabIndex = 8;
             // 
             // qbox
             // 
             this.qbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.qbox.FormattingEnabled = true;
-            this.qbox.Location = new System.Drawing.Point(255, 98);
+            this.qbox.Location = new System.Drawing.Point(306, 98);
             this.qbox.Name = "qbox";
-            this.qbox.Size = new System.Drawing.Size(133, 32);
+            this.qbox.Size = new System.Drawing.Size(116, 32);
             this.qbox.TabIndex = 9;
             // 
             // frmGraph
