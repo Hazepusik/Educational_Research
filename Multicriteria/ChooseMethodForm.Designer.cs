@@ -32,6 +32,7 @@
             this.btnElectre = new System.Windows.Forms.Button();
             this.btnAll = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnSuperiority
@@ -41,7 +42,7 @@
             this.btnSuperiority.Name = "btnSuperiority";
             this.btnSuperiority.Size = new System.Drawing.Size(372, 55);
             this.btnSuperiority.TabIndex = 0;
-            this.btnSuperiority.Text = "Отношение превосходства";
+            this.btnSuperiority.Text = "Отношения превосходства";
             this.btnSuperiority.UseVisualStyleBackColor = true;
             this.btnSuperiority.Click += new System.EventHandler(this.btnSuperiority_Click);
             // 
@@ -52,7 +53,7 @@
             this.btnElectre.Name = "btnElectre";
             this.btnElectre.Size = new System.Drawing.Size(367, 54);
             this.btnElectre.TabIndex = 1;
-            this.btnElectre.Text = "Метод ELECTRE";
+            this.btnElectre.Text = "ELECTRE";
             this.btnElectre.UseVisualStyleBackColor = true;
             this.btnElectre.Click += new System.EventHandler(this.btnElectre_Click);
             // 
@@ -63,7 +64,7 @@
             this.btnAll.Name = "btnAll";
             this.btnAll.Size = new System.Drawing.Size(367, 54);
             this.btnAll.TabIndex = 2;
-            this.btnAll.Text = "Усреднить по всем";
+            this.btnAll.Text = "Комбинированный";
             this.btnAll.UseVisualStyleBackColor = true;
             this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
             // 
@@ -77,11 +78,22 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Выберите метод решения";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(432, 46);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // frmChoose
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 301);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnAll);
             this.Controls.Add(this.btnElectre);
@@ -99,5 +111,6 @@
         private System.Windows.Forms.Button btnElectre;
         private System.Windows.Forms.Button btnAll;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
     }
 }

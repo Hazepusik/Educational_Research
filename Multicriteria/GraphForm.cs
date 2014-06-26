@@ -73,12 +73,17 @@ namespace Multicriteria
             {
                 case 1:
                     {
-                        Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Superiority.GetGraphByIndexes(Superiority.C, Convert.ToDouble((ybox.SelectedItem as Item).Value)));
+                        double curC = Convert.ToDouble((ybox.SelectedItem as Item).Value);
+                        Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Superiority.GetGraphByIndexes(Superiority.C, curC));
+                        Logger.AddGraphAction(new double[1] {curC});
                         break;
                     }
                 case 2:
                     {
-                        Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Electre.GetGraphByIndexes(Electre.C, Electre.D, Convert.ToDouble((ybox.SelectedItem as Item).Value), Convert.ToDouble((qbox.SelectedItem as Item).Value)));
+                        double curC = Convert.ToDouble((ybox.SelectedItem as Item).Value);
+                        double curD = Convert.ToDouble((qbox.SelectedItem as Item).Value);
+                        Visualization.ShowGraph(Data.models.Where(m => m.dominatedStatus == 0).ToArray(), MathLib.Electre.GetGraphByIndexes(Electre.C, Electre.D, curC, curD));
+                        Logger.AddGraphAction(new double[2] { curC, curD });
                         break;
                     }
             }

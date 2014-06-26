@@ -87,6 +87,7 @@
             this.Controls.Add(this.btnExport);
             this.Name = "frmMain";
             this.Text = "              Multicriteria";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

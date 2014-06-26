@@ -30,6 +30,18 @@ namespace Multicriteria
             var val = MathLib.Electre.CalcIndexes(Data.tablePareto, P);
             Electre.C = val.Select(t => t.Item1).First();
             Electre.D = val.Select(t => t.Item2).First();
+            /*Electre.D[1][0] = 0.11;
+            Electre.D[2][0] = 0.22;
+            Electre.D[3][0] = 0.33;
+            Electre.D[0][1] = 0.6;
+            Electre.D[2][1] = 0.3;
+            Electre.D[3][1] = 0.22;
+            Electre.D[0][2] = 0.3;
+            Electre.D[1][2] = 0.1;
+            Electre.D[3][2] = 0.11;
+            Electre.D[0][3] = 0.4;
+            Electre.D[1][3] = 0.2;
+            Electre.D[2][3] = 0.1;*/
 
             int modelsCount = Data.tablePareto.Count();
             //Electre.graph = MathLib.Electre.GetGraphByIndexes(Electre.C, Electre.D, Electre.Y, Electre.Q);
@@ -41,8 +53,9 @@ namespace Multicriteria
             Electre.scores = MathLib.Electre.FinalScore(Electre.C, Electre.D, modelNames);
 
             Data.notDominated = notDominated.ToList();
+            DataGridView tableCD = Electre.ShowCDMatrix();
+            // TODO: write tableCD to excel
             Data.ShowResults(Electre.scores, 2);
-            //Excel.WriteElectre();
             if (Electre.scores.Count() > 1)
             {
                 frmGraph graphForm = new frmGraph(2);
@@ -74,8 +87,9 @@ namespace Multicriteria
             }
             Superiority.scores = MathLib.Superiority.FinalScore(Superiority.C, modelNames);
             Data.notDominated = notDominated.ToList();
+            DataGridView tableC = Superiority.ShowCMatrix();
+            // TODO: write tableC to excel
             Data.ShowResults(Superiority.scores, 1);
-            //Excel.WriteSuperiority();
             if (Superiority.scores.Count() > 1)
             {
                 frmGraph graphForm = new frmGraph(1);
@@ -115,6 +129,11 @@ namespace Multicriteria
             Data.avgScores = Data.avgScores.OrderBy(x => x.Item2).ToArray();
             Data.notDominated = notDominated.ToList();
             Data.ShowResults(Data.avgScores, 0);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Logger.Finish();
         }
     }
 }

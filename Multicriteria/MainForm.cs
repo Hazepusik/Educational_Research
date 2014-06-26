@@ -55,6 +55,7 @@ namespace Multicriteria
                     MessageBoxButtons button = MessageBoxButtons.YesNo;
                     MessageBoxIcon icon = MessageBoxIcon.Question;
                     DialogResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+                    Logger.AddFileAction("загружен");
                     switch (result)
                     {
                         case DialogResult.Yes:
@@ -72,6 +73,11 @@ namespace Multicriteria
 
                 }
             }
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            Logger.Init();
         }
 
       

@@ -301,6 +301,9 @@ namespace Multicriteria
                 if (Excel.GenerateReport(criteria, models, dataT))
                 {
                     this.Close();
+                    if (isNew) Logger.AddFileAction("создан");
+                    else Logger.AddFileAction("изменен");
+
                     if (Excel.ReadXls(Data.filePath))
                     {
                         Data.ShowPareto();

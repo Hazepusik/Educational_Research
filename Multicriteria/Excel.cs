@@ -127,8 +127,8 @@ namespace Multicriteria
                     for (int col = 1; col <= criteriaCount; col++)
                     {
                         Data.criteria.Add(new Criterion(dataWorksheet.Cells[1, col + 1].Value.ToString(), CellToInt(sysWorksheet.Cells[3, col]), Convert.ToBoolean(sysWorksheet.Cells[4, col].Value)));
-                        if (Convert.ToBoolean(sysWorksheet.Cells[4, col].Value))
-                            ids.Add(col);
+                        //if (Convert.ToBoolean(sysWorksheet.Cells[4, col].Value))
+                            //ids.Add(col);
                     }
                     for (int row = 1; row <= modelsCount; row++)
                     {
@@ -142,7 +142,6 @@ namespace Multicriteria
                     
                 }
 
-                Data.table = MathLib.Common.MakeReverse(Data.table, ids);
                 return true;
             }
         }
@@ -306,14 +305,14 @@ namespace Multicriteria
                 double[][] D = Electre.D;
                 SetWorkbookProperties(package);
 
-                ExcelWorksheet score = CreateSheet(package, "Таблица смежности");
+                ExcelWorksheet score = CreateSheet(package, "Результат");
                 ExcelWorksheet agree = CreateSheet(package, "Согласие");
                 ExcelWorksheet disagree = CreateSheet(package, "Несогласие");
 
 
                 int current = 2;
                 score.Cells[1, 1].Value = "Модел(и)";
-                score.Cells[1, 2].Value = "Штрафной балл";
+                score.Cells[1, 2].Value = "Приоритет";
                 foreach (System.Tuple<string, double> modSc in Electre.scores)
                 {
                     string m = modSc.Item1;
@@ -366,12 +365,12 @@ namespace Multicriteria
                 double[][] C = Superiority.C;
                 SetWorkbookProperties(package);
 
-                ExcelWorksheet score = CreateSheet(package, "Таблица смежности");
+                ExcelWorksheet score = CreateSheet(package, "Результат");
                 ExcelWorksheet agree = CreateSheet(package, "Согласие");
 
                 int current = 2;
                 score.Cells[1, 1].Value = "Модел(и)";
-                score.Cells[1, 2].Value = "Штрафной балл";
+                score.Cells[1, 2].Value = "Приоритет";
                 foreach (System.Tuple<string, double> modSc in Superiority.scores)
                 {
                     string m = modSc.Item1;
@@ -424,7 +423,7 @@ namespace Multicriteria
 
                 int current = 2;
                 score.Cells[1, 1].Value = "Модел(и)";
-                score.Cells[1, 2].Value = "Штрафной балл";
+                score.Cells[1, 2].Value = "Приоритет";
                 foreach (System.Tuple<string, double> avgSc in Data.avgScores)
                 {
                     string m = avgSc.Item1;
