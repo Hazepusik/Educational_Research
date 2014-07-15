@@ -219,3 +219,17 @@ module public Electre =
                 results.[m] <- results.[m] + Common.LeadingZeros (sprintf "%d" cores.[c].[m])
         let pairs = Array.zip results names |> Array.sortBy (fun (x,y) -> (x,y)) |> Array.rev
         Common.CountPlaces pairs
+
+module public IdealPoint = 
+    let distance2(pnt:double[], ideal, P:int[]) = 
+        let pnt = pnt |> Array.toList
+        let P = P |> Array.toList
+        let diffs = List.map3(fun a b c -> (a-b)*(a-b)*float c/100.0) pnt ideal P
+        sprintf "%d" (int ((diffs |> List.sum |> sqrt) * 100000.0))
+    let FinalScore(A:double[][], P:int[], names:string[]) = 
+        let names = names |> Array.toList
+        let ideal = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.max (Common.getColumn(i, A))) 
+        let dists = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> distance2 (A.[i], ideal, P))
+        let pairs = List.zip dists names |> List.sortBy (fun (x,y) -> (x,y)) |> List.rev |> List.toArray
+        Common.CountPlaces pairs
+

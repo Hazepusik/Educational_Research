@@ -133,7 +133,22 @@ namespace Multicriteria
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //TODO: onclose
             Logger.Finish();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Model.CheckDominated();
+            Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
+            int[] P = new int[Data.criteria.Count];
+            foreach (Criterion c in Data.criteria)
+                P[c.id - 1] = c.value;
+            int modelsCount = Data.tablePareto.Count();
+            string[] modelNames = new string[notDominated.Count()];
+            for (int i = 0; i < notDominated.Count(); ++i)
+                modelNames[i] = notDominated[i].name;
+            MathLib.IdealPoint.FinalScore(Data.tablePareto, P, modelNames);
         }
     }
 }
