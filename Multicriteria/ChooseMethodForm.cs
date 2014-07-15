@@ -54,7 +54,7 @@ namespace Multicriteria
 
             Data.notDominated = notDominated.ToList();
             DataGridView tableCD = Electre.ShowCDMatrix();
-            // TODO: write tableCD to excel
+            // can write tableCD to excel
             Data.ShowResults(Electre.scores, 2);
             if (Electre.scores.Count() > 1)
             {
@@ -88,7 +88,7 @@ namespace Multicriteria
             Superiority.scores = MathLib.Superiority.FinalScore(Superiority.C, modelNames);
             Data.notDominated = notDominated.ToList();
             DataGridView tableC = Superiority.ShowCMatrix();
-            // TODO: write tableC to excel
+            // can write tableC to excel
             Data.ShowResults(Superiority.scores, 1);
             if (Superiority.scores.Count() > 1)
             {

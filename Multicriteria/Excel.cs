@@ -350,10 +350,17 @@ namespace Multicriteria
 
                 Byte[] bin = package.GetAsByteArray();
                 string fileName = Data.GetFileName() + "_electre_result.xlsx";
-                //TODO: file is busy + fname change
-                File.WriteAllBytes(fileName, bin);
-                ProcessStartInfo pi = new ProcessStartInfo(fileName);
-                Process.Start(pi);
+                var existingFile = new FileInfo(fileName);
+                if (!FileIsLocked(existingFile))
+                {
+                    File.WriteAllBytes(fileName, bin);
+                    ProcessStartInfo pi = new ProcessStartInfo(fileName);
+                    Process.Start(pi);
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при записи в файл.\nУбедитесь, что файл закрыт.");
+                }
             }
         }
 
@@ -404,10 +411,17 @@ namespace Multicriteria
 
                 Byte[] bin = package.GetAsByteArray();
                 string fileName = Data.GetFileName() + "_superiority_result.xlsx";
-                //TODO: file is busy + fname change
-                File.WriteAllBytes(fileName, bin);
-                ProcessStartInfo pi = new ProcessStartInfo(fileName);
-                Process.Start(pi);
+                var existingFile = new FileInfo(fileName);
+                if (!FileIsLocked(existingFile))
+                {
+                    File.WriteAllBytes(fileName, bin);
+                    ProcessStartInfo pi = new ProcessStartInfo(fileName);
+                    Process.Start(pi);
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при записи в файл.\nУбедитесь, что файл закрыт.");
+                }
             }
         }
 
@@ -435,10 +449,17 @@ namespace Multicriteria
 
                 Byte[] bin = package.GetAsByteArray();
                 string fileName = Data.GetFileName()+"_avg_result.xlsx";
-                //TODO: file is busy
-                File.WriteAllBytes(fileName, bin);
-                ProcessStartInfo pi = new ProcessStartInfo(fileName);
-                Process.Start(pi);
+                var existingFile = new FileInfo(fileName);
+                if (!FileIsLocked(existingFile))
+                {
+                    File.WriteAllBytes(fileName, bin);
+                    ProcessStartInfo pi = new ProcessStartInfo(fileName);
+                    Process.Start(pi);
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при записи в файл.\nУбедитесь, что файл закрыт.");
+                }
             }
         }
 

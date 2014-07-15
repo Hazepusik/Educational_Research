@@ -174,7 +174,7 @@ namespace Multicriteria
                     StringBuilder sb = new StringBuilder();
                     using (StreamWriter outfile = new StreamWriter(fPath))
                     {
-                        //TODO: check if busy
+                        //shouldn't be busy
                         outfile.Write(log.ToString());
                     }
                     break;
@@ -258,8 +258,7 @@ namespace Multicriteria
                             }
                     }
                     break;
-                case DialogResult.No:
-                    
+                case DialogResult.No:  
                     break;
             }
         }
