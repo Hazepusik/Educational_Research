@@ -78,6 +78,7 @@ namespace Multicriteria
         private void frmMain_Load(object sender, EventArgs e)
         {
             Logger.Init();
+            Configuration.Init();
         }
 
       

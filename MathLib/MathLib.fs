@@ -41,7 +41,7 @@ module public Common =
 
     let LeadingZeros(s:string) = 
         let mutable str = s
-        let maxL = 4
+        let maxL = 6
         while str.Length<maxL do
             str <- "0"+str
         str
@@ -221,15 +221,37 @@ module public Electre =
         Common.CountPlaces pairs
 
 module public IdealPoint = 
-    let distance2(pnt:double[], ideal, P:int[]) = 
+    let distance2(pnt:double[], ideal, worst, P) = 
         let pnt = pnt |> Array.toList
-        let P = P |> Array.toList
-        let diffs = List.map3(fun a b c -> (a-b)*(a-b)*float c/100.0) pnt ideal P
-        sprintf "%d" (int ((diffs |> List.sum |> sqrt) * 100000.0))
+        //TODO: check without alco
+        let diffs = List.map3(fun x i w -> ((i-x)/(i-w))**2.0) pnt ideal worst
+        //let diffs = List.map2(fun x i -> (i-x)**2.0) pnt ideal
+        //let dists = diffs
+        let dists = List.map2(fun d p -> d*(float p/100.0)**2.0) diffs P
+        sprintf "%d" (int ((dists |> List.sum |> sqrt) * 10000.0))
     let FinalScore(A:double[][], P:int[], names:string[]) = 
         let names = names |> Array.toList
-        let ideal = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.max (Common.getColumn(i, A))) 
-        let dists = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> distance2 (A.[i], ideal, P))
-        let pairs = List.zip dists names |> List.sortBy (fun (x,y) -> (x,y)) |> List.rev |> List.toArray
+        let P = P |> Array.toList
+        let ideal = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.max (Common.getColumn(i, A)))
+        let worst = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.min (Common.getColumn(i, A))) 
+        let qq = A.[0].GetUpperBound(0)
+        let qqw = A.GetUpperBound(0)
+        let dists = [0..A.GetUpperBound(0)] |> List.map(fun i -> Common.LeadingZeros (distance2 (A.[i], ideal, worst, P)))
+        let pairs = List.zip dists names |> List.sortBy (fun (x,y) -> (x,y)) |> List.toArray
         Common.CountPlaces pairs
 
+module public Convolution = 
+    let oneConv(pnt:double[], ideal, worst, P) = 
+        let pnt = pnt |> Array.toList
+        //TODO: check without alco
+        let conv = List.map3(fun x i w -> (x-w)/(i-w)) pnt ideal worst
+        let conv = List.map2(fun d p -> d*float p/100.0) conv P
+        sprintf "%d" (int ((conv |> List.sum) * 10000.0))
+    let FinalScore(A:double[][], P:int[], names:string[]) = 
+        let names = names |> Array.toList
+        let P = P |> Array.toList
+        let ideal = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.max (Common.getColumn(i, A)))
+        let worst = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.min (Common.getColumn(i, A)))
+        let convolution = [0..A.GetUpperBound(0)] |> List.map(fun i -> Common.LeadingZeros ( oneConv (A.[i], ideal, worst, P)))
+        let pairs = List.zip convolution names |> List.sortBy (fun (x,y) -> (x,y)) |> List.rev |> List.toArray
+        Common.CountPlaces pairs

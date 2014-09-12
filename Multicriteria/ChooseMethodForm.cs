@@ -111,19 +111,31 @@ namespace Multicriteria
 
 
             Superiority.C = MathLib.Superiority.CalcIndexes(Data.tablePareto, P);
-            Superiority.scores = MathLib.Superiority.FinalScore(Superiority.C, modelNames);
-
+            
             var val = MathLib.Electre.CalcIndexes(Data.tablePareto, P);
             Electre.C = val.Select(t => t.Item1).First();
             Electre.D = val.Select(t => t.Item2).First();
 
+            Superiority.scores = MathLib.Superiority.FinalScore(Superiority.C, modelNames);
             Electre.scores = MathLib.Electre.FinalScore(Electre.C, Electre.D, modelNames);
+            IdealPoint.scores = MathLib.IdealPoint.FinalScore(Data.tablePareto, P, modelNames);
+            Convolution.scores = MathLib.Convolution.FinalScore(Data.tablePareto, P, modelNames);
+
             Array.Sort(Electre.scores);
             Array.Sort(Superiority.scores);
+            Array.Sort(IdealPoint.scores);
+            Array.Sort(Convolution.scores);
+
             Data.avgScores = new System.Tuple<string, double>[Electre.scores.Count()];
+
             for (int i = 0; i < Electre.scores.Count(); ++i)
             {
-                double avg = ((Superiority.scores[i].Item2 * Superiority.importance) + (Electre.scores[i].Item2 * Electre.importance)) / (Electre.importance + Superiority.importance);
+                double avg = (
+                    (Superiority.scores[i].Item2 * Superiority.importance) +
+                    (Electre.scores[i].Item2 * Electre.importance) +
+                    (IdealPoint.scores[i].Item2 * IdealPoint.importance) +
+                    (Convolution.scores[i].Item2 * Convolution.importance)
+                    );
                 Data.avgScores[i] = new System.Tuple<string, double>(Electre.scores[i].Item1, avg);
             }
             Data.avgScores = Data.avgScores.OrderBy(x => x.Item2).ToArray();
@@ -131,13 +143,8 @@ namespace Multicriteria
             Data.ShowResults(Data.avgScores, 0);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //TODO: onclose
-            Logger.Finish();
-        }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnIdealPoint_Click(object sender, EventArgs e)
         {
             Model.CheckDominated();
             Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
@@ -148,7 +155,29 @@ namespace Multicriteria
             string[] modelNames = new string[notDominated.Count()];
             for (int i = 0; i < notDominated.Count(); ++i)
                 modelNames[i] = notDominated[i].name;
-            MathLib.IdealPoint.FinalScore(Data.tablePareto, P, modelNames);
+            IdealPoint.scores = MathLib.IdealPoint.FinalScore(Data.tablePareto, P, modelNames);
+            Data.ShowResults(IdealPoint.scores, 3);
+        }
+
+        private void btnConvolution_Click(object sender, EventArgs e)
+        {
+            Model.CheckDominated();
+            Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
+            int[] P = new int[Data.criteria.Count];
+            foreach (Criterion c in Data.criteria)
+                P[c.id - 1] = c.value;
+            int modelsCount = Data.tablePareto.Count();
+            string[] modelNames = new string[notDominated.Count()];
+            for (int i = 0; i < notDominated.Count(); ++i)
+                modelNames[i] = notDominated[i].name;
+            Convolution.scores = MathLib.Convolution.FinalScore(Data.tablePareto, P, modelNames);
+            Data.ShowResults(Convolution.scores, 4);
+        }
+
+        private void btnImportance_Click(object sender, EventArgs e)
+        {
+            frmImportance importanceForm = new frmImportance();
+            importanceForm.ShowDialog();
         }
     }
 }

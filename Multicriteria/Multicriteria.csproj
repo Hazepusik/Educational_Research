@@ -79,6 +79,18 @@
     </Compile>
     <Compile Include="Classes.cs" />
     <Compile Include="Excel.cs" />
+    <Compile Include="ImportanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportanceForm.Designer.cs">
+      <DependentUpon>ImportanceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResultForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResultForm.Designer.cs">
+      <DependentUpon>ResultForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Visualization.cs" />
     <Compile Include="GraphForm.cs">
       <SubType>Form</SubType>
@@ -106,6 +118,9 @@
     <EmbeddedResource Include="GraphForm.resx">
       <DependentUpon>GraphForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ImportanceForm.resx">
+      <DependentUpon>ImportanceForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -122,6 +137,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ResultForm.resx">
+      <DependentUpon>ResultForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

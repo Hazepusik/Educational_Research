@@ -221,6 +221,16 @@ namespace Multicriteria
                         s = String.Format(s, "ELECTRE.");
                         break;
                     }
+                case 3:
+                    {
+                        s = String.Format(s, "Идеальная точка.");
+                        break;
+                    }
+                case 4:
+                    {
+                        s = String.Format(s, "Линейная свертка.");
+                        break;
+                    }
             }
             Logger.log.AppendLine();
             Logger.log.AppendLine(s);
@@ -229,38 +239,9 @@ namespace Multicriteria
                 messageBoxText += String.Format("\n{0} - {1}", score.Item1, score.Item2.ToString());
                 Logger.log.AppendLine(String.Format("{0} - {1}", score.Item1, score.Item2.ToString()));
             }
-            messageBoxText += "\n\n\n Сохранить результат в файл?";
-            string caption = "Результат";
-            MessageBoxButtons button = MessageBoxButtons.YesNo;
-            MessageBoxIcon icon = MessageBoxIcon.Question;
-            DialogResult result = MessageBox.Show(messageBoxText, caption, button, icon);
-            
-
-            switch (result)
-            {
-                case DialogResult.Yes:
-                    switch (method)
-                    {
-                        case 0:
-                            {
-                                Excel.WriteAvg();
-                                break;
-                            }
-                        case 1:
-                            {
-                                Excel.WriteSuperiority();
-                                break;
-                            }
-                        case 2:
-                            {
-                                Excel.WriteElectre();
-                                break;
-                            }
-                    }
-                    break;
-                case DialogResult.No:  
-                    break;
-            }
+            ResultForm frmResult = new ResultForm(scores, method);
+            frmResult.ShowDialog();
+   
         }
 
 
@@ -279,11 +260,67 @@ namespace Multicriteria
         }
     }
 
+    public static class Configuration
+    {
+        public static void Init()
+        {
+            if (!File.Exists("data.conf"))
+            {
+                WriteConfiguration(
+                    Superiority.importance.ToString(),
+                    Electre.importance.ToString(),
+                    Convolution.importance.ToString(),
+                    IdealPoint.importance.ToString());
+            }
+            try
+            {
+                StreamReader readtext = new StreamReader("data.conf");
+                Superiority.importance = int.Parse(readtext.ReadLine().Substring(3));
+                Electre.importance = int.Parse(readtext.ReadLine().Substring(3));
+                Convolution.importance = int.Parse(readtext.ReadLine().Substring(3));
+                IdealPoint.importance = int.Parse(readtext.ReadLine().Substring(3));
+                readtext.Close();
+            }
+            catch
+            {
+                SetDefaultImportance();
+            }
+        }
+
+        public static bool WriteConfiguration(string sp, string el, string cv, string ip)
+        {
+            try
+            {
+                StreamWriter writetext = new StreamWriter("data.conf");
+                writetext.WriteLine("SP " + sp);
+                writetext.WriteLine("EL " + el);
+                writetext.WriteLine("CV " + cv);
+                writetext.WriteLine("IP " + ip);
+                writetext.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        public static void SetDefaultImportance()
+        {
+            Superiority.importance = 5;
+            Electre.importance = 9;
+            Convolution.importance = 7;
+            IdealPoint.importance = 3;
+        }
+
+    }
+
     public static class Superiority
     {
         public static double[][] C;
         public static System.Tuple<string, double>[] scores;
-        public static int importance = 1;
+        public static int importance = 5;
 
         public static DataGridView ShowCMatrix()
         {
@@ -385,7 +422,7 @@ namespace Multicriteria
         public static double[][] C;
         public static double[][] D;
         public static System.Tuple<string, double>[] scores;
-        public static int importance = 3;
+        public static int importance = 9;
 
         public static DataGridView ShowCDMatrix()
         {
@@ -460,4 +497,18 @@ namespace Multicriteria
             return data;
         }
     }
+
+    public static class Convolution
+    {
+        public static System.Tuple<string, double>[] scores;
+        public static int importance = 7;
+    }
+
+    public static class IdealPoint
+    {
+        public static System.Tuple<string, double>[] scores;
+        public static int importance = 3;
+    }
+
+
 }

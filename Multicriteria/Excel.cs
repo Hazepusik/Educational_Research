@@ -208,6 +208,10 @@ namespace Multicriteria
                 {
                     string fileName = saveFD.FileName;
                     var existingFile = new FileInfo(fileName);
+                    if (!existingFile.Exists)
+                    {
+                        existingFile.Create();
+                    }
                     if (FileIsLocked(existingFile) && File.Exists(fileName))
                     {
                         MessageBox.Show("Произошла ошибка при записи файла.\nУбедитесь, что файл закрыт.");
@@ -351,6 +355,10 @@ namespace Multicriteria
                 Byte[] bin = package.GetAsByteArray();
                 string fileName = Data.GetFileName() + "_electre_result.xlsx";
                 var existingFile = new FileInfo(fileName);
+                if (!existingFile.Exists)
+                {
+                    existingFile.Create();
+                }
                 if (!FileIsLocked(existingFile))
                 {
                     File.WriteAllBytes(fileName, bin);
@@ -412,6 +420,10 @@ namespace Multicriteria
                 Byte[] bin = package.GetAsByteArray();
                 string fileName = Data.GetFileName() + "_superiority_result.xlsx";
                 var existingFile = new FileInfo(fileName);
+                if (!existingFile.Exists)
+                {
+                    existingFile.Create();
+                }
                 if (!FileIsLocked(existingFile))
                 {
                     File.WriteAllBytes(fileName, bin);
@@ -448,8 +460,95 @@ namespace Multicriteria
                 }
 
                 Byte[] bin = package.GetAsByteArray();
-                string fileName = Data.GetFileName()+"_avg_result.xlsx";
+                string fileName = Data.GetFileName() + "_avg_result.xlsx";
                 var existingFile = new FileInfo(fileName);
+                if (!existingFile.Exists)
+                {
+                    existingFile.Create();
+                }
+                if (!FileIsLocked(existingFile))
+                {
+                    File.WriteAllBytes(fileName, bin);
+                    ProcessStartInfo pi = new ProcessStartInfo(fileName);
+                    Process.Start(pi);
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при записи в файл.\nУбедитесь, что файл закрыт.");
+                }
+            }
+        }
+
+        public static void WriteIdealPoint()
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                List<Model> models = Data.notDominated;
+                SetWorkbookProperties(package);
+
+                ExcelWorksheet score = CreateSheet(package, "Результат");
+
+                int current = 2;
+                score.Cells[1, 1].Value = "Модел(и)";
+                score.Cells[1, 2].Value = "Приоритет";
+                foreach (System.Tuple<string, double> ipSc in IdealPoint.scores)
+                {
+                    string m = ipSc.Item1;
+                    double s = ipSc.Item2;
+                    score.Cells[current, 1].Value = m;
+                    score.Cells[current, 2].Value = s.ToString();
+                    current++;
+                }
+
+                Byte[] bin = package.GetAsByteArray();
+                string fileName = Data.GetFileName() + "_ideal_point_result.xlsx";
+                var existingFile = new FileInfo(fileName);
+                if (!existingFile.Exists)
+                {
+                    existingFile.Create();
+                }
+                existingFile = new FileInfo(fileName);
+                if (!FileIsLocked(existingFile))
+                {
+                    File.WriteAllBytes(fileName, bin);
+                    ProcessStartInfo pi = new ProcessStartInfo(fileName);
+                    Process.Start(pi);
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при записи в файл.\nУбедитесь, что файл закрыт.");
+                }
+            }
+        }
+
+        public static void WriteConvolution()
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                List<Model> models = Data.notDominated;
+                SetWorkbookProperties(package);
+
+                ExcelWorksheet score = CreateSheet(package, "Результат");
+
+                int current = 2;
+                score.Cells[1, 1].Value = "Модел(и)";
+                score.Cells[1, 2].Value = "Приоритет";
+                foreach (System.Tuple<string, double> cvSc in Convolution.scores)
+                {
+                    string m = cvSc.Item1;
+                    double s = cvSc.Item2;
+                    score.Cells[current, 1].Value = m;
+                    score.Cells[current, 2].Value = s.ToString();
+                    current++;
+                }
+
+                Byte[] bin = package.GetAsByteArray();
+                string fileName = Data.GetFileName() + "_convolution_result.xlsx";
+                var existingFile = new FileInfo(fileName);
+                if (!existingFile.Exists)
+                {
+                    existingFile.Create();
+                }
                 if (!FileIsLocked(existingFile))
                 {
                     File.WriteAllBytes(fileName, bin);

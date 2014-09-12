@@ -32,8 +32,9 @@
             this.btnElectre = new System.Windows.Forms.Button();
             this.btnAll = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnIdealPoint = new System.Windows.Forms.Button();
+            this.btnConvolution = new System.Windows.Forms.Button();
+            this.btnImportance = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnSuperiority
@@ -61,7 +62,7 @@
             // btnAll
             // 
             this.btnAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnAll.Location = new System.Drawing.Point(59, 230);
+            this.btnAll.Location = new System.Drawing.Point(59, 374);
             this.btnAll.Name = "btnAll";
             this.btnAll.Size = new System.Drawing.Size(367, 54);
             this.btnAll.TabIndex = 2;
@@ -79,33 +80,47 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Выберите метод решения";
             // 
-            // button1
+            // btnIdealPoint
             // 
-            this.button1.Location = new System.Drawing.Point(432, 46);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnIdealPoint.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnIdealPoint.Location = new System.Drawing.Point(59, 298);
+            this.btnIdealPoint.Name = "btnIdealPoint";
+            this.btnIdealPoint.Size = new System.Drawing.Size(367, 54);
+            this.btnIdealPoint.TabIndex = 5;
+            this.btnIdealPoint.Text = "Идеальная точка";
+            this.btnIdealPoint.UseVisualStyleBackColor = true;
+            this.btnIdealPoint.Click += new System.EventHandler(this.btnIdealPoint_Click);
             // 
-            // button2
+            // btnConvolution
             // 
-            this.button2.Location = new System.Drawing.Point(432, 106);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnConvolution.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnConvolution.Location = new System.Drawing.Point(59, 229);
+            this.btnConvolution.Name = "btnConvolution";
+            this.btnConvolution.Size = new System.Drawing.Size(367, 54);
+            this.btnConvolution.TabIndex = 6;
+            this.btnConvolution.Text = "Линейная свертка";
+            this.btnConvolution.UseVisualStyleBackColor = true;
+            this.btnConvolution.Click += new System.EventHandler(this.btnConvolution_Click);
+            // 
+            // btnImportance
+            // 
+            this.btnImportance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnImportance.Location = new System.Drawing.Point(59, 449);
+            this.btnImportance.Name = "btnImportance";
+            this.btnImportance.Size = new System.Drawing.Size(367, 54);
+            this.btnImportance.TabIndex = 7;
+            this.btnImportance.Text = "Настройка важности методов";
+            this.btnImportance.UseVisualStyleBackColor = true;
+            this.btnImportance.Click += new System.EventHandler(this.btnImportance_Click);
             // 
             // frmChoose
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(500, 301);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(500, 515);
+            this.Controls.Add(this.btnImportance);
+            this.Controls.Add(this.btnConvolution);
+            this.Controls.Add(this.btnIdealPoint);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnAll);
             this.Controls.Add(this.btnElectre);
@@ -123,7 +138,8 @@
         private System.Windows.Forms.Button btnElectre;
         private System.Windows.Forms.Button btnAll;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnIdealPoint;
+        private System.Windows.Forms.Button btnConvolution;
+        private System.Windows.Forms.Button btnImportance;
     }
 }
