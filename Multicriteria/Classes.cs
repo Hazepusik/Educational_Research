@@ -54,7 +54,7 @@ namespace Multicriteria
                 foreach (int eq in equal)
                 {
                     int mainId = MathLib.Domin.EqualIndex(Data.table, eq - 1);
-                    Data.models.First(m => m.id == mainId).name += "; " + Data.models[eq - 1].name;
+                    Data.models.First(m => m.id == mainId).name += "| " + Data.models[eq - 1].name;
                     Data.models[eq - 1].dominatedStatus = mainId;
 
                 }
@@ -251,7 +251,7 @@ namespace Multicriteria
             Data.table = MathLib.Common.MakeReverse(Data.table, reverseIds);
             Model.CheckDominated();
             Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
-            string txt = "Оптимальные по Парето модели:\n(через ';' обозначены эквивалентные)\n";
+            string txt = "Оптимальные по Парето модели:\n(через '|' записаны эквивалентные)\n";
             foreach (Model m in notDominated)
             {
                 txt += "\n" + m.name;
@@ -266,36 +266,69 @@ namespace Multicriteria
         {
             if (!File.Exists("data.conf"))
             {
-                WriteConfiguration(
-                    Superiority.importance.ToString(),
-                    Electre.importance.ToString(),
-                    Convolution.importance.ToString(),
-                    IdealPoint.importance.ToString());
+                WriteConfiguration();
             }
             try
             {
                 StreamReader readtext = new StreamReader("data.conf");
-                Superiority.importance = int.Parse(readtext.ReadLine().Substring(3));
-                Electre.importance = int.Parse(readtext.ReadLine().Substring(3));
-                Convolution.importance = int.Parse(readtext.ReadLine().Substring(3));
-                IdealPoint.importance = int.Parse(readtext.ReadLine().Substring(3));
+                string line = readtext.ReadLine();
+                Superiority.importance = int.Parse(line.Substring(3, 2));
+                Superiority.use = line.Substring(6, 1) == "1";
+                line = readtext.ReadLine();
+                Electre.importance = int.Parse(line.Substring(3, 2));
+                Electre.use = line.Substring(6, 1) == "1";
+                line = readtext.ReadLine();
+                Convolution.importance = int.Parse(line.Substring(3, 2));
+                Convolution.use = line.Substring(6, 1) == "1";
+                line = readtext.ReadLine();
+                IdealPoint.importance = int.Parse(line.Substring(3, 2));
+                IdealPoint.use = line.Substring(6, 1) == "1";
+                line = readtext.ReadLine();
+                Promethee.importance = int.Parse(line.Substring(3, 2));
+                Promethee.use = line.Substring(6, 1) == "1";
                 readtext.Close();
             }
             catch
             {
-                SetDefaultImportance();
+                SetDefault();
             }
         }
 
-        public static bool WriteConfiguration(string sp, string el, string cv, string ip)
+        public static bool WriteConfiguration(string sp, string el, string cv, string ip, string pr)
         {
             try
             {
                 StreamWriter writetext = new StreamWriter("data.conf");
-                writetext.WriteLine("SP " + sp);
-                writetext.WriteLine("EL " + el);
-                writetext.WriteLine("CV " + cv);
-                writetext.WriteLine("IP " + ip);
+
+                writetext.WriteLine("SP " + (sp.Length < 2 ? "0" : "") + sp + (Superiority.use ? " 1" : " 0"));
+                writetext.WriteLine("EL " + (el.Length < 2 ? "0" : "") + el + (Electre.use ? " 1" : " 0"));
+                writetext.WriteLine("CV " + (cv.Length < 2 ? "0" : "") + cv + (Convolution.use ? " 1" : " 0"));
+                writetext.WriteLine("IP " + (ip.Length < 2 ? "0" : "") + ip + (IdealPoint.use ? " 1" : " 0"));
+                writetext.WriteLine("PR " + (pr.Length < 2 ? "0" : "") + pr + (Promethee.use ? " 1" : " 0"));
+                writetext.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool WriteConfiguration()
+        {
+            try
+            {
+                string sp = Superiority.importance.ToString();
+                string el = Electre.importance.ToString();
+                string cv = Convolution.importance.ToString();
+                string ip = IdealPoint.importance.ToString();
+                string pr = Promethee.importance.ToString();
+                StreamWriter writetext = new StreamWriter("data.conf");
+                writetext.WriteLine("SP " + (sp.Length < 2 ? "0" : "") + sp + (Superiority.use ? " 1" : " 0"));
+                writetext.WriteLine("EL " + (el.Length < 2 ? "0" : "") + el + (Electre.use ? " 1" : " 0"));
+                writetext.WriteLine("CV " + (cv.Length < 2 ? "0" : "") + cv + (Convolution.use ? " 1" : " 0"));
+                writetext.WriteLine("IP " + (ip.Length < 2 ? "0" : "") + ip + (IdealPoint.use ? " 1" : " 0"));
+                writetext.WriteLine("PR " + (pr.Length < 2 ? "0" : "") + pr + (Promethee.use ? " 1" : " 0"));
                 writetext.Close();
                 return true;
             }
@@ -306,12 +339,18 @@ namespace Multicriteria
         }
 
 
-        public static void SetDefaultImportance()
+        public static void SetDefault()
         {
             Superiority.importance = 5;
+            Superiority.use = true;
             Electre.importance = 9;
+            Electre.use = true;
             Convolution.importance = 7;
+            Convolution.use = true;
             IdealPoint.importance = 3;
+            IdealPoint.use = true;
+            Promethee.importance = 9;
+            Promethee.use = true;
         }
 
     }
@@ -321,6 +360,8 @@ namespace Multicriteria
         public static double[][] C;
         public static System.Tuple<string, double>[] scores;
         public static int importance = 5;
+        public static string name = "Отношения превосходства";
+        public static bool use = true;
 
         public static DataGridView ShowCMatrix()
         {
@@ -423,6 +464,8 @@ namespace Multicriteria
         public static double[][] D;
         public static System.Tuple<string, double>[] scores;
         public static int importance = 9;
+        public static string name = "ELECTRE";
+        public static bool use = true;
 
         public static DataGridView ShowCDMatrix()
         {
@@ -502,13 +545,23 @@ namespace Multicriteria
     {
         public static System.Tuple<string, double>[] scores;
         public static int importance = 7;
+        public static string name = "Линейная свертка";
+        public static bool use = true;
     }
 
     public static class IdealPoint
     {
         public static System.Tuple<string, double>[] scores;
         public static int importance = 3;
+        public static string name = "Идеальная точка";
+        public static bool use = true;
     }
 
-
+    public static class Promethee
+    {
+        public static System.Tuple<string, double>[] scores;
+        public static int importance = 9;
+        public static string name = "PROMETHEE";
+        public static bool use = true;
+    }
 }

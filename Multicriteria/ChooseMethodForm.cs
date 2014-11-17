@@ -130,12 +130,28 @@ namespace Multicriteria
 
             for (int i = 0; i < Electre.scores.Count(); ++i)
             {
-                double avg = (
-                    (Superiority.scores[i].Item2 * Superiority.importance) +
-                    (Electre.scores[i].Item2 * Electre.importance) +
-                    (IdealPoint.scores[i].Item2 * IdealPoint.importance) +
-                    (Convolution.scores[i].Item2 * Convolution.importance)
-                    );
+                double avg = 0;
+                if (Superiority.use)
+                {
+                    avg += Superiority.scores[i].Item2 * Superiority.importance;
+                }
+                if (Electre.use)
+                {
+                    avg += Electre.scores[i].Item2 * Electre.importance;
+                }
+                if (Convolution.use)
+                {
+                    avg += Convolution.scores[i].Item2 * Convolution.importance;
+                }
+                if (IdealPoint.use)
+                {
+                    avg += IdealPoint.scores[i].Item2 * IdealPoint.importance;
+                }
+                if (Promethee.use)
+                {
+                    //TODO: uncomment
+                    //avg += Promethee.scores[i].Item2 * Promethee.importance;
+                }
                 Data.avgScores[i] = new System.Tuple<string, double>(Electre.scores[i].Item1, avg);
             }
             Data.avgScores = Data.avgScores.OrderBy(x => x.Item2).ToArray();

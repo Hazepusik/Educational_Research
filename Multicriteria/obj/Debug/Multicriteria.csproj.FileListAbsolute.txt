@@ -26,3 +26,4 @@ D:\GitHub\Educational_Research\Multicriteria\bin\Debug\EPPlus.dll
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmInput.resources
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.frmImportance.resources
 D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.ResultForm.resources
+D:\GitHub\Educational_Research\Multicriteria\obj\Debug\Multicriteria.ManualForm.resources

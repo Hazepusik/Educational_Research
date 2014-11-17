@@ -81,6 +81,12 @@ namespace Multicriteria
             Configuration.Init();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ManualForm frm = new ManualForm();
+            frm.ShowDialog();
+        }
+
       
     }
 }

@@ -240,6 +240,7 @@ module public IdealPoint =
         let pairs = List.zip dists names |> List.sortBy (fun (x,y) -> (x,y)) |> List.toArray
         Common.CountPlaces pairs
 
+
 module public Convolution = 
     let oneConv(pnt:double[], ideal, worst, P) = 
         let pnt = pnt |> Array.toList
@@ -253,5 +254,36 @@ module public Convolution =
         let ideal = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.max (Common.getColumn(i, A)))
         let worst = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.min (Common.getColumn(i, A)))
         let convolution = [0..A.GetUpperBound(0)] |> List.map(fun i -> Common.LeadingZeros ( oneConv (A.[i], ideal, worst, P)))
+        let pairs = List.zip convolution names |> List.sortBy (fun (x,y) -> (x,y)) |> List.rev |> List.toArray
+        Common.CountPlaces pairs
+
+
+module public Promethee = 
+
+    let func(x) =
+        let p = 0.15
+        let q = 0.85
+        let ans = ref 0.0
+        if (x<p) then
+             ans := 0.0
+        else 
+            if (x>q) then
+                ans := 1.0
+            else
+                ans := (!ans - p) / (q - p) // TODO: CHECK IT
+        !ans
+
+    let oneCnt(pnt:double[], ideal, worst, P) = 
+        let pnt = pnt |> Array.toList
+        let row = List.map3(fun x i w -> (x-w)/(i-w)) pnt ideal worst
+        let row = List.map2(fun d p -> func(d) * float p / 100.0) row P
+        sprintf "%d" (int ((row |> List.sum) * 10000.0))
+
+    let FinalScore(A:double[][], P:int[], names:string[]) = 
+        let names = names |> Array.toList
+        let P = P |> Array.toList
+        let ideal = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.max (Common.getColumn(i, A)))
+        let worst = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.min (Common.getColumn(i, A)))
+        let convolution = [0..A.GetUpperBound(0)] |> List.map(fun i -> Common.LeadingZeros ( oneCnt (A.[i], ideal, worst, P)))
         let pairs = List.zip convolution names |> List.sortBy (fun (x,y) -> (x,y)) |> List.rev |> List.toArray
         Common.CountPlaces pairs
