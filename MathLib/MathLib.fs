@@ -260,7 +260,8 @@ module public Convolution =
 
 module public Promethee = 
 
-    let func(x) =
+
+    let fx(x:double) =
         let p = 0.15
         let q = 0.85
         let ans = ref 0.0
@@ -273,17 +274,46 @@ module public Promethee =
                 ans := (!ans - p) / (q - p) // TODO: CHECK IT
         !ans
 
-    let oneCnt(pnt:double[], ideal, worst, P) = 
-        let pnt = pnt |> Array.toList
-        let row = List.map3(fun x i w -> (x-w)/(i-w)) pnt ideal worst
-        let row = List.map2(fun d p -> func(d) * float p / 100.0) row P
+    let p(a,b,f) =
+        a
+
+    let H(x,f) = 
+        x
+
+    let P_f(a,b,f) = 
+        if a<b then
+            0.0
+        else
+            let x = float(a-b)
+            fx(x) // func 1-6
+
+
+    let oneCnt(pnt:double[], ideal, worst, P, f) = 
+        let critdata = pnt |> Array.toList
+        let row = List.map2(fun d p -> fx(d) * float p / 100.0) critdata P
         sprintf "%d" (int ((row |> List.sum) * 10000.0))
 
-    let FinalScore(A:double[][], P:int[], names:string[]) = 
+    let norm(pnt:double[], ideal, worst) = 
+        let pnt = pnt |> Array.toList
+        List.map3(fun x i w -> (x-w)/(i-w)) pnt ideal worst |> List.toArray
+
+    let pi_f(a,b,p,f) = 
+        let pidata = List.map3(fun aa bb pp -> float(pp) * P_f(aa, bb, f) ) a b p //|> List.map(fun i -> float(i))
+        pidata |> List.sum
+
+    let phiplus(A:double[][], i:int, P, f:int) = 
+        let a = A.[i] |> Array.toList
+        let sum = [0..A.GetUpperBound(0)] |> List.map(fun j -> pi_f(a, A.[j] |> Array.toList, P, f))
+        sum
+    
+
+    let FinalScore(A:double[][], P:int[], names:string[], f:int) = 
         let names = names |> Array.toList
         let P = P |> Array.toList
         let ideal = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.max (Common.getColumn(i, A)))
         let worst = [0..A.[0].GetUpperBound(0)] |> List.map(fun i -> Array.min (Common.getColumn(i, A)))
-        let convolution = [0..A.GetUpperBound(0)] |> List.map(fun i -> Common.LeadingZeros ( oneCnt (A.[i], ideal, worst, P)))
-        let pairs = List.zip convolution names |> List.sortBy (fun (x,y) -> (x,y)) |> List.rev |> List.toArray
+        let normdata = [0..A.GetUpperBound(0)] |> List.toArray |> Array.map(fun i -> norm(A.[i], ideal, worst))
+        let promethee = phiplus(normdata, 1, P, f)
+        let promethee = [0..A.GetUpperBound(0)] |> List.map(fun i -> Common.LeadingZeros ( oneCnt (normdata.[i], ideal, worst, P, f)))
+        let pairs = List.zip promethee names |> List.sortBy (fun (x,y) -> (x,y)) |> List.rev |> List.toArray
         Common.CountPlaces pairs

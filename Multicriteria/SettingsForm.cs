@@ -76,6 +76,12 @@ namespace Multicriteria
             clbUsing.SetItemChecked(clbUsing.Items.IndexOf(Convolution.name), Convolution.use);
             clbUsing.SetItemChecked(clbUsing.Items.IndexOf(IdealPoint.name), IdealPoint.use);
             clbUsing.SetItemChecked(clbUsing.Items.IndexOf(Promethee.name), Promethee.use);
+            rbF1.Checked = Promethee.func == 1;
+            rbF2.Checked = Promethee.func == 2;
+            rbF3.Checked = Promethee.func == 3;
+            rbF4.Checked = Promethee.func == 4;
+            rbF5.Checked = Promethee.func == 5;
+            rbF6.Checked = Promethee.func == 6;
         }
 
         private void tabPage1_Click(object sender, EventArgs e)
@@ -123,6 +129,41 @@ namespace Multicriteria
                     MessageBox.Show("Ошибка в записи файла конфигурации");
                 }
             }
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSavePromethee_Click(object sender, EventArgs e)
+        {
+            if (rbF1.Checked)
+                Promethee.func = 1;
+            if (rbF2.Checked)
+                Promethee.func = 2;
+            if (rbF3.Checked)
+                Promethee.func = 3;
+            if (rbF4.Checked)
+                Promethee.func = 4;
+            if (rbF5.Checked)
+                Promethee.func = 5;
+            if (rbF6.Checked)
+                Promethee.func = 6;
+            if (Configuration.WriteConfiguration())
+            {
+                MessageBox.Show("Файл конфигурации успешно записан");
+                this.Close();
+            }
+            else 
+            {
+                MessageBox.Show("Ошибка в записи файла конфигурации");
+            }          
         }
     }
 }

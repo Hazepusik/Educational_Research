@@ -79,11 +79,29 @@
     </Compile>
     <Compile Include="Classes.cs" />
     <Compile Include="Excel.cs" />
-    <Compile Include="ImportanceForm.cs">
+    <Compile Include="MainExpertForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ImportanceForm.Designer.cs">
-      <DependentUpon>ImportanceForm.cs</DependentUpon>
+    <Compile Include="MainExpertForm.Designer.cs">
+      <DependentUpon>MainExpertForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainMulticriteriaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainMulticriteriaForm.Designer.cs">
+      <DependentUpon>MainMulticriteriaForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewVoteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewVoteForm.Designer.cs">
+      <DependentUpon>NewVoteForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ManualForm.cs">
       <SubType>Form</SubType>
@@ -124,8 +142,17 @@
     <EmbeddedResource Include="GraphForm.resx">
       <DependentUpon>GraphForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImportanceForm.resx">
-      <DependentUpon>ImportanceForm.cs</DependentUpon>
+    <EmbeddedResource Include="MainExpertForm.resx">
+      <DependentUpon>MainExpertForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainMulticriteriaForm.resx">
+      <DependentUpon>MainMulticriteriaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewVoteForm.resx">
+      <DependentUpon>NewVoteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>

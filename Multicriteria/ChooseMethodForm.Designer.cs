@@ -35,14 +35,15 @@
             this.btnIdealPoint = new System.Windows.Forms.Button();
             this.btnConvolution = new System.Windows.Forms.Button();
             this.btnImportance = new System.Windows.Forms.Button();
+            this.btnPromethee = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnSuperiority
             // 
             this.btnSuperiority.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnSuperiority.Location = new System.Drawing.Point(54, 88);
+            this.btnSuperiority.Location = new System.Drawing.Point(59, 91);
             this.btnSuperiority.Name = "btnSuperiority";
-            this.btnSuperiority.Size = new System.Drawing.Size(372, 55);
+            this.btnSuperiority.Size = new System.Drawing.Size(367, 52);
             this.btnSuperiority.TabIndex = 0;
             this.btnSuperiority.Text = "Отношения превосходства";
             this.btnSuperiority.UseVisualStyleBackColor = true;
@@ -62,7 +63,7 @@
             // btnAll
             // 
             this.btnAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnAll.Location = new System.Drawing.Point(59, 374);
+            this.btnAll.Location = new System.Drawing.Point(59, 440);
             this.btnAll.Name = "btnAll";
             this.btnAll.Size = new System.Drawing.Size(367, 54);
             this.btnAll.TabIndex = 2;
@@ -105,19 +106,31 @@
             // btnImportance
             // 
             this.btnImportance.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnImportance.Location = new System.Drawing.Point(59, 449);
+            this.btnImportance.Location = new System.Drawing.Point(59, 515);
             this.btnImportance.Name = "btnImportance";
             this.btnImportance.Size = new System.Drawing.Size(367, 54);
             this.btnImportance.TabIndex = 7;
-            this.btnImportance.Text = "Настройка важности методов";
+            this.btnImportance.Text = "Настройки";
             this.btnImportance.UseVisualStyleBackColor = true;
             this.btnImportance.Click += new System.EventHandler(this.btnImportance_Click);
+            // 
+            // btnPromethee
+            // 
+            this.btnPromethee.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnPromethee.Location = new System.Drawing.Point(59, 369);
+            this.btnPromethee.Name = "btnPromethee";
+            this.btnPromethee.Size = new System.Drawing.Size(367, 54);
+            this.btnPromethee.TabIndex = 8;
+            this.btnPromethee.Text = "PROMETHEE";
+            this.btnPromethee.UseVisualStyleBackColor = true;
+            this.btnPromethee.Click += new System.EventHandler(this.btnPromethee_Click);
             // 
             // frmChoose
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(500, 515);
+            this.ClientSize = new System.Drawing.Size(500, 584);
+            this.Controls.Add(this.btnPromethee);
             this.Controls.Add(this.btnImportance);
             this.Controls.Add(this.btnConvolution);
             this.Controls.Add(this.btnIdealPoint);
@@ -141,5 +154,6 @@
         private System.Windows.Forms.Button btnIdealPoint;
         private System.Windows.Forms.Button btnConvolution;
         private System.Windows.Forms.Button btnImportance;
+        private System.Windows.Forms.Button btnPromethee;
     }
 }

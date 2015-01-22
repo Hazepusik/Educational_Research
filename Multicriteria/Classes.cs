@@ -199,6 +199,7 @@ namespace Multicriteria
         {
             return filePath.Substring(0, filePath.Length - 5);
         }
+
         public static void ShowResults(System.Tuple<string, double>[] scores, int method)
         {
             string messageBoxText = "Результаты: модели и приоритет";
@@ -229,6 +230,11 @@ namespace Multicriteria
                 case 4:
                     {
                         s = String.Format(s, "Линейная свертка.");
+                        break;
+                    }
+                case 5:
+                    {
+                        s = String.Format(s, "PROMETHEE.");
                         break;
                     }
             }
@@ -286,6 +292,8 @@ namespace Multicriteria
                 line = readtext.ReadLine();
                 Promethee.importance = int.Parse(line.Substring(3, 2));
                 Promethee.use = line.Substring(6, 1) == "1";
+                line = readtext.ReadLine();
+                Promethee.func = int.Parse(line.Substring(5, 1));
                 readtext.Close();
             }
             catch
@@ -323,12 +331,14 @@ namespace Multicriteria
                 string cv = Convolution.importance.ToString();
                 string ip = IdealPoint.importance.ToString();
                 string pr = Promethee.importance.ToString();
+                string prfn = Promethee.func.ToString();
                 StreamWriter writetext = new StreamWriter("data.conf");
                 writetext.WriteLine("SP " + (sp.Length < 2 ? "0" : "") + sp + (Superiority.use ? " 1" : " 0"));
                 writetext.WriteLine("EL " + (el.Length < 2 ? "0" : "") + el + (Electre.use ? " 1" : " 0"));
                 writetext.WriteLine("CV " + (cv.Length < 2 ? "0" : "") + cv + (Convolution.use ? " 1" : " 0"));
                 writetext.WriteLine("IP " + (ip.Length < 2 ? "0" : "") + ip + (IdealPoint.use ? " 1" : " 0"));
                 writetext.WriteLine("PR " + (pr.Length < 2 ? "0" : "") + pr + (Promethee.use ? " 1" : " 0"));
+                writetext.WriteLine("PRFN " + prfn);
                 writetext.Close();
                 return true;
             }
@@ -337,6 +347,7 @@ namespace Multicriteria
                 return false;
             }
         }
+
 
 
         public static void SetDefault()
@@ -351,6 +362,7 @@ namespace Multicriteria
             IdealPoint.use = true;
             Promethee.importance = 9;
             Promethee.use = true;
+            Promethee.func = 2;
         }
 
     }
@@ -561,7 +573,42 @@ namespace Multicriteria
     {
         public static System.Tuple<string, double>[] scores;
         public static int importance = 9;
+        public static int func = 1;
         public static string name = "PROMETHEE";
         public static bool use = true;
+    }
+
+    public static class Expert
+    {
+        public static List<string> choise;
+
+        public static string filename;
+
+        public static List<string> GetVotes()
+        {
+            List<string> votes = new List<string>();
+            string tmplDir = Directory.GetCurrentDirectory() + "\\Шаблоны Голосования";
+            if (!Directory.Exists(tmplDir))
+            {
+                return votes;
+            }
+
+            foreach (string file in Directory.GetFiles(tmplDir))
+            {
+                
+                if (file.Contains(".xlsx"))
+                    votes.Add(Path.GetFileNameWithoutExtension(file));
+            }
+
+            return votes;
+        }
+
+        public static bool LoadChoise(string file)
+        {
+            filename = file;
+            choise = Excel.LoadChoise(file);
+            return choise.Count != 0;
+        }
+
     }
 }

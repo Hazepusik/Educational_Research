@@ -23,7 +23,7 @@ namespace Multicriteria
             {
                 stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
             }
-            catch (IOException)
+            catch (IOException e)
             {
                 return true;
             }
@@ -560,6 +560,146 @@ namespace Multicriteria
                     MessageBox.Show("Произошла ошибка при записи в файл.\nУбедитесь, что файл закрыт.");
                 }
             }
+        }
+
+        public static void WriteExpert()
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                List<string> models = Expert.choise;
+                SetWorkbookProperties(package);
+
+                ExcelWorksheet score = CreateSheet(package, "Результат");
+
+                int current = 2;
+                score.Cells[1, 1].Value = models.Count.ToString();
+                current = 2;
+                foreach (string model in models)
+                {
+                    score.Cells[current, 1].Value = model;
+                    current++;
+                }
+                
+                Byte[] bin = package.GetAsByteArray();
+                string fileName = Directory.GetCurrentDirectory() + "\\" + Expert.filename;
+
+                if (!Directory.Exists(fileName))
+                {
+                    Directory.CreateDirectory(fileName);
+                }
+                fileName += "\\" + DateTime.Now.ToString("ddMMyyHHmmss") + ".xlsx";
+
+                try
+                {
+                    File.WriteAllBytes(fileName, bin);
+                }
+                catch
+                {
+                    MessageBox.Show("Произошла ошибка при записи в файл.\nУбедитесь, что файл закрыт.");
+                }
+            }
+        }
+
+        public static bool GenerateExpertTemplate(List<string> alternatives)
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                SetWorkbookProperties(package);
+                ExcelWorksheet dataWorksheet = CreateSheet(package, "Альтернативы");
+
+                dataWorksheet.Cells[1, 1].Value = alternatives.Count.ToString();
+                for (int i = 1; i <= alternatives.Count; ++i)
+                {
+                    dataWorksheet.Cells[i+1, 1].Value = alternatives[i-1];
+                }
+
+                Byte[] bin = package.GetAsByteArray();
+                SaveFileDialog saveFD = new SaveFileDialog();
+                string tmplDir = Directory.GetCurrentDirectory()+"\\Шаблоны Голосования";
+                if (!Directory.Exists(tmplDir))
+                {
+                    Directory.CreateDirectory(tmplDir);
+                }
+                saveFD.InitialDirectory = tmplDir;
+                saveFD.Filter = "Excel files (*.xlsx;*.xls)|*.xlsx;*.xls|All files (*.*)|*.*";
+                saveFD.FilterIndex = 1;
+                saveFD.RestoreDirectory = true;
+                if (saveFD.ShowDialog() == DialogResult.OK)
+                {
+                    string fileName = saveFD.FileName;
+                    var existingFile = new FileInfo(fileName);
+                    /*if (!existingFile.Exists)
+                    {
+                        existingFile.Create();
+                    }
+                    else
+                    {
+                        if (FileIsLocked(existingFile) && File.Exists(fileName))
+                        {
+                            MessageBox.Show("Произошла ошибка при записи файла.\nУбедитесь, что файл закрыт.");
+                            return false;
+                        }
+                    }*/
+                    File.WriteAllBytes(fileName, bin);
+                    Data.filePath = fileName;
+
+                }
+                else
+                {
+                    MessageBox.Show("Произошла ошибка при генерации файла");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static List<string> LoadChoise(string file)
+        {
+            List<string> votes = new List<string>();
+            file = Directory.GetCurrentDirectory() + "\\Шаблоны Голосования\\" + file + ".xlsx";
+            if (!File.Exists(file))
+            {
+                return votes;
+            }
+            var existingFile = new FileInfo(file);
+            if (FileIsLocked(existingFile))
+            {
+                MessageBox.Show("Произошла ошибка при открытии файла.\nУбедитесь, что файл существует и закрыт.");
+                return votes;
+            }
+            using (var package = new ExcelPackage(existingFile))
+            {
+                ExcelWorkbook workBook = package.Workbook;
+                if (workBook != null)
+                {
+                    if (workBook.Worksheets.Count < 1)
+                    {
+                        MessageBox.Show("Произошла ошибка при чтении файла.\nУбедитесь, что файл заполнен верно.");
+                        return votes;
+                    }
+                    ExcelWorksheet dataWorksheet = workBook.Worksheets[1];
+                    int count;
+                    try
+                    {
+                        if (!int.TryParse(dataWorksheet.Cells[1, 1].Value.ToString(), out count))
+                        {
+                            MessageBox.Show("Произошла ошибка при чтении файла.\nУбедитесь, что файл заполнен верно.");
+                            return votes;
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Произошла ошибка при чтении файла.\nУбедитесь, что файл заполнен верно.");
+                        return votes;
+                    }
+
+                    for (int row = 1; row <= count; row++)
+                    {
+                        votes.Add(dataWorksheet.Cells[row + 1, 1].Value.ToString());
+                    }
+                }
+            }
+            return votes;
         }
 
     }

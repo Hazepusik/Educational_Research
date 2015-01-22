@@ -195,5 +195,20 @@ namespace Multicriteria
             frmImportance importanceForm = new frmImportance();
             importanceForm.ShowDialog();
         }
+
+        private void btnPromethee_Click(object sender, EventArgs e)
+        {
+            Model.CheckDominated();
+            Model[] notDominated = Data.models.Where(m => m.dominatedStatus == 0).ToArray();
+            int[] P = new int[Data.criteria.Count];
+            foreach (Criterion c in Data.criteria)
+                P[c.id - 1] = c.value;
+            int modelsCount = Data.tablePareto.Count();
+            string[] modelNames = new string[notDominated.Count()];
+            for (int i = 0; i < notDominated.Count(); ++i)
+                modelNames[i] = notDominated[i].name;
+            Promethee.scores = MathLib.Promethee.FinalScore(Data.tablePareto, P, modelNames, Promethee.func);
+            Data.ShowResults(Promethee.scores, 5);
+        }
     }
 }

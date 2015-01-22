@@ -1,9 +1,0 @@
-D:\Downloads\ExportToExcelV2\ExportToExcelV2\obj\Debug\ExportToExcelV2.Form1.resources
-D:\Downloads\ExportToExcelV2\ExportToExcelV2\obj\Debug\ExportToExcelV2.Properties.Resources.resources
-D:\Downloads\ExportToExcelV2\ExportToExcelV2\obj\Debug\ExportToExcelV2.csproj.GenerateResource.Cache
-D:\Downloads\ExportToExcelV2\ExportToExcelV2\bin\Debug\ExportToExcelV2.exe
-D:\Downloads\ExportToExcelV2\ExportToExcelV2\bin\Debug\ExportToExcelV2.pdb
-D:\Downloads\ExportToExcelV2\ExportToExcelV2\bin\Debug\EPPlus.dll
-D:\Downloads\ExportToExcelV2\ExportToExcelV2\obj\Debug\ExportToExcelV2.csprojResolveAssemblyReference.cache
-D:\Downloads\ExportToExcelV2\ExportToExcelV2\obj\Debug\ExportToExcelV2.exe
-D:\Downloads\ExportToExcelV2\ExportToExcelV2\obj\Debug\ExportToExcelV2.pdb

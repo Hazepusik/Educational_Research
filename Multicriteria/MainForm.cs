@@ -29,50 +29,16 @@ namespace Multicriteria
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnExport_Click(object sender, EventArgs e)
         {
-            frmInput inputForm = new frmInput(true);
-            inputForm.ShowDialog();
+            frmMainMulticriteria frm = new frmMainMulticriteria();
+            frm.ShowDialog();
         }
 
 
 
         private void Import_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFD = new OpenFileDialog();
-
-            openFD.InitialDirectory = Directory.GetCurrentDirectory();
-            openFD.Filter = "Excel files (*.xlsx;*.xls)|*.xlsx;*.xls|All files (*.*)|*.*";
-            openFD.FilterIndex = 1;
-            openFD.RestoreDirectory = true;
-            if (openFD.ShowDialog() == DialogResult.OK)
-            {
-                if (Excel.ReadXls(openFD.FileName))
-                {
-                    //TODO: show filename
-                    Data.filePath = openFD.FileName;
-
-                    string messageBoxText = "Произвести изменения в загруженном файле?";
-                    string caption = "Загрузка файла";
-                    MessageBoxButtons button = MessageBoxButtons.YesNo;
-                    MessageBoxIcon icon = MessageBoxIcon.Question;
-                    DialogResult result = MessageBox.Show(messageBoxText, caption, button, icon);
-                    Logger.AddFileAction("загружен");
-                    switch (result)
-                    {
-                        case DialogResult.Yes:
-                            frmInput inputForm = new frmInput(false);
-                            inputForm.ShowDialog();
-                            break;
-                        case DialogResult.No:
-                            Data.ShowPareto();
-                            frmChoose chooseForm = new frmChoose();
-                            chooseForm.ShowDialog();
-                            break;
-                    }
-
-
-
-                }
-            }
+            frmMainExpert frm = new frmMainExpert();
+            frm.ShowDialog();
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -83,8 +49,18 @@ namespace Multicriteria
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ManualForm frm = new ManualForm();
+            frmMainExpert frm = new frmMainExpert();
             frm.ShowDialog();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
 
       
